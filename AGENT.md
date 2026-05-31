@@ -41,6 +41,8 @@ Primary entry points:
   exchange, broker, market type, and data-source notes.
 - [Project Governance](.codex/wiki/reference/project-governance.md):
   contribution, security, conduct, trademarks, and release guidance.
+- [API Conventions](.codex/wiki/reference/api-conventions.md):
+  human API, Agent Gateway, OpenAPI artifact paths, and contract rules.
 - [Source Docs Archive Map](.codex/wiki/reference/source-docs-archive-map.md):
   mapping from deleted `docs/` and top-level governance files into wiki pages.
 
@@ -328,6 +330,16 @@ Rules:
 
 - Do not reintroduce long-form `docs/` files unless the user explicitly asks or
   a clear product need exists.
+- Do not recreate `docs/api/`, `docs/agent/`, or `docs/API_CONVENTIONS.md`.
+  API artifacts and API contract documentation live at:
+  `.codex/wiki/reference/api/openapi.yaml`,
+  `.codex/wiki/reference/api/index.html`,
+  `.codex/wiki/reference/agent/agent-openapi.json`, and
+  `.codex/wiki/reference/api-conventions.md`.
+- `backend_api_python/scripts/export_openapi.py` must keep its default output
+  pointed at `.codex/wiki/reference/api/openapi.yaml`.
+- OpenAPI CI, PR templates, README, and wiki verification commands must point
+  at the wiki API artifact paths, not old `docs/` paths.
 - Repo-task-driven scope docs belong under `.codex/scopes/<scope>/`.
 - Completed scope archives belong under `.codex/scopes/archive/<scope>/`.
 - Durable behavior, architecture, and operating assumptions belong in
@@ -347,7 +359,48 @@ python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
 For code-to-wiki navigation, use `wiki.py nav search`, `wiki.py nav goto`, and
 `wiki.py nav refs` before loading broad docs or editing high-risk modules.
 
-## 12. Validation Defaults
+## 12. Upstream Merge Preservation
+
+This checkout has intentionally diverged from upstream in its documentation
+and local-runtime baseline. Future merges must preserve the local base unless
+the user explicitly asks to restore upstream behavior.
+
+During upstream merge, rebase, or cherry-pick work:
+
+- Treat `.codex/wiki/` as the durable documentation surface.
+- If upstream adds or changes useful Markdown under `docs/`, extract the useful
+  facts into the relevant wiki page and update
+  `.codex/wiki/reference/source-docs-archive-map.md`.
+- Do not accept upstream changes that restore `docs/api/openapi.yaml`,
+  `docs/api/index.html`, `docs/agent/agent-openapi.json`, or
+  `docs/API_CONVENTIONS.md`; keep those paths under `.codex/wiki/reference/`.
+- Keep `.github/workflows/openapi-ci.yml`, `.github/PULL_REQUEST_TEMPLATE.md`,
+  README, AGENT, and `backend_api_python/scripts/export_openapi.py` aligned
+  with the wiki API paths after conflict resolution.
+- Before deleting or restoring deployment assets such as Docker Compose files,
+  Dockerfiles, image build paths, or local runtime scripts, prove whether they
+  are still referenced by README, AGENT, wiki, CI, install scripts, or current
+  runtime commands. Cleanup is allowed only after those references and
+  replacement workflows are updated together.
+- Do not restore upstream documentation or deployment scaffolding just because
+  a merge marks it as added. Preserve the local deletion when the local wiki or
+  runtime model already absorbed the useful content.
+
+Post-merge minimum checks:
+
+```bash
+rg -n "docs/api|docs/agent|docs/API_CONVENTIONS|API_CONVENTIONS" README.md AGENT.md .github backend_api_python .codex/wiki -S
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py rebuild --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
+cd backend_api_python && python scripts/export_openapi.py
+```
+
+The `rg` check should only return this preservation section and unrelated
+third-party URLs, if any. It must not reveal active README, CI, code, or wiki
+links that still point at old local `docs/` API artifact paths. The OpenAPI
+export must write to `.codex/wiki/reference/api/openapi.yaml`.
+
+## 13. Validation Defaults
 
 Use the narrowest meaningful check first.
 
@@ -394,7 +447,7 @@ curl -f http://localhost:5000/api/health
 Do not claim completion for high-risk changes without either running the
 focused checks or clearly stating why validation could not be run.
 
-## 13. High-Risk Areas
+## 14. High-Risk Areas
 
 Treat these paths as security-sensitive:
 
