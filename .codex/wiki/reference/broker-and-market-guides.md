@@ -3,13 +3,40 @@ title: Broker And Market Guides
 type: reference
 status: current
 scope: quantdinger-brokers
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - backend_api_python/app/services/live_trading
-  - backend_api_python/app/services/ibkr_trading
-  - backend_api_python/app/services/mt5_trading
-  - backend_api_python/app/services/alpaca_trading
-  - backend_api_python/app/data_sources
+  - path: backend_api_python/app/services/live_trading
+    role: owner
+  - path: backend_api_python/app/services/live_trading/factory.py
+    role: owner
+  - path: backend_api_python/app/services/ibkr_trading
+    role: owner
+  - path: backend_api_python/app/services/mt5_trading
+    role: owner
+  - path: backend_api_python/app/services/alpaca_trading
+    role: owner
+  - path: backend_api_python/app/data_sources
+    role: owner
+  - path: backend_api_python/app/services/broker_market_policy.py
+    role: owner
+  - path: backend_api_python/app/utils/local_brokers.py
+    role: config
+code_anchors:
+  - id: broker-live-client-factory
+    kind: function
+    file: backend_api_python/app/services/live_trading/factory.py
+    symbol: create_client
+    role: defines
+  - id: broker-market-policy-validation
+    kind: function
+    file: backend_api_python/app/services/broker_market_policy.py
+    symbol: validate_strategy_config
+    role: defines
+  - id: broker-local-desktop-guard
+    kind: function
+    file: backend_api_python/app/utils/local_brokers.py
+    symbol: local_desktop_brokers_allowed
+    role: explains
 source_docs:
   - docs/IBKR_TRADING_GUIDE_EN.md
   - docs/MT5_TRADING_GUIDE_EN.md
@@ -21,7 +48,7 @@ tags:
   - market-data
   - ibkr
   - mt5
-updated: 2026-05-31T15:45:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Broker And Market Guides

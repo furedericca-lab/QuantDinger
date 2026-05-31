@@ -3,14 +3,38 @@ title: Deployment And Operations
 type: implementation
 status: current
 scope: quantdinger-deploy
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - docker-compose.yml
-  - docker-compose.ghcr.yml
-  - docker-compose.build.yml
-  - backend_api_python/env.example
-  - backend_api_python/Dockerfile
-  - backend_api_python/run.py
+  - path: docker-compose.yml
+    role: config
+  - path: docker-compose.ghcr.yml
+    role: config
+  - path: docker-compose.build.yml
+    role: config
+  - path: backend_api_python/env.example
+    role: config
+  - path: backend_api_python/Dockerfile
+    role: config
+  - path: backend_api_python/run.py
+    role: owner
+  - path: backend_api_python/app/config/settings.py
+    role: owner
+code_anchors:
+  - id: quantdinger-compose-runtime
+    kind: config
+    file: docker-compose.yml
+    symbol: services.backend
+    role: defines
+  - id: quantdinger-backend-env-template
+    kind: config
+    file: backend_api_python/env.example
+    symbol: SECRET_KEY
+    role: references
+  - id: quantdinger-backend-run-entrypoint
+    kind: module
+    file: backend_api_python/run.py
+    symbol: app
+    role: explains
 source_docs:
   - docs/CLOUD_DEPLOYMENT_EN.md
   - docs/CLOUD_DEPLOYMENT_CN.md
@@ -20,7 +44,7 @@ tags:
   - deployment
   - operations
   - docker
-updated: 2026-05-31T15:35:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Deployment And Operations

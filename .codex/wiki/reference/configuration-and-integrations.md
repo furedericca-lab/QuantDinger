@@ -3,12 +3,39 @@ title: Configuration And Integrations
 type: reference
 status: current
 scope: quantdinger-config
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - backend_api_python/env.example
-  - backend_api_python/app/routes/settings.py
-  - backend_api_python/app/services/oauth_service.py
-  - backend_api_python/app/services/usdt_payment
+  - path: backend_api_python/env.example
+    role: config
+  - path: backend_api_python/app/routes/settings.py
+    role: owner
+  - path: backend_api_python/app/services/oauth_service.py
+    role: owner
+  - path: backend_api_python/app/services/usdt_payment/service.py
+    role: owner
+  - path: backend_api_python/app/services/email_service.py
+    role: caller
+code_anchors:
+  - id: quantdinger-settings-catalog
+    kind: route
+    file: backend_api_python/app/routes/settings.py
+    symbol: settings_bp
+    role: defines
+  - id: quantdinger-oauth-service
+    kind: class
+    file: backend_api_python/app/services/oauth_service.py
+    symbol: OAuthService
+    role: defines
+  - id: quantdinger-usdt-payment-service
+    kind: class
+    file: backend_api_python/app/services/usdt_payment/service.py
+    symbol: UsdtPaymentService
+    role: defines
+  - id: quantdinger-usdt-payment-worker
+    kind: class
+    file: backend_api_python/app/services/usdt_payment/service.py
+    symbol: UsdtOrderWorker
+    role: explains
 source_docs:
   - docs/OAUTH_CONFIG_EN.md
   - docs/OAUTH_CONFIG_CN.md
@@ -24,7 +51,7 @@ tags:
   - oauth
   - notifications
   - billing
-updated: 2026-05-31T15:40:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Configuration And Integrations

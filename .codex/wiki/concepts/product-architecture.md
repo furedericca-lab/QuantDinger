@@ -3,13 +3,36 @@ title: Product Architecture
 type: concept
 status: current
 scope: quantdinger-core
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - backend_api_python/app/__init__.py
-  - backend_api_python/app/routes
-  - backend_api_python/app/services
-  - backend_api_python/app/data_sources
-  - docker-compose.yml
+  - path: backend_api_python/app/__init__.py
+    role: owner
+  - path: backend_api_python/app/routes
+    role: caller
+  - path: backend_api_python/app/services
+    role: owner
+  - path: backend_api_python/app/data_sources
+    role: owner
+  - path: backend_api_python/migrations/init.sql
+    role: owner
+  - path: docker-compose.yml
+    role: config
+code_anchors:
+  - id: quantdinger-flask-app-factory
+    kind: function
+    file: backend_api_python/app/__init__.py
+    symbol: create_app
+    role: defines
+  - id: quantdinger-runtime-workers
+    kind: behavior
+    file: backend_api_python/app/__init__.py
+    symbol: start_pending_order_worker
+    role: explains
+  - id: quantdinger-first-boot-schema
+    kind: schema
+    file: backend_api_python/migrations/init.sql
+    symbol: qd_agent_tokens
+    role: references
 source_docs:
   - README.md
   - backend_api_python/README.md
@@ -23,7 +46,7 @@ tags:
   - architecture
   - product
   - backend
-updated: 2026-05-31T15:20:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Product Architecture

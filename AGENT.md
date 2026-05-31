@@ -337,9 +337,12 @@ Rules:
 After wiki changes:
 
 ```bash
-python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py rebuild --json
-python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py rebuild --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
 ```
+
+For code-to-wiki navigation, use `wiki.py nav search`, `wiki.py nav goto`, and
+`wiki.py nav refs` before loading broad docs or editing high-risk modules.
 
 ## 12. Validation Defaults
 

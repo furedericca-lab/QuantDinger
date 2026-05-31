@@ -3,12 +3,46 @@ title: Agent Gateway And MCP
 type: implementation
 status: current
 scope: quantdinger-agent-api
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - backend_api_python/app/routes/agent_v1
-  - backend_api_python/app/utils/agent_auth.py
-  - backend_api_python/app/utils/agent_jobs.py
-  - mcp_server
+  - path: backend_api_python/app/routes/agent_v1
+    role: owner
+  - path: backend_api_python/app/routes/agent_v1/__init__.py
+    role: owner
+  - path: backend_api_python/app/utils/agent_auth.py
+    role: owner
+  - path: backend_api_python/app/utils/agent_jobs.py
+    role: owner
+  - path: backend_api_python/app/routes/agent_v1/quick_trade.py
+    role: caller
+  - path: mcp_server/src/quantdinger_mcp/server.py
+    role: owner
+code_anchors:
+  - id: agent-gateway-blueprint-registration
+    kind: function
+    file: backend_api_python/app/routes/agent_v1/__init__.py
+    symbol: register
+    role: defines
+  - id: agent-token-auth-scope-guard
+    kind: decorator
+    file: backend_api_python/app/utils/agent_auth.py
+    symbol: agent_required
+    role: defines
+  - id: agent-idempotent-job-submission
+    kind: decorator
+    file: backend_api_python/app/utils/agent_auth.py
+    symbol: with_idempotency
+    role: defines
+  - id: agent-quick-trade-capital-boundary
+    kind: route
+    file: backend_api_python/app/routes/agent_v1/quick_trade.py
+    symbol: place_order
+    role: explains
+  - id: quantdinger-mcp-rest-wrapper
+    kind: module
+    file: mcp_server/src/quantdinger_mcp/server.py
+    symbol: submit_backtest
+    role: explains
 source_docs:
   - docs/agent/AI_INTEGRATION_DESIGN.md
   - docs/agent/AGENT_ENVIRONMENT_DESIGN.md
@@ -21,7 +55,7 @@ tags:
   - mcp
   - automation
   - safety
-updated: 2026-05-31T15:30:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Agent Gateway And MCP

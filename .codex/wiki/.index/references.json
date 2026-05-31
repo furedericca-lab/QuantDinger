@@ -1,0 +1,194 @@
+{
+  ".codex/wiki/concepts/product-architecture.md#quantdinger-first-boot-schema": {
+    "code_refs": [
+      "backend_api_python/migrations/init.sql"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/concepts/product-architecture.md#quantdinger-flask-app-factory": {
+    "code_refs": [
+      "backend_api_python/app/__init__.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/concepts/product-architecture.md#quantdinger-runtime-workers": {
+    "code_refs": [
+      "backend_api_python/app/__init__.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-gateway-blueprint-registration": {
+    "code_refs": [
+      "backend_api_python/app/routes/agent_v1/__init__.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-idempotent-job-submission": {
+    "code_refs": [
+      "backend_api_python/app/utils/agent_auth.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-quick-trade-capital-boundary": {
+    "code_refs": [
+      "backend_api_python/app/routes/agent_v1/quick_trade.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-auth-scope-guard": {
+    "code_refs": [
+      "backend_api_python/app/utils/agent_auth.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#quantdinger-mcp-rest-wrapper": {
+    "code_refs": [
+      "mcp_server/src/quantdinger_mcp/server.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-backend-env-template": {
+    "code_refs": [
+      "backend_api_python/env.example"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-backend-run-entrypoint": {
+    "code_refs": [
+      "backend_api_python/run.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime": {
+    "code_refs": [
+      "docker-compose.yml"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-backtest-engine": {
+    "code_refs": [
+      "backend_api_python/app/services/backtest.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-live-signal-provider": {
+    "code_refs": [
+      "backend_api_python/app/services/trading_executor.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-pending-order-dispatch": {
+    "code_refs": [
+      "backend_api_python/app/services/pending_order_worker.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-safe-exec-sandbox": {
+    "code_refs": [
+      "backend_api_python/app/utils/safe_exec.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-script-handler-compile": {
+    "code_refs": [
+      "backend_api_python/app/services/strategy_script_runtime.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-script-runtime-context": {
+    "code_refs": [
+      "backend_api_python/app/services/strategy_script_runtime.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/broker-and-market-guides.md#broker-live-client-factory": {
+    "code_refs": [
+      "backend_api_python/app/services/live_trading/factory.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/broker-and-market-guides.md#broker-local-desktop-guard": {
+    "code_refs": [
+      "backend_api_python/app/utils/local_brokers.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/broker-and-market-guides.md#broker-market-policy-validation": {
+    "code_refs": [
+      "backend_api_python/app/services/broker_market_policy.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-oauth-service": {
+    "code_refs": [
+      "backend_api_python/app/services/oauth_service.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-settings-catalog": {
+    "code_refs": [
+      "backend_api_python/app/routes/settings.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service": {
+    "code_refs": [
+      "backend_api_python/app/services/usdt_payment/service.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-worker": {
+    "code_refs": [
+      "backend_api_python/app/services/usdt_payment/service.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/current-verification-commands.md#verification-agent-gateway-tests": {
+    "code_refs": [
+      "backend_api_python/tests/test_agent_v1.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/current-verification-commands.md#verification-strategy-runtime-tests": {
+    "code_refs": [
+      "backend_api_python/tests/test_backtest_execution.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/current-verification-commands.md#verification-wiki-maintenance": {
+    "code_refs": [
+      ".codex/wiki"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/project-governance.md#governance-agent-contract": {
+    "code_refs": [
+      "AGENT.md"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/project-governance.md#governance-safe-exec-boundary": {
+    "code_refs": [
+      "backend_api_python/app/utils/safe_exec.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/project-governance.md#governance-secret-crypto-boundary": {
+    "code_refs": [
+      "backend_api_python/app/utils/credential_crypto.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/source-docs-archive-map.md#docs-consolidation-maintenance-log": {
+    "code_refs": [
+      ".codex/wiki/maintenance-log.md"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/source-docs-archive-map.md#docs-consolidation-wiki-index": {
+    "code_refs": [
+      ".codex/wiki/index.md"
+    ],
+    "wiki_refs": []
+  }
+}

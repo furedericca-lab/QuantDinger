@@ -3,15 +3,59 @@ title: Strategy Backtest And Execution
 type: implementation
 status: current
 scope: quantdinger-strategy-runtime
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - backend_api_python/app/services/backtest.py
-  - backend_api_python/app/services/backtest_execution.py
-  - backend_api_python/app/services/trading_executor.py
-  - backend_api_python/app/services/pending_order_worker.py
-  - backend_api_python/app/services/live_trading
-  - backend_api_python/app/services/strategy_script_runtime.py
-  - backend_api_python/app/utils/safe_exec.py
+  - path: backend_api_python/app/routes/backtest.py
+    role: caller
+  - path: backend_api_python/app/routes/indicator.py
+    role: caller
+  - path: backend_api_python/app/routes/strategy.py
+    role: caller
+  - path: backend_api_python/app/services/backtest.py
+    role: owner
+  - path: backend_api_python/app/services/backtest_execution.py
+    role: owner
+  - path: backend_api_python/app/services/trading_executor.py
+    role: owner
+  - path: backend_api_python/app/services/pending_order_worker.py
+    role: owner
+  - path: backend_api_python/app/services/live_trading
+    role: owner
+  - path: backend_api_python/app/services/strategy_script_runtime.py
+    role: owner
+  - path: backend_api_python/app/utils/safe_exec.py
+    role: owner
+code_anchors:
+  - id: strategy-backtest-engine
+    kind: class
+    file: backend_api_python/app/services/backtest.py
+    symbol: BacktestService
+    role: defines
+  - id: strategy-live-signal-provider
+    kind: class
+    file: backend_api_python/app/services/trading_executor.py
+    symbol: TradingExecutor
+    role: defines
+  - id: strategy-pending-order-dispatch
+    kind: class
+    file: backend_api_python/app/services/pending_order_worker.py
+    symbol: PendingOrderWorker
+    role: defines
+  - id: strategy-script-runtime-context
+    kind: class
+    file: backend_api_python/app/services/strategy_script_runtime.py
+    symbol: StrategyScriptContext
+    role: defines
+  - id: strategy-script-handler-compile
+    kind: function
+    file: backend_api_python/app/services/strategy_script_runtime.py
+    symbol: compile_strategy_script_handlers
+    role: explains
+  - id: strategy-safe-exec-sandbox
+    kind: module
+    file: backend_api_python/app/utils/safe_exec.py
+    symbol: safe_exec
+    role: explains
 source_docs:
   - docs/SIGNAL_EXECUTION_STANDARD.md
   - docs/SIGNAL_EXECUTION_STANDARD_CN.md
@@ -24,7 +68,7 @@ tags:
   - strategy
   - backtest
   - execution
-updated: 2026-05-31T15:25:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Strategy Backtest And Execution

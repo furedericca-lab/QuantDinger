@@ -3,11 +3,29 @@ title: Source Docs Archive Map
 type: reference
 status: current
 scope: docs-consolidation-2026-05-31
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - README.md
-  - AGENT.md
-  - .codex/wiki
+  - path: README.md
+    role: doc
+  - path: AGENT.md
+    role: doc
+  - path: .codex/wiki
+    role: doc
+  - path: .codex/wiki/index.md
+    role: generated
+  - path: .codex/wiki/maintenance-log.md
+    role: doc
+code_anchors:
+  - id: docs-consolidation-wiki-index
+    kind: generated-doc
+    file: .codex/wiki/index.md
+    symbol: Project Wiki Index
+    role: references
+  - id: docs-consolidation-maintenance-log
+    kind: log
+    file: .codex/wiki/maintenance-log.md
+    symbol: Maintenance Log
+    role: references
 source_docs:
   - docs
   - CODE_OF_CONDUCT.md
@@ -19,7 +37,7 @@ source_docs:
 tags:
   - docs
   - archive-map
-updated: 2026-05-31T16:00:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Source Docs Archive Map

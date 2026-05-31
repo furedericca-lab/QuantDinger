@@ -3,13 +3,36 @@ title: Current Verification Commands
 type: reference
 status: current
 scope: quantdinger-verification
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - README.md
-  - AGENT.md
-  - docker-compose.yml
-  - backend_api_python
-  - mcp_server
+  - path: README.md
+    role: doc
+  - path: AGENT.md
+    role: doc
+  - path: docker-compose.yml
+    role: config
+  - path: backend_api_python
+    role: owner
+  - path: mcp_server
+    role: owner
+  - path: .codex/wiki
+    role: doc
+code_anchors:
+  - id: verification-agent-gateway-tests
+    kind: command
+    file: backend_api_python/tests/test_agent_v1.py
+    symbol: test_agent_v1
+    role: tests
+  - id: verification-strategy-runtime-tests
+    kind: command
+    file: backend_api_python/tests/test_backtest_execution.py
+    symbol: test_backtest_execution
+    role: tests
+  - id: verification-wiki-maintenance
+    kind: command
+    file: .codex/wiki
+    symbol: wiki.py doctor
+    role: references
 source_docs:
   - README.md
   - AGENT.md
@@ -17,7 +40,7 @@ tags:
   - verification
   - tests
   - operations
-updated: 2026-05-31T15:55:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Current Verification Commands
@@ -89,8 +112,8 @@ reverse-proxy changes.
 ## Wiki Maintenance
 
 ```bash
-python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py rebuild --json
-python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py rebuild --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
 ```
 
 Run these after structural wiki edits or when README/AGENT links change.

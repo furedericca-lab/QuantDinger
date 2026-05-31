@@ -3,11 +3,36 @@ title: Project Governance
 type: reference
 status: current
 scope: quantdinger-governance
-last_checked: 2026-05-31
+last_checked: 2026-06-01
 related_files:
-  - LICENSE
-  - README.md
-  - AGENT.md
+  - path: LICENSE
+    role: doc
+  - path: README.md
+    role: doc
+  - path: AGENT.md
+    role: doc
+  - path: backend_api_python/app/utils/auth.py
+    role: owner
+  - path: backend_api_python/app/utils/credential_crypto.py
+    role: owner
+  - path: backend_api_python/app/utils/safe_exec.py
+    role: owner
+code_anchors:
+  - id: governance-agent-contract
+    kind: doc
+    file: AGENT.md
+    symbol: wiki-note
+    role: references
+  - id: governance-secret-crypto-boundary
+    kind: module
+    file: backend_api_python/app/utils/credential_crypto.py
+    symbol: credential_crypto
+    role: references
+  - id: governance-safe-exec-boundary
+    kind: module
+    file: backend_api_python/app/utils/safe_exec.py
+    symbol: safe_exec
+    role: references
 source_docs:
   - CODE_OF_CONDUCT.md
   - CONTRIBUTING.md
@@ -22,7 +47,7 @@ tags:
   - security
   - trademarks
   - contributing
-updated: 2026-05-31T15:50:00+08:00
+updated: 2026-06-01T00:15:00+08:00
 ---
 
 # Project Governance
@@ -124,8 +149,8 @@ Rules:
 For documentation-only changes:
 
 ```bash
-python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py rebuild --json
-python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py rebuild --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
 ```
 
 For code changes, pair docs updates with the focused test family listed in

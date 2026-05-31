@@ -1,0 +1,941 @@
+{
+  ".codex/wiki": {
+    "anchors": [
+      {
+        "file": ".codex/wiki",
+        "id": "verification-wiki-maintenance",
+        "kind": "command",
+        "page": ".codex/wiki/reference/current-verification-commands.md",
+        "role": "references",
+        "symbol": "wiki.py doctor",
+        "target": ".codex/wiki/reference/current-verification-commands.md#verification-wiki-maintenance"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {
+      "wiki.py doctor": [
+        ".codex/wiki/reference/current-verification-commands.md#verification-wiki-maintenance"
+      ]
+    }
+  },
+  ".codex/wiki/index.md": {
+    "anchors": [
+      {
+        "file": ".codex/wiki/index.md",
+        "id": "docs-consolidation-wiki-index",
+        "kind": "generated-doc",
+        "page": ".codex/wiki/reference/source-docs-archive-map.md",
+        "role": "references",
+        "symbol": "Project Wiki Index",
+        "target": ".codex/wiki/reference/source-docs-archive-map.md#docs-consolidation-wiki-index"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {
+      "Project Wiki Index": [
+        ".codex/wiki/reference/source-docs-archive-map.md#docs-consolidation-wiki-index"
+      ]
+    }
+  },
+  ".codex/wiki/maintenance-log.md": {
+    "anchors": [
+      {
+        "file": ".codex/wiki/maintenance-log.md",
+        "id": "docs-consolidation-maintenance-log",
+        "kind": "log",
+        "page": ".codex/wiki/reference/source-docs-archive-map.md",
+        "role": "references",
+        "symbol": "Maintenance Log",
+        "target": ".codex/wiki/reference/source-docs-archive-map.md#docs-consolidation-maintenance-log"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {
+      "Maintenance Log": [
+        ".codex/wiki/reference/source-docs-archive-map.md#docs-consolidation-maintenance-log"
+      ]
+    }
+  },
+  "AGENT.md": {
+    "anchors": [
+      {
+        "file": "AGENT.md",
+        "id": "governance-agent-contract",
+        "kind": "doc",
+        "page": ".codex/wiki/reference/project-governance.md",
+        "role": "references",
+        "symbol": "wiki-note",
+        "target": ".codex/wiki/reference/project-governance.md#governance-agent-contract"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md",
+      ".codex/wiki/reference/project-governance.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {
+      "wiki-note": [
+        ".codex/wiki/reference/project-governance.md#governance-agent-contract"
+      ]
+    }
+  },
+  "LICENSE": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/project-governance.md"
+    ],
+    "symbols": {}
+  },
+  "README.md": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md",
+      ".codex/wiki/reference/project-governance.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/Dockerfile": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/__init__.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/__init__.py",
+        "id": "quantdinger-flask-app-factory",
+        "kind": "function",
+        "page": ".codex/wiki/concepts/product-architecture.md",
+        "role": "defines",
+        "symbol": "create_app",
+        "target": ".codex/wiki/concepts/product-architecture.md#quantdinger-flask-app-factory"
+      },
+      {
+        "file": "backend_api_python/app/__init__.py",
+        "id": "quantdinger-runtime-workers",
+        "kind": "behavior",
+        "page": ".codex/wiki/concepts/product-architecture.md",
+        "role": "explains",
+        "symbol": "start_pending_order_worker",
+        "target": ".codex/wiki/concepts/product-architecture.md#quantdinger-runtime-workers"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/concepts/product-architecture.md",
+      ".codex/wiki/concepts/product-architecture.md#quantdinger-flask-app-factory"
+    ],
+    "pages": [
+      ".codex/wiki/concepts/product-architecture.md"
+    ],
+    "symbols": {
+      "create_app": [
+        ".codex/wiki/concepts/product-architecture.md#quantdinger-flask-app-factory"
+      ],
+      "start_pending_order_worker": [
+        ".codex/wiki/concepts/product-architecture.md#quantdinger-runtime-workers"
+      ]
+    }
+  },
+  "backend_api_python/app/config/settings.py": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/data_sources": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/concepts/product-architecture.md",
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "pages": [
+      ".codex/wiki/concepts/product-architecture.md",
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/routes": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/concepts/product-architecture.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/routes/agent_v1": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/routes/agent_v1/__init__.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/routes/agent_v1/__init__.py",
+        "id": "agent-gateway-blueprint-registration",
+        "kind": "function",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "defines",
+        "symbol": "register",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-gateway-blueprint-registration"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-gateway-blueprint-registration"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {
+      "register": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-gateway-blueprint-registration"
+      ]
+    }
+  },
+  "backend_api_python/app/routes/agent_v1/quick_trade.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/routes/agent_v1/quick_trade.py",
+        "id": "agent-quick-trade-capital-boundary",
+        "kind": "route",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "explains",
+        "symbol": "place_order",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-quick-trade-capital-boundary"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {
+      "place_order": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-quick-trade-capital-boundary"
+      ]
+    }
+  },
+  "backend_api_python/app/routes/backtest.py": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/routes/indicator.py": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/routes/settings.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/routes/settings.py",
+        "id": "quantdinger-settings-catalog",
+        "kind": "route",
+        "page": ".codex/wiki/reference/configuration-and-integrations.md",
+        "role": "defines",
+        "symbol": "settings_bp",
+        "target": ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-settings-catalog"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/configuration-and-integrations.md",
+      ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-settings-catalog"
+    ],
+    "pages": [
+      ".codex/wiki/reference/configuration-and-integrations.md"
+    ],
+    "symbols": {
+      "settings_bp": [
+        ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-settings-catalog"
+      ]
+    }
+  },
+  "backend_api_python/app/routes/strategy.py": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/concepts/product-architecture.md"
+    ],
+    "pages": [
+      ".codex/wiki/concepts/product-architecture.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/alpaca_trading": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/backtest.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/backtest.py",
+        "id": "strategy-backtest-engine",
+        "kind": "class",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "defines",
+        "symbol": "BacktestService",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-backtest-engine"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-backtest-engine"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {
+      "BacktestService": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-backtest-engine"
+      ]
+    }
+  },
+  "backend_api_python/app/services/backtest_execution.py": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/broker_market_policy.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/broker_market_policy.py",
+        "id": "broker-market-policy-validation",
+        "kind": "function",
+        "page": ".codex/wiki/reference/broker-and-market-guides.md",
+        "role": "defines",
+        "symbol": "validate_strategy_config",
+        "target": ".codex/wiki/reference/broker-and-market-guides.md#broker-market-policy-validation"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md",
+      ".codex/wiki/reference/broker-and-market-guides.md#broker-market-policy-validation"
+    ],
+    "pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {
+      "validate_strategy_config": [
+        ".codex/wiki/reference/broker-and-market-guides.md#broker-market-policy-validation"
+      ]
+    }
+  },
+  "backend_api_python/app/services/email_service.py": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/configuration-and-integrations.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/ibkr_trading": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/live_trading": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/live_trading/factory.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/live_trading/factory.py",
+        "id": "broker-live-client-factory",
+        "kind": "function",
+        "page": ".codex/wiki/reference/broker-and-market-guides.md",
+        "role": "defines",
+        "symbol": "create_client",
+        "target": ".codex/wiki/reference/broker-and-market-guides.md#broker-live-client-factory"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md",
+      ".codex/wiki/reference/broker-and-market-guides.md#broker-live-client-factory"
+    ],
+    "pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {
+      "create_client": [
+        ".codex/wiki/reference/broker-and-market-guides.md#broker-live-client-factory"
+      ]
+    }
+  },
+  "backend_api_python/app/services/mt5_trading": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/oauth_service.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/oauth_service.py",
+        "id": "quantdinger-oauth-service",
+        "kind": "class",
+        "page": ".codex/wiki/reference/configuration-and-integrations.md",
+        "role": "defines",
+        "symbol": "OAuthService",
+        "target": ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-oauth-service"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/configuration-and-integrations.md",
+      ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-oauth-service"
+    ],
+    "pages": [
+      ".codex/wiki/reference/configuration-and-integrations.md"
+    ],
+    "symbols": {
+      "OAuthService": [
+        ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-oauth-service"
+      ]
+    }
+  },
+  "backend_api_python/app/services/pending_order_worker.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/pending_order_worker.py",
+        "id": "strategy-pending-order-dispatch",
+        "kind": "class",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "defines",
+        "symbol": "PendingOrderWorker",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-pending-order-dispatch"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-pending-order-dispatch"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {
+      "PendingOrderWorker": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-pending-order-dispatch"
+      ]
+    }
+  },
+  "backend_api_python/app/services/strategy_script_runtime.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/strategy_script_runtime.py",
+        "id": "strategy-script-runtime-context",
+        "kind": "class",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "defines",
+        "symbol": "StrategyScriptContext",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-script-runtime-context"
+      },
+      {
+        "file": "backend_api_python/app/services/strategy_script_runtime.py",
+        "id": "strategy-script-handler-compile",
+        "kind": "function",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "explains",
+        "symbol": "compile_strategy_script_handlers",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-script-handler-compile"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-script-runtime-context"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {
+      "StrategyScriptContext": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-script-runtime-context"
+      ],
+      "compile_strategy_script_handlers": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-script-handler-compile"
+      ]
+    }
+  },
+  "backend_api_python/app/services/trading_executor.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/trading_executor.py",
+        "id": "strategy-live-signal-provider",
+        "kind": "class",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "defines",
+        "symbol": "TradingExecutor",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-live-signal-provider"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-live-signal-provider"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {
+      "TradingExecutor": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-live-signal-provider"
+      ]
+    }
+  },
+  "backend_api_python/app/services/usdt_payment/service.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/usdt_payment/service.py",
+        "id": "quantdinger-usdt-payment-service",
+        "kind": "class",
+        "page": ".codex/wiki/reference/configuration-and-integrations.md",
+        "role": "defines",
+        "symbol": "UsdtPaymentService",
+        "target": ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service"
+      },
+      {
+        "file": "backend_api_python/app/services/usdt_payment/service.py",
+        "id": "quantdinger-usdt-payment-worker",
+        "kind": "class",
+        "page": ".codex/wiki/reference/configuration-and-integrations.md",
+        "role": "explains",
+        "symbol": "UsdtOrderWorker",
+        "target": ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-worker"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/configuration-and-integrations.md",
+      ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service"
+    ],
+    "pages": [
+      ".codex/wiki/reference/configuration-and-integrations.md"
+    ],
+    "symbols": {
+      "UsdtOrderWorker": [
+        ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-worker"
+      ],
+      "UsdtPaymentService": [
+        ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service"
+      ]
+    }
+  },
+  "backend_api_python/app/utils/agent_auth.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/utils/agent_auth.py",
+        "id": "agent-token-auth-scope-guard",
+        "kind": "decorator",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "defines",
+        "symbol": "agent_required",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-auth-scope-guard"
+      },
+      {
+        "file": "backend_api_python/app/utils/agent_auth.py",
+        "id": "agent-idempotent-job-submission",
+        "kind": "decorator",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "defines",
+        "symbol": "with_idempotency",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-idempotent-job-submission"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-auth-scope-guard",
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-idempotent-job-submission"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {
+      "agent_required": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-auth-scope-guard"
+      ],
+      "with_idempotency": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-idempotent-job-submission"
+      ]
+    }
+  },
+  "backend_api_python/app/utils/agent_jobs.py": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/utils/auth.py": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/reference/project-governance.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/project-governance.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/utils/credential_crypto.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/utils/credential_crypto.py",
+        "id": "governance-secret-crypto-boundary",
+        "kind": "module",
+        "page": ".codex/wiki/reference/project-governance.md",
+        "role": "references",
+        "symbol": "credential_crypto",
+        "target": ".codex/wiki/reference/project-governance.md#governance-secret-crypto-boundary"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/project-governance.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/project-governance.md"
+    ],
+    "symbols": {
+      "credential_crypto": [
+        ".codex/wiki/reference/project-governance.md#governance-secret-crypto-boundary"
+      ]
+    }
+  },
+  "backend_api_python/app/utils/local_brokers.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/utils/local_brokers.py",
+        "id": "broker-local-desktop-guard",
+        "kind": "function",
+        "page": ".codex/wiki/reference/broker-and-market-guides.md",
+        "role": "explains",
+        "symbol": "local_desktop_brokers_allowed",
+        "target": ".codex/wiki/reference/broker-and-market-guides.md#broker-local-desktop-guard"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/broker-and-market-guides.md"
+    ],
+    "symbols": {
+      "local_desktop_brokers_allowed": [
+        ".codex/wiki/reference/broker-and-market-guides.md#broker-local-desktop-guard"
+      ]
+    }
+  },
+  "backend_api_python/app/utils/safe_exec.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/utils/safe_exec.py",
+        "id": "strategy-safe-exec-sandbox",
+        "kind": "module",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "explains",
+        "symbol": "safe_exec",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-safe-exec-sandbox"
+      },
+      {
+        "file": "backend_api_python/app/utils/safe_exec.py",
+        "id": "governance-safe-exec-boundary",
+        "kind": "module",
+        "page": ".codex/wiki/reference/project-governance.md",
+        "role": "references",
+        "symbol": "safe_exec",
+        "target": ".codex/wiki/reference/project-governance.md#governance-safe-exec-boundary"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/reference/project-governance.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+      ".codex/wiki/reference/project-governance.md"
+    ],
+    "symbols": {
+      "safe_exec": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-safe-exec-sandbox",
+        ".codex/wiki/reference/project-governance.md#governance-safe-exec-boundary"
+      ]
+    }
+  },
+  "backend_api_python/env.example": {
+    "anchors": [
+      {
+        "file": "backend_api_python/env.example",
+        "id": "quantdinger-backend-env-template",
+        "kind": "config",
+        "page": ".codex/wiki/implementation/deployment-and-operations.md",
+        "role": "references",
+        "symbol": "SECRET_KEY",
+        "target": ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-backend-env-template"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md",
+      ".codex/wiki/reference/configuration-and-integrations.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md",
+      ".codex/wiki/reference/configuration-and-integrations.md"
+    ],
+    "symbols": {
+      "SECRET_KEY": [
+        ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-backend-env-template"
+      ]
+    }
+  },
+  "backend_api_python/migrations/init.sql": {
+    "anchors": [
+      {
+        "file": "backend_api_python/migrations/init.sql",
+        "id": "quantdinger-first-boot-schema",
+        "kind": "schema",
+        "page": ".codex/wiki/concepts/product-architecture.md",
+        "role": "references",
+        "symbol": "qd_agent_tokens",
+        "target": ".codex/wiki/concepts/product-architecture.md#quantdinger-first-boot-schema"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/concepts/product-architecture.md"
+    ],
+    "pages": [
+      ".codex/wiki/concepts/product-architecture.md"
+    ],
+    "symbols": {
+      "qd_agent_tokens": [
+        ".codex/wiki/concepts/product-architecture.md#quantdinger-first-boot-schema"
+      ]
+    }
+  },
+  "backend_api_python/run.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/run.py",
+        "id": "quantdinger-backend-run-entrypoint",
+        "kind": "module",
+        "page": ".codex/wiki/implementation/deployment-and-operations.md",
+        "role": "explains",
+        "symbol": "app",
+        "target": ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-backend-run-entrypoint"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "symbols": {
+      "app": [
+        ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-backend-run-entrypoint"
+      ]
+    }
+  },
+  "backend_api_python/tests/test_agent_v1.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/tests/test_agent_v1.py",
+        "id": "verification-agent-gateway-tests",
+        "kind": "command",
+        "page": ".codex/wiki/reference/current-verification-commands.md",
+        "role": "tests",
+        "symbol": "test_agent_v1",
+        "target": ".codex/wiki/reference/current-verification-commands.md#verification-agent-gateway-tests"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "symbols": {
+      "test_agent_v1": [
+        ".codex/wiki/reference/current-verification-commands.md#verification-agent-gateway-tests"
+      ]
+    }
+  },
+  "backend_api_python/tests/test_backtest_execution.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/tests/test_backtest_execution.py",
+        "id": "verification-strategy-runtime-tests",
+        "kind": "command",
+        "page": ".codex/wiki/reference/current-verification-commands.md",
+        "role": "tests",
+        "symbol": "test_backtest_execution",
+        "target": ".codex/wiki/reference/current-verification-commands.md#verification-strategy-runtime-tests"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "symbols": {
+      "test_backtest_execution": [
+        ".codex/wiki/reference/current-verification-commands.md#verification-strategy-runtime-tests"
+      ]
+    }
+  },
+  "docker-compose.build.yml": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "symbols": {}
+  },
+  "docker-compose.ghcr.yml": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "symbols": {}
+  },
+  "docker-compose.yml": {
+    "anchors": [
+      {
+        "file": "docker-compose.yml",
+        "id": "quantdinger-compose-runtime",
+        "kind": "config",
+        "page": ".codex/wiki/implementation/deployment-and-operations.md",
+        "role": "defines",
+        "symbol": "services.backend",
+        "target": ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/concepts/product-architecture.md",
+      ".codex/wiki/implementation/deployment-and-operations.md",
+      ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime",
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "pages": [
+      ".codex/wiki/concepts/product-architecture.md",
+      ".codex/wiki/implementation/deployment-and-operations.md",
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "symbols": {
+      "services.backend": [
+        ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime"
+      ]
+    }
+  },
+  "mcp_server": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "symbols": {}
+  },
+  "mcp_server/src/quantdinger_mcp/server.py": {
+    "anchors": [
+      {
+        "file": "mcp_server/src/quantdinger_mcp/server.py",
+        "id": "quantdinger-mcp-rest-wrapper",
+        "kind": "module",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "explains",
+        "symbol": "submit_backtest",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#quantdinger-mcp-rest-wrapper"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {
+      "submit_backtest": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#quantdinger-mcp-rest-wrapper"
+      ]
+    }
+  }
+}
