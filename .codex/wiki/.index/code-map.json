@@ -66,6 +66,50 @@
       ]
     }
   },
+  ".codex/wiki/reference/agent/agent-openapi.json": {
+    "anchors": [
+      {
+        "file": ".codex/wiki/reference/agent/agent-openapi.json",
+        "id": "agent-openapi-spec-artifact",
+        "kind": "schema",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "references",
+        "symbol": "Agent Gateway OpenAPI",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-openapi-spec-artifact"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+      ".codex/wiki/reference/api-conventions.md",
+      ".codex/wiki/reference/current-verification-commands.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {
+      "Agent Gateway OpenAPI": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-openapi-spec-artifact"
+      ]
+    }
+  },
+  ".codex/wiki/reference/api/index.html": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/api-conventions.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {}
+  },
+  ".codex/wiki/reference/api/openapi.yaml": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/api-conventions.md",
+      ".codex/wiki/reference/current-verification-commands.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {}
+  },
   "AGENT.md": {
     "anchors": [
       {
@@ -196,6 +240,66 @@
       ".codex/wiki/implementation/agent-gateway-and-mcp.md"
     ],
     "symbols": {}
+  },
+  "backend_api_python/app/openapi/__init__.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/openapi/__init__.py",
+        "id": "api-openapi-init",
+        "kind": "function",
+        "page": ".codex/wiki/reference/api-conventions.md",
+        "role": "defines",
+        "symbol": "init_openapi",
+        "target": ".codex/wiki/reference/api-conventions.md#api-openapi-init"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/api-conventions.md",
+      ".codex/wiki/reference/api-conventions.md#api-openapi-init"
+    ],
+    "pages": [
+      ".codex/wiki/reference/api-conventions.md"
+    ],
+    "symbols": {
+      "init_openapi": [
+        ".codex/wiki/reference/api-conventions.md#api-openapi-init"
+      ]
+    }
+  },
+  "backend_api_python/app/openapi/routes": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/reference/api-conventions.md"
+    ],
+    "pages": [
+      ".codex/wiki/reference/api-conventions.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/openapi/schemas/common.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/openapi/schemas/common.py",
+        "id": "api-common-envelopes",
+        "kind": "schema",
+        "page": ".codex/wiki/reference/api-conventions.md",
+        "role": "defines",
+        "symbol": "HumanSuccessEnvelopeSchema",
+        "target": ".codex/wiki/reference/api-conventions.md#api-common-envelopes"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/reference/api-conventions.md",
+      ".codex/wiki/reference/api-conventions.md#api-common-envelopes"
+    ],
+    "pages": [
+      ".codex/wiki/reference/api-conventions.md"
+    ],
+    "symbols": {
+      "HumanSuccessEnvelopeSchema": [
+        ".codex/wiki/reference/api-conventions.md#api-common-envelopes"
+      ]
+    }
   },
   "backend_api_python/app/routes": {
     "anchors": [],
@@ -933,6 +1037,15 @@
     "anchors": [
       {
         "file": "backend_api_python/scripts/export_openapi.py",
+        "id": "api-export-script",
+        "kind": "script",
+        "page": ".codex/wiki/reference/api-conventions.md",
+        "role": "references",
+        "symbol": "export_spec",
+        "target": ".codex/wiki/reference/api-conventions.md#api-export-script"
+      },
+      {
+        "file": "backend_api_python/scripts/export_openapi.py",
         "id": "verification-openapi-export",
         "kind": "command",
         "page": ".codex/wiki/reference/current-verification-commands.md",
@@ -943,11 +1056,15 @@
     ],
     "definition_pages": [],
     "pages": [
+      ".codex/wiki/reference/api-conventions.md",
       ".codex/wiki/reference/current-verification-commands.md"
     ],
     "symbols": {
       "export_openapi": [
         ".codex/wiki/reference/current-verification-commands.md#verification-openapi-export"
+      ],
+      "export_spec": [
+        ".codex/wiki/reference/api-conventions.md#api-export-script"
       ]
     }
   },
@@ -1043,39 +1160,6 @@
         ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime"
       ]
     }
-  },
-  "docs/agent/agent-openapi.json": {
-    "anchors": [
-      {
-        "file": "docs/agent/agent-openapi.json",
-        "id": "agent-openapi-spec-artifact",
-        "kind": "schema",
-        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
-        "role": "references",
-        "symbol": "Agent Gateway OpenAPI",
-        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-openapi-spec-artifact"
-      }
-    ],
-    "definition_pages": [],
-    "pages": [
-      ".codex/wiki/implementation/agent-gateway-and-mcp.md",
-      ".codex/wiki/reference/current-verification-commands.md",
-      ".codex/wiki/reference/source-docs-archive-map.md"
-    ],
-    "symbols": {
-      "Agent Gateway OpenAPI": [
-        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-openapi-spec-artifact"
-      ]
-    }
-  },
-  "docs/api/openapi.yaml": {
-    "anchors": [],
-    "definition_pages": [],
-    "pages": [
-      ".codex/wiki/reference/current-verification-commands.md",
-      ".codex/wiki/reference/source-docs-archive-map.md"
-    ],
-    "symbols": {}
   },
   "mcp_server": {
     "anchors": [],

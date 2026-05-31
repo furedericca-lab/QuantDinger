@@ -20,8 +20,8 @@ and verification notes live in the wiki.
 - Backend health: `http://localhost:5000/api/health`
 - Backend API: `http://localhost:5000`
 - Agent Gateway: `http://localhost:8888/api/agent/v1`
-- Human Web API OpenAPI: `docs/api/openapi.yaml`
-- Agent Gateway OpenAPI: `docs/agent/agent-openapi.json`
+- Human Web API OpenAPI: `.codex/wiki/reference/api/openapi.yaml`
+- Agent Gateway OpenAPI: `.codex/wiki/reference/agent/agent-openapi.json`
 
 The default Docker stack serves the frontend through a prebuilt Vue/Nginx image
 and builds the backend from local source. PostgreSQL and Redis are bound to
@@ -277,10 +277,10 @@ should not receive credential or trading scope by default.
 
 API references:
 
-- Human Web API OpenAPI: `docs/api/openapi.yaml`
-- Human Web API ReDoc viewer: `docs/api/index.html`
-- API conventions: `docs/API_CONVENTIONS.md`
-- Agent Gateway OpenAPI: `docs/agent/agent-openapi.json`
+- Human Web API OpenAPI: `.codex/wiki/reference/api/openapi.yaml`
+- Human Web API ReDoc viewer: `.codex/wiki/reference/api/index.html`
+- API conventions: `.codex/wiki/reference/api-conventions.md`
+- Agent Gateway OpenAPI: `.codex/wiki/reference/agent/agent-openapi.json`
 
 ### MCP Server
 

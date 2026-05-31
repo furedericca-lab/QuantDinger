@@ -13,9 +13,9 @@ related_files:
     role: config
   - path: backend_api_python
     role: owner
-  - path: docs/api/openapi.yaml
+  - path: .codex/wiki/reference/api/openapi.yaml
     role: generated
-  - path: docs/agent/agent-openapi.json
+  - path: .codex/wiki/reference/agent/agent-openapi.json
     role: generated
   - path: mcp_server
     role: owner
@@ -81,9 +81,9 @@ uv run python -m py_compile backend_api_python/app/utils/agent_jobs.py
 
 ```bash
 cd backend_api_python
-SKIP_STARTUP_HOOKS=1 OPENAPI_ENABLED=false uv run python scripts/export_openapi.py --output ../docs/api/openapi.generated.yaml
-diff -u ../docs/api/openapi.yaml ../docs/api/openapi.generated.yaml
-rm -f ../docs/api/openapi.generated.yaml
+SKIP_STARTUP_HOOKS=1 OPENAPI_ENABLED=false uv run python scripts/export_openapi.py --output ../.codex/wiki/reference/api/openapi.generated.yaml
+diff -u ../.codex/wiki/reference/api/openapi.yaml ../.codex/wiki/reference/api/openapi.generated.yaml
+rm -f ../.codex/wiki/reference/api/openapi.generated.yaml
 ```
 
 ## Strategy, Backtest, And Trading Semantics

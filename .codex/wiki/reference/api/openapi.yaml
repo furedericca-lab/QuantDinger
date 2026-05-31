@@ -1,6 +1,6 @@
 info:
   description: 'Human-facing REST API for QuantDinger. Agent integrations use `/api/agent/v1`
-    — see `docs/agent/agent-openapi.json`. Conventions: `docs/API_CONVENTIONS.md`.'
+    — see `.codex/wiki/reference/agent/agent-openapi.json`. Conventions: `.codex/wiki/reference/api-conventions.md`.'
   contact:
     name: QuantDinger
     url: https://github.com/brokermr810/quantdinger
@@ -21,7 +21,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: qd_agent_xxx
-      description: Agent Gateway token for `/api/agent/v1/*` only. See docs/agent/AGENT_QUICKSTART.md.
+      description: Agent Gateway token for `/api/agent/v1/*` only. See `.codex/wiki/reference/api-conventions.md`.
   schemas:
     Error:
       type: object

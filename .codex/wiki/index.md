@@ -3,8 +3,11 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-31T16:40:44Z
+updated: 2026-05-31T17:15:19Z
 ---
+
+
+
 
 
 
@@ -21,8 +24,8 @@ updated: 2026-05-31T16:40:44Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-31T16:40:44Z
-- Page count: 9
+- Last rebuilt: 2026-05-31T17:15:19Z
+- Page count: 10
 
 ## By Type
 
@@ -38,6 +41,7 @@ updated: 2026-05-31T16:40:44Z
 
 ### reference
 
+- [API Conventions](reference/api-conventions.md) | status: current | updated: 2026-06-01T01:25:00+08:00
 - [Broker And Market Guides](reference/broker-and-market-guides.md) | status: current | updated: 2026-06-01T00:15:00+08:00
 - [Configuration And Integrations](reference/configuration-and-integrations.md) | status: current | updated: 2026-06-01T00:15:00+08:00
 - [Current Verification Commands](reference/current-verification-commands.md) | status: current | updated: 2026-06-01T00:42:00+08:00
@@ -53,6 +57,10 @@ updated: 2026-05-31T16:40:44Z
 ### quantdinger-agent-api
 
 - [Agent Gateway And MCP](implementation/agent-gateway-and-mcp.md) | type: implementation | status: current
+
+### quantdinger-api-contracts
+
+- [API Conventions](reference/api-conventions.md) | type: reference | status: current
 
 ### quantdinger-brokers
 
@@ -84,6 +92,7 @@ updated: 2026-05-31T16:40:44Z
 
 ## Recently Updated
 
+- 2026-06-01T01:25:00+08:00 | [API Conventions](reference/api-conventions.md)
 - 2026-06-01T00:42:00+08:00 | [Agent Gateway And MCP](implementation/agent-gateway-and-mcp.md)
 - 2026-06-01T00:42:00+08:00 | [Strategy Backtest And Execution](implementation/strategy-backtest-and-execution.md)
 - 2026-06-01T00:42:00+08:00 | [Current Verification Commands](reference/current-verification-commands.md)
@@ -104,6 +113,7 @@ updated: 2026-05-31T16:40:44Z
 - [Agent Gateway And MCP](implementation/agent-gateway-and-mcp.md) | files: `backend_api_python/app/routes/agent_v1`, `backend_api_python/app/routes/agent_v1/__init__.py`, `backend_api_python/app/routes/agent_v1/me_tokens.py` ... | anchors: 8 | status: current
 - [Deployment And Operations](implementation/deployment-and-operations.md) | files: `docker-compose.yml`, `docker-compose.ghcr.yml`, `docker-compose.build.yml` ... | anchors: 3 | status: current
 - [Strategy Backtest And Execution](implementation/strategy-backtest-and-execution.md) | files: `backend_api_python/app/services/backtest.py`, `backend_api_python/app/services/backtest_execution.py`, `backend_api_python/app/services/trading_executor.py` ... | anchors: 8 | status: current
+- [API Conventions](reference/api-conventions.md) | files: `backend_api_python/app/openapi/__init__.py`, `backend_api_python/app/openapi/routes`, `backend_api_python/app/openapi/schemas/common.py` ... | anchors: 3 | status: current
 - [Broker And Market Guides](reference/broker-and-market-guides.md) | files: `backend_api_python/app/services/live_trading`, `backend_api_python/app/services/live_trading/factory.py`, `backend_api_python/app/services/ibkr_trading` ... | anchors: 3 | status: current
 - [Configuration And Integrations](reference/configuration-and-integrations.md) | files: `backend_api_python/env.example`, `backend_api_python/app/routes/settings.py`, `backend_api_python/app/services/oauth_service.py` ... | anchors: 4 | status: current
 - [Current Verification Commands](reference/current-verification-commands.md) | files: `docker-compose.yml`, `backend_api_python`, `mcp_server` ... | anchors: 4 | status: current

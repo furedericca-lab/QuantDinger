@@ -5,7 +5,7 @@ Export the flask-smorest OpenAPI spec to YAML/JSON.
 Usage (from backend_api_python/):
 
     python scripts/export_openapi.py
-    python scripts/export_openapi.py --output ../docs/api/openapi.yaml
+    python scripts/export_openapi.py --output ../.codex/wiki/reference/api/openapi.yaml
     python scripts/export_openapi.py --format json --output /tmp/openapi.json
 
 Set SKIP_STARTUP_HOOKS=1 so workers and strategy restore are not started.
@@ -21,7 +21,7 @@ from pathlib import Path
 # Repo layout: backend_api_python/scripts/export_openapi.py
 _BACKEND_ROOT = Path(__file__).resolve().parents[1]
 _REPO_ROOT = _BACKEND_ROOT.parent
-_DEFAULT_OUTPUT = _REPO_ROOT / "docs" / "api" / "openapi.yaml"
+_DEFAULT_OUTPUT = _REPO_ROOT / ".codex" / "wiki" / "reference" / "api" / "openapi.yaml"
 
 sys.path.insert(0, str(_BACKEND_ROOT))
 

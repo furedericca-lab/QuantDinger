@@ -3,7 +3,7 @@ Shared Marshmallow schemas for OpenAPI generation.
 
 Human-facing routes use ``{code, msg, data}``. Agent Gateway routes use
 ``{code, message, data}`` on success and ``{code, message, details, retriable}``
-on error — see ``docs/agent/agent-openapi.json``.
+on error — see ``.codex/wiki/reference/agent/agent-openapi.json``.
 """
 from marshmallow import Schema, fields
 

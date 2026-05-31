@@ -1155,7 +1155,7 @@ DROP TABLE IF EXISTS qd_polymarket_markets CASCADE;
 -- =============================================================================
 -- 30. Agent Gateway (/api/agent/v1) — tokens, async jobs, audit, idempotency
 -- =============================================================================
--- These tables back the multi-agent runtime (see docs/agent/AI_INTEGRATION_DESIGN.md).
+-- These tables back the multi-agent runtime (see .codex/wiki/implementation/agent-gateway-and-mcp.md).
 -- They are tenant-scoped via user_id and stay isolated from human JWT sessions.
 
 CREATE TABLE IF NOT EXISTS qd_agent_tokens (

@@ -19,7 +19,7 @@ related_files:
     role: owner
   - path: backend_api_python/app/openapi
     role: owner
-  - path: docs/agent/agent-openapi.json
+  - path: .codex/wiki/reference/agent/agent-openapi.json
     role: generated
   - path: backend_api_python/app/routes/agent_v1/quick_trade.py
     role: caller
@@ -63,15 +63,11 @@ code_anchors:
     role: explains
   - id: agent-openapi-spec-artifact
     kind: schema
-    file: docs/agent/agent-openapi.json
+    file: .codex/wiki/reference/agent/agent-openapi.json
     symbol: Agent Gateway OpenAPI
     role: references
 source_docs:
-  - docs/agent/AI_INTEGRATION_DESIGN.md
-  - docs/agent/AGENT_ENVIRONMENT_DESIGN.md
-  - docs/agent/AGENT_QUICKSTART.md
-  - docs/agent/MCP_SETUP.md
-  - docs/agent/README.md
+  - .codex/wiki/reference/agent/agent-openapi.json
   - mcp_server/README.md
 tags:
   - agent
@@ -209,12 +205,13 @@ through REST.
 ## OpenAPI Artifacts
 
 The Agent Gateway keeps its machine-readable contract in
-`docs/agent/agent-openapi.json`. Human Web API OpenAPI lives separately under
-`docs/api/` and is generated from the flask-smorest registration layer.
+`.codex/wiki/reference/agent/agent-openapi.json`. Human Web API OpenAPI lives
+under `.codex/wiki/reference/api/` and is generated from the flask-smorest
+registration layer.
 
-These files are allowed generated API artifacts, not a restoration of the old
-long-form `docs/` knowledge base. If their semantics change, update the API
-tests and this wiki page rather than relying on README links alone.
+These files are wiki-owned generated API artifacts. If their semantics change,
+update the API tests and this wiki page rather than relying on README links
+alone.
 
 MCP safety rules:
 

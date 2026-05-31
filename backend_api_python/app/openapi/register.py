@@ -3,7 +3,8 @@ Register all human-facing API blueprints with flask-smorest.
 
 Legacy handler bodies stay in ``app/routes/*``; this module wires them into
 the OpenAPI generator. Agent Gateway remains on ``/api/agent/v1`` with its
-own hand-maintained spec (``docs/agent/agent-openapi.json``).
+own hand-maintained spec
+(``.codex/wiki/reference/agent/agent-openapi.json``).
 """
 from __future__ import annotations
 

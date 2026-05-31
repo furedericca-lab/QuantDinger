@@ -6,8 +6,8 @@ on:
     paths:
       - 'backend_api_python/app/openapi/**'
       - 'backend_api_python/scripts/export_openapi.py'
-      - 'docs/api/**'
-      - 'docs/agent/agent-openapi.json'
+      - '.codex/wiki/reference/api/**'
+      - '.codex/wiki/reference/agent/agent-openapi.json'
       - '.spectral.yaml'
       - '.github/workflows/openapi-ci.yml'
   pull_request:
@@ -15,8 +15,8 @@ on:
     paths:
       - 'backend_api_python/app/openapi/**'
       - 'backend_api_python/scripts/export_openapi.py'
-      - 'docs/api/**'
-      - 'docs/agent/agent-openapi.json'
+      - '.codex/wiki/reference/api/**'
+      - '.codex/wiki/reference/agent/agent-openapi.json'
       - '.spectral.yaml'
       - '.github/workflows/openapi-ci.yml'
 
@@ -48,12 +48,12 @@ jobs:
           SKIP_STARTUP_HOOKS: '1'
           OPENAPI_ENABLED: 'false'
         run: |
-          python scripts/export_openapi.py --output ../docs/api/openapi.generated.yaml
+          python scripts/export_openapi.py --output ../.codex/wiki/reference/api/openapi.generated.yaml
 
       - name: Verify committed spec matches export
         run: |
-          if ! diff -u docs/api/openapi.yaml docs/api/openapi.generated.yaml; then
-            echo "::error::docs/api/openapi.yaml is out of date. Run: cd backend_api_python && python scripts/export_openapi.py"
+          if ! diff -u .codex/wiki/reference/api/openapi.yaml .codex/wiki/reference/api/openapi.generated.yaml; then
+            echo "::error::.codex/wiki/reference/api/openapi.yaml is out of date. Run: cd backend_api_python && python scripts/export_openapi.py"
             exit 1
           fi
           echo "Committed openapi.yaml matches flask-smorest export."
@@ -67,10 +67,10 @@ jobs:
         run: npm install -g @stoplight/spectral-cli@6.15.1
 
       - name: Lint human Web API spec
-        run: spectral lint docs/api/openapi.yaml --ruleset .spectral.yaml
+        run: spectral lint .codex/wiki/reference/api/openapi.yaml --ruleset .spectral.yaml
 
       - name: Lint Agent Gateway spec
-        run: spectral lint docs/agent/agent-openapi.json --ruleset .spectral.agent.yaml
+        run: spectral lint .codex/wiki/reference/agent/agent-openapi.json --ruleset .spectral.agent.yaml
 
       - name: Install oasdiff
         run: |
@@ -82,7 +82,7 @@ jobs:
 
       - name: Breaking-change check (human API)
         run: |
-          oasdiff breaking docs/api/openapi.yaml docs/api/openapi.generated.yaml \
+          oasdiff breaking .codex/wiki/reference/api/openapi.yaml .codex/wiki/reference/api/openapi.generated.yaml \
             --fail-on ERR || {
             echo "::error::Breaking OpenAPI change detected. Document in PR and bump API version if intentional."
             exit 1
