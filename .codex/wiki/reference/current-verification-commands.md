@@ -9,8 +9,6 @@ related_files:
     role: doc
   - path: AGENT.md
     role: doc
-  - path: docker-compose.yml
-    role: config
   - path: backend_api_python
     role: owner
   - path: .codex/wiki/reference/api/openapi.yaml
@@ -49,7 +47,7 @@ tags:
   - verification
   - tests
   - operations
-updated: 2026-06-01T00:42:00+08:00
+updated: 2026-06-01T02:05:00+08:00
 ---
 
 # Current Verification Commands
@@ -57,14 +55,15 @@ updated: 2026-06-01T00:42:00+08:00
 ## Scope
 
 Use this page as the quick command map for QuantDinger maintenance. Prefer the
-narrowest meaningful check first, then broaden to Compose/runtime checks when
-the change affects deployment behavior.
+narrowest meaningful check first, then broaden to local runtime checks when the
+change affects deployment behavior.
 
 ## General Backend
 
 ```bash
 uv run python -m pytest backend_api_python/tests/test_health.py
 uv run python -m py_compile <changed-file.py>
+uv run python -m compileall -q backend_api_python/app backend_api_python/scripts
 ```
 
 ## Agent Gateway
@@ -81,7 +80,7 @@ uv run python -m py_compile backend_api_python/app/utils/agent_jobs.py
 
 ```bash
 cd backend_api_python
-SKIP_STARTUP_HOOKS=1 OPENAPI_ENABLED=false uv run python scripts/export_openapi.py --output ../.codex/wiki/reference/api/openapi.generated.yaml
+SKIP_STARTUP_HOOKS=1 OPENAPI_ENABLED=false ../.venv/bin/python scripts/export_openapi.py --output ../.codex/wiki/reference/api/openapi.generated.yaml
 diff -u ../.codex/wiki/reference/api/openapi.yaml ../.codex/wiki/reference/api/openapi.generated.yaml
 rm -f ../.codex/wiki/reference/api/openapi.generated.yaml
 ```
@@ -99,14 +98,6 @@ uv run python -m py_compile backend_api_python/app/services/pending_order_worker
 Use signal or paper mode for live-order-adjacent checks unless the user
 explicitly authorizes a real account action.
 
-## Billing And USDT Payments
-
-```bash
-uv run python -m pytest backend_api_python/tests/test_usdt_payment_idempotency.py
-uv run python -m py_compile backend_api_python/app/routes/billing.py
-uv run python -m py_compile backend_api_python/app/services/usdt_payment/service.py
-```
-
 ## MCP Server
 
 ```bash
@@ -117,17 +108,15 @@ uv run --directory mcp_server python -m build
 `uv run --directory mcp_server python -m build` requires the locked local build
 dependencies to be installed. If they are missing, run `uv sync` first.
 
-## Compose Runtime
+## Local Runtime
 
 ```bash
-docker compose config
-docker compose ps
-docker compose logs --tail=100 backend
-curl -f http://localhost:5000/api/health
+curl -f http://127.0.0.1:5000/api/health
+curl -f http://localhost/api/health
 ```
 
-Use these after deployment, env, image, port, database, Redis, worker, or
-reverse-proxy changes.
+Use these after environment, port, database, Redis, worker, or reverse-proxy
+changes.
 
 ## Wiki Maintenance
 

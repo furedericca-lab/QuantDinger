@@ -183,7 +183,6 @@ def _strategy_ai_text(key: str, lang: str = "zh-CN") -> str:
     texts = {
         "prompt_empty": "提示词不能为空" if is_zh else "Prompt cannot be empty",
         "no_llm_key": "未配置 LLM API Key" if is_zh else "No LLM API key configured",
-        "insufficient_credits": "积分不足，请充值后重试" if is_zh else "Insufficient credits. Please top up and try again.",
         "invalid_json_params": "AI 未返回有效的 JSON 参数" if is_zh else "AI did not return valid JSON parameters",
         "ai_empty_result": "AI 生成结果为空" if is_zh else "AI generation returned empty result",
         "success": "success",
@@ -1585,18 +1584,6 @@ def ai_generate_strategy():
         api_key = llm.get_api_key()
         if not api_key:
             return jsonify({'code': '', 'msg': _strategy_ai_text('no_llm_key', lang), 'params': None})
-
-        from app.services.billing_service import get_billing_service
-        billing = get_billing_service()
-        user_id = g.user_id
-        ok, billing_msg = billing.check_and_consume(
-            user_id=user_id,
-            feature='ai_code_gen',
-            reference_id=f"ai_strategy_{intent}_{user_id}_{int(time.time())}"
-        )
-        if not ok:
-            msg = f'积分不足: {billing_msg}' if _is_zh_lang(lang) and billing_msg else _strategy_ai_text('insufficient_credits', lang)
-            return jsonify({'code': '', 'msg': msg, 'params': None})
 
         if intent == 'bot_recommend':
             # ── Detect (market, symbol) from prompt and fetch real K-lines ──

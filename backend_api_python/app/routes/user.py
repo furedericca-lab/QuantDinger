@@ -102,7 +102,7 @@ def export_users():
         writer = csv.writer(output)
         writer.writerow([
             'ID', 'Username', 'Email', 'Nickname', 'Role', 'Status',
-            'Credits', 'VIP Expires At', 'Timezone', 'Register IP',
+            'Timezone', 'Register IP',
             'Last Login At', 'Created At', 'Updated At'
         ])
 
@@ -114,8 +114,6 @@ def export_users():
                 user.get('nickname') or '',
                 user.get('role') or '',
                 user.get('status') or '',
-                user.get('credits') or 0,
-                user.get('vip_expires_at') or '',
                 user.get('timezone') or '',
                 user.get('register_ip') or '',
                 user.get('last_login_at') or '',
@@ -307,135 +305,6 @@ def get_roles():
     })
 
 
-# ==================== Billing Management (Admin) ====================
-
-@user_blp.route('/set-credits', methods=['POST'])
-@login_required
-@admin_required
-def set_user_credits():
-    """
-    Set user credits (admin only).
-    
-    Request body:
-        user_id: int (required)
-        credits: int (required)
-        remark: str (optional)
-    """
-    try:
-        from app.services.billing_service import get_billing_service
-        
-        data = request.get_json() or {}
-        user_id = data.get('user_id')
-        credits = data.get('credits')
-        remark = data.get('remark', '')
-        
-        if not user_id:
-            return jsonify({'code': 0, 'msg': 'Missing user_id', 'data': None}), 400
-        
-        if credits is None or credits < 0:
-            return jsonify({'code': 0, 'msg': 'Credits must be a non-negative number', 'data': None}), 400
-        
-        operator_id = getattr(g, 'user_id', None)
-        success, result = get_billing_service().set_credits(user_id, int(credits), remark, operator_id)
-        
-        if success:
-            return jsonify({'code': 1, 'msg': 'Credits updated successfully', 'data': {'credits': result}})
-        else:
-            return jsonify({'code': 0, 'msg': result, 'data': None}), 400
-    except Exception as e:
-        logger.error(f"set_user_credits failed: {e}")
-        return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
-
-
-@user_blp.route('/set-vip', methods=['POST'])
-@login_required
-@admin_required
-def set_user_vip():
-    """
-    Set user VIP status (admin only).
-    
-    Request body:
-        user_id: int (required)
-        vip_days: int (optional, 0 to cancel VIP, positive number to grant VIP for days)
-        vip_expires_at: str (optional, ISO format datetime, overrides vip_days if provided)
-        remark: str (optional)
-    """
-    try:
-        from datetime import datetime, timedelta, timezone
-        from app.services.billing_service import get_billing_service
-        
-        data = request.get_json() or {}
-        user_id = data.get('user_id')
-        vip_days = data.get('vip_days')
-        vip_expires_at_str = data.get('vip_expires_at')
-        remark = data.get('remark', '')
-        
-        if not user_id:
-            return jsonify({'code': 0, 'msg': 'Missing user_id', 'data': None}), 400
-        
-        # Calculate expires_at
-        expires_at = None
-        if vip_expires_at_str:
-            try:
-                expires_at = datetime.fromisoformat(vip_expires_at_str.replace('Z', '+00:00'))
-            except ValueError:
-                return jsonify({'code': 0, 'msg': 'Invalid vip_expires_at format', 'data': None}), 400
-        elif vip_days is not None:
-            if vip_days > 0:
-                expires_at = datetime.now(timezone.utc) + timedelta(days=vip_days)
-            else:
-                expires_at = None  # Cancel VIP
-        else:
-            return jsonify({'code': 0, 'msg': 'Provide vip_days or vip_expires_at', 'data': None}), 400
-        
-        operator_id = getattr(g, 'user_id', None)
-        success, result = get_billing_service().set_vip(user_id, expires_at, remark, operator_id)
-        
-        if success:
-            return jsonify({
-                'code': 1,
-                'msg': 'VIP status updated successfully',
-                # Let SafeJSONProvider normalize datetimes to UTC ISO (with Z).
-                'data': {'vip_expires_at': expires_at if expires_at else None}
-            })
-        else:
-            return jsonify({'code': 0, 'msg': result, 'data': None}), 400
-    except Exception as e:
-        logger.error(f"set_user_vip failed: {e}")
-        return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
-
-
-@user_blp.route('/credits-log', methods=['GET'])
-@login_required
-@admin_required
-def get_user_credits_log():
-    """
-    Get user credits log (admin only).
-    
-    Query params:
-        user_id: int (required)
-        page: int (default 1)
-        page_size: int (default 20)
-    """
-    try:
-        from app.services.billing_service import get_billing_service
-        
-        user_id = request.args.get('user_id', type=int)
-        if not user_id:
-            return jsonify({'code': 0, 'msg': 'Missing user_id', 'data': None}), 400
-        
-        page = request.args.get('page', 1, type=int)
-        page_size = request.args.get('page_size', 20, type=int)
-        page_size = min(100, max(1, page_size))
-        
-        result = get_billing_service().get_credits_log(user_id, page, page_size)
-        
-        return jsonify({'code': 1, 'msg': 'success', 'data': result})
-    except Exception as e:
-        logger.error(f"get_user_credits_log failed: {e}")
-        return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
-
-
 # Self-service endpoints (accessible by any logged-in user)
 
 @user_blp.route('/login-logs', methods=['GET'])
@@ -462,10 +331,9 @@ def get_login_logs():
 @user_blp.route('/profile', methods=['GET'])
 @login_required
 def get_profile():
-    """Get current user's profile with billing info and notification settings"""
+    """Get current user's profile with notification settings."""
     try:
         import json
-        from app.services.billing_service import get_billing_service
         from app.utils.db import get_db_connection
         
         user_id = getattr(g, 'user_id', None)
@@ -478,10 +346,6 @@ def get_profile():
         
         # Add permissions
         user['permissions'] = get_user_service().get_user_permissions(user.get('role', 'user'))
-        
-        # Add billing info
-        billing_info = get_billing_service().get_user_billing_info(user_id)
-        user['billing'] = billing_info
         
         # Add notification settings
         with get_db_connection() as db:
@@ -566,35 +430,6 @@ def update_profile():
         return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
 
 
-@user_blp.route('/my-credits-log', methods=['GET'])
-@login_required
-def get_my_credits_log():
-    """
-    Get current user's credits log.
-    
-    Query params:
-        page: int (default 1)
-        page_size: int (default 20)
-    """
-    try:
-        from app.services.billing_service import get_billing_service
-        
-        user_id = getattr(g, 'user_id', None)
-        if not user_id:
-            return jsonify({'code': 0, 'msg': 'Not authenticated', 'data': None}), 401
-        
-        page = request.args.get('page', 1, type=int)
-        page_size = request.args.get('page_size', 20, type=int)
-        page_size = min(100, max(1, page_size))
-        
-        result = get_billing_service().get_credits_log(user_id, page, page_size)
-        
-        return jsonify({'code': 1, 'msg': 'success', 'data': result})
-    except Exception as e:
-        logger.error(f"get_my_credits_log failed: {e}")
-        return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
-
-
 @user_blp.route('/my-referrals', methods=['GET'])
 @login_required
 def get_my_referrals():
@@ -609,11 +444,8 @@ def get_my_referrals():
         list: Users referred by current user (id, username, nickname, avatar, created_at)
         total: Total count of referrals
         referral_code: Current user's referral code (user ID)
-        referral_bonus: Credits earned per referral
-        register_bonus: Credits new users get on registration
     """
     try:
-        import os
         from app.utils.db import get_db_connection
         
         user_id = getattr(g, 'user_id', None)
@@ -669,8 +501,8 @@ def get_my_referrals():
                 'page': page,
                 'page_size': page_size,
                 'referral_code': str(user_id),
-                'referral_bonus': int(os.getenv('CREDITS_REFERRAL_BONUS', '0')),
-                'register_bonus': int(os.getenv('CREDITS_REGISTER_BONUS', '0'))
+                'referral_bonus': 0,
+                'register_bonus': 0
             }
         })
     except Exception as e:
@@ -1719,346 +1551,6 @@ def admin_toggle_system_strategy():
         logger.error(f"admin_toggle_system_strategy failed: {e}")
         import traceback
         logger.error(traceback.format_exc())
-        return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
-
-
-# ==================== Admin Orders ====================
-
-
-def _ensure_usdt_admin_columns():
-    """Best-effort: extend qd_usdt_orders with admin-audit columns introduced
-    by the manual-confirm flow. ``ADD COLUMN IF NOT EXISTS`` is idempotent
-    on PostgreSQL, so this is effectively a no-op after the first hit.
-
-    Failures are swallowed (logged at debug level) so a running DB user
-    without DDL privileges doesn't block the read paths — the SELECTs
-    further down use ``information_schema`` checks or COALESCE to tolerate
-    the columns being absent.
-    """
-    try:
-        with get_db_connection() as db:
-            cur = db.cursor()
-            cur.execute(
-                "ALTER TABLE qd_usdt_orders ADD COLUMN IF NOT EXISTS admin_note TEXT DEFAULT NULL"
-            )
-            cur.execute(
-                "ALTER TABLE qd_usdt_orders ADD COLUMN IF NOT EXISTS manual_confirmed_by INTEGER DEFAULT NULL"
-            )
-            db.commit()
-            cur.close()
-    except Exception as exc:
-        logger.debug("ensure_usdt_admin_columns skipped: %s", exc)
-
-
-@user_blp.route('/admin-orders', methods=['GET'])
-@login_required
-@admin_required
-def get_admin_orders():
-    """
-    Get all orders across the system (admin only).
-    Lists USDT on-chain membership orders only (qd_usdt_orders).
-
-    Query params:
-        page: int (default 1)
-        page_size: int (default 20, max 100)
-        status: str (optional, filter by status: paid/pending/confirmed/expired/all)
-        search: str (optional, search by username/email)
-    """
-    try:
-        page = request.args.get('page', 1, type=int)
-        page_size = request.args.get('page_size', 20, type=int)
-        status_filter = request.args.get('status', '', type=str).strip().lower()
-        search = request.args.get('search', '', type=str).strip()
-        page_size = min(100, max(1, page_size))
-        offset = (page - 1) * page_size
-
-        _ensure_usdt_admin_columns()
-
-        with get_db_connection() as db:
-            cur = db.cursor()
-
-            usdt_conditions = []
-            usdt_params = []
-
-            if status_filter and status_filter != 'all':
-                usdt_conditions.append("o.status = ?")
-                usdt_params.append(status_filter)
-
-            if search:
-                usdt_conditions.append("(u.username ILIKE ? OR u.email ILIKE ? OR u.nickname ILIKE ?)")
-                like_val = f"%{search}%"
-                usdt_params.extend([like_val, like_val, like_val])
-
-            usdt_where = ""
-            if usdt_conditions:
-                usdt_where = "WHERE " + " AND ".join(usdt_conditions)
-
-            cur.execute(
-                f"SELECT COUNT(*) as cnt FROM qd_usdt_orders o LEFT JOIN qd_users u ON u.id = o.user_id {usdt_where}",
-                tuple(usdt_params)
-            )
-            total = cur.fetchone()['cnt']
-
-            list_sql = f"""
-                SELECT
-                    o.id,
-                    'usdt' AS order_type,
-                    o.user_id,
-                    u.username,
-                    u.nickname,
-                    u.email AS user_email,
-                    o.plan,
-                    o.amount_usdt AS amount,
-                    'USDT' AS currency,
-                    o.chain,
-                    o.address,
-                    o.tx_hash,
-                    o.status,
-                    o.matched_via,
-                    o.admin_note,
-                    o.manual_confirmed_by,
-                    o.created_at,
-                    o.paid_at,
-                    o.confirmed_at,
-                    o.expires_at
-                FROM qd_usdt_orders o
-                LEFT JOIN qd_users u ON u.id = o.user_id
-                {usdt_where}
-                ORDER BY o.created_at DESC
-                LIMIT ? OFFSET ?
-            """
-            all_params = list(usdt_params) + [page_size, offset]
-            cur.execute(list_sql, tuple(all_params))
-            rows = cur.fetchall() or []
-
-            # Summary stats
-            cur.execute(
-                f"""SELECT
-                    COUNT(*) AS total_orders,
-                    COALESCE(SUM(CASE WHEN status IN ('paid','confirmed') THEN 1 ELSE 0 END), 0) AS paid_orders,
-                    COALESCE(SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END), 0) AS pending_orders,
-                    COALESCE(SUM(CASE WHEN status IN ('expired','cancelled','failed') THEN 1 ELSE 0 END), 0) AS failed_orders,
-                    COALESCE(SUM(CASE WHEN status IN ('paid','confirmed') THEN amount_usdt ELSE 0 END), 0) AS total_revenue
-                FROM qd_usdt_orders"""
-            )
-            summary_row = cur.fetchone() or {}
-
-            cur.close()
-
-        items = []
-        for row in rows:
-            # SafeJSONProvider normalizes datetimes to UTC ISO; no manual
-            # conversion needed.
-            created_at = row.get('created_at')
-            paid_at = row.get('paid_at')
-            confirmed_at = row.get('confirmed_at')
-            expires_at = row.get('expires_at')
-
-            items.append({
-                'id': row['id'],
-                'order_type': row.get('order_type') or '',
-                'user_id': row.get('user_id'),
-                'username': row.get('username') or '',
-                'nickname': row.get('nickname') or '',
-                'user_email': row.get('user_email') or '',
-                'plan': row.get('plan') or '',
-                'amount': float(row.get('amount') or 0),
-                'currency': row.get('currency') or '',
-                'chain': row.get('chain') or '',
-                'address': row.get('address') or '',
-                'tx_hash': row.get('tx_hash') or '',
-                'status': row.get('status') or '',
-                'matched_via': row.get('matched_via') or '',
-                'admin_note': row.get('admin_note') or '',
-                'manual_confirmed_by': row.get('manual_confirmed_by'),
-                'created_at': created_at,
-                'paid_at': paid_at,
-                'confirmed_at': confirmed_at,
-                'expires_at': expires_at
-            })
-
-        return jsonify({
-            'code': 1,
-            'msg': 'success',
-            'data': {
-                'items': items,
-                'total': total,
-                'page': page,
-                'page_size': page_size,
-                'summary': {
-                    'total_orders': int(summary_row.get('total_orders') or 0),
-                    'paid_orders': int(summary_row.get('paid_orders') or 0),
-                    'pending_orders': int(summary_row.get('pending_orders') or 0),
-                    'failed_orders': int(summary_row.get('failed_orders') or 0),
-                    'total_revenue': round(float(summary_row.get('total_revenue') or 0), 2)
-                }
-            }
-        })
-    except Exception as e:
-        logger.error(f"get_admin_orders failed: {e}")
-        import traceback
-        logger.error(traceback.format_exc())
-        return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
-
-
-@user_blp.route('/admin-orders/<int:order_id>/manual-confirm', methods=['POST'])
-@login_required
-@admin_required
-def manual_confirm_order(order_id: int):
-    """
-    Admin-only "rescue" lever for USDT orders.
-
-    Use case: the buyer paid the correct amount to the correct receiving
-    address, but the on-chain reconciler missed the transaction (RPC
-    outage, exotic wallet, chain-specific edge case, off-chain mistake
-    where the customer used a slightly different amount than the order
-    suffix demanded, etc.). Without this endpoint the admin's only option
-    is to ``UPDATE qd_usdt_orders ...`` by hand and then somehow trigger
-    ``purchase_membership``; this surface does both atomically and leaves
-    an audit trail.
-
-    Body:
-        {
-            "tx_hash": "<on-chain tx hash>",     # required
-            "note":    "<free-form audit note>"  # optional
-        }
-
-    Behavior:
-        - Flips the order to 'confirmed'.
-        - Stamps tx_hash + paid_at (if empty) + confirmed_at + admin_note
-          + manual_confirmed_by + matched_via='manual_admin'.
-        - Calls ``purchase_membership`` exactly once per order (idempotent
-          on re-submit — already-confirmed orders only refresh the audit
-          fields, no double-grant).
-        - Refuses ``status='cancelled'`` orders so the admin doesn't
-          accidentally resurrect a deliberately-cancelled refund.
-    """
-    try:
-        admin_user_id = getattr(g, 'user_id', None)
-        body = request.get_json(silent=True) or {}
-        tx_hash = (body.get('tx_hash') or '').strip()
-        note = (body.get('note') or '').strip()
-
-        if not tx_hash:
-            return jsonify({'code': 0, 'msg': 'missing_tx_hash', 'data': None}), 400
-        if len(tx_hash) > 120:
-            return jsonify({'code': 0, 'msg': 'tx_hash_too_long', 'data': None}), 400
-        if len(note) > 1000:
-            return jsonify({'code': 0, 'msg': 'note_too_long', 'data': None}), 400
-
-        _ensure_usdt_admin_columns()
-
-        # Load order in a short read txn (don't hold a lock across the
-        # billing call below — purchase_membership opens its own conn).
-        with get_db_connection() as db:
-            cur = db.cursor()
-            cur.execute(
-                """
-                SELECT id, user_id, plan, status, chain
-                FROM qd_usdt_orders WHERE id = ?
-                """,
-                (order_id,),
-            )
-            order = cur.fetchone()
-            cur.close()
-
-        if not order:
-            return jsonify({'code': 0, 'msg': 'order_not_found', 'data': None}), 404
-
-        current_status = (order.get('status') or '').lower()
-        user_id = order.get('user_id')
-        plan = order.get('plan')
-
-        if current_status == 'cancelled':
-            # Cancelled orders are deliberately retired — surfacing this
-            # as an error forces the admin to recreate the order instead
-            # of silently rescuing a refunded one.
-            return jsonify({
-                'code': 0,
-                'msg': 'order_cancelled',
-                'data': {'order_id': order_id, 'status': current_status},
-            }), 400
-
-        already_confirmed = current_status == 'confirmed'
-
-        # Stamp confirmation + audit fields. COALESCE on paid_at /
-        # confirmed_at means re-running this for amendments (e.g. fix a
-        # typo in the tx hash) preserves the original timestamps.
-        with get_db_connection() as db:
-            cur = db.cursor()
-            cur.execute(
-                """
-                UPDATE qd_usdt_orders
-                SET status = 'confirmed',
-                    tx_hash = ?,
-                    paid_at = COALESCE(paid_at, NOW()),
-                    confirmed_at = COALESCE(confirmed_at, NOW()),
-                    admin_note = ?,
-                    manual_confirmed_by = ?,
-                    matched_via = 'manual_admin',
-                    updated_at = NOW()
-                WHERE id = ?
-                """,
-                (tx_hash, note or None, admin_user_id, order_id),
-            )
-            db.commit()
-            cur.close()
-
-        # Grant membership only when transitioning into 'confirmed' for
-        # the first time — re-submits (already confirmed) should only
-        # update the audit fields above, never grant another membership.
-        billing_msg = ''
-        if not already_confirmed:
-            try:
-                from app.services.billing_service import get_billing_service
-                billing = get_billing_service()
-                ok, billing_msg, _ = billing.purchase_membership(
-                    int(user_id),
-                    str(plan),
-                    record_membership_order=False,
-                    fulfillment_ref=f"manual_usdt:{order_id}:by_{admin_user_id}",
-                )
-                logger.info(
-                    "[ManualConfirm] order=%s user=%s plan=%s admin=%s ok=%s msg=%s",
-                    order_id, user_id, plan, admin_user_id, ok, billing_msg,
-                )
-                if not ok:
-                    # Order row is already 'confirmed' at this point;
-                    # surface the billing error so the admin knows to
-                    # retry / dig in. We deliberately don't roll back the
-                    # status because the on-chain payment IS real.
-                    return jsonify({
-                        'code': 0,
-                        'msg': f'order_confirmed_but_billing_failed:{billing_msg}',
-                        'data': {'order_id': order_id, 'billing_error': billing_msg},
-                    }), 500
-            except Exception as exc:
-                logger.error(
-                    "[ManualConfirm] billing exception order=%s err=%s",
-                    order_id, exc, exc_info=True,
-                )
-                return jsonify({
-                    'code': 0,
-                    'msg': f'order_confirmed_but_billing_exception:{exc}',
-                    'data': {'order_id': order_id},
-                }), 500
-
-        return jsonify({
-            'code': 1,
-            'msg': 'success',
-            'data': {
-                'order_id': order_id,
-                'user_id': user_id,
-                'plan': plan,
-                'status': 'confirmed',
-                'tx_hash': tx_hash,
-                'admin_note': note,
-                'manual_confirmed_by': admin_user_id,
-                'already_confirmed': already_confirmed,
-            },
-        })
-    except Exception as e:
-        logger.error(f"manual_confirm_order failed: {e}", exc_info=True)
         return jsonify({'code': 0, 'msg': str(e), 'data': None}), 500
 
 

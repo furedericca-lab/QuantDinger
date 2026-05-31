@@ -25,10 +25,6 @@ from app.utils.db import get_db_connection
 from app.utils.logger import get_logger
 from app.utils.auth import login_required
 from app.services.indicator_params import IndicatorParamsParser
-from app.services.indicator_translator import (
-    translate_indicator,
-    SUPPORTED_LANGUAGES as _SUPPORTED_LANGUAGES_FOR_TRANSLATE,
-)
 import requests
 
 logger = get_logger(__name__)
@@ -77,11 +73,6 @@ def _row_to_indicator(row: Dict[str, Any], user_id: int) -> Dict[str, Any]:
         "name": row.get("name") or "",
         "code": row.get("code") or "",
         "description": row.get("description") or "",
-        "publish_to_community": row.get("publish_to_community") if row.get("publish_to_community") is not None else 0,
-        "pricing_type": row.get("pricing_type") or "free",
-        "price": row.get("price") if row.get("price") is not None else 0,
-        # VIP-free indicator flag (community publishing)
-        "vip_free": 1 if (row.get("vip_free") or 0) else 0,
         # Local mode: encryption is not supported; keep field for frontend compatibility (always 0).
         "is_encrypted": 0,
         "preview_image": row.get("preview_image") or "",
@@ -314,7 +305,6 @@ def _indicator_ai_text(key: str, lang: str = "zh-CN") -> str:
     is_zh = _is_zh_lang(lang)
     texts = {
         "prompt_required": "提示词不能为空" if is_zh else "Prompt cannot be empty",
-        "insufficient_credits": "积分不足，请充值后重试" if is_zh else "Insufficient credits. Please top up and try again.",
     }
     return texts.get(key, key)
 
@@ -485,17 +475,12 @@ def get_indicators():
 
         with get_db_connection() as db:
             cur = db.cursor()
-            # Best-effort schema upgrade for VIP-free indicators
-            try:
-                cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS vip_free BOOLEAN DEFAULT FALSE")
-            except Exception:
-                pass
             # Get user's own indicators (both purchased and custom).
             cur.execute(
                 """
                 SELECT
                   id, user_id, is_buy, end_time, name, code, description,
-                  publish_to_community, pricing_type, price, is_encrypted, preview_image, vip_free,
+                  is_encrypted, preview_image,
                   createtime, updatetime, created_at, updated_at
                 FROM qd_indicator_codes
                 WHERE user_id = ?
@@ -535,13 +520,6 @@ def save_indicator():
         code = data.get("code") or ""
         name = (data.get("name") or "").strip()
         description = (data.get("description") or "").strip()
-        publish_to_community = 1 if data.get("publishToCommunity") or data.get("publish_to_community") else 0
-        pricing_type = (data.get("pricingType") or data.get("pricing_type") or "free").strip() or "free"
-        vip_free = bool(data.get("vipFree") or data.get("vip_free"))
-        try:
-            price = float(data.get("price") or 0)
-        except Exception:
-            price = 0.0
         preview_image = (data.get("previewImage") or data.get("preview_image") or "").strip()
 
         if not code or not str(code).strip():
@@ -570,15 +548,9 @@ def save_indicator():
 
         now = _now_ts()  # For BIGINT fields (createtime, updatetime)
 
-        # 检查用户是否是管理员（管理员发布的指标自动通过审核）
-        user_role = getattr(g, 'user_role', 'user')
-        is_admin = user_role == 'admin'
-        
         with get_db_connection() as db:
             cur = db.cursor()
-            # Best-effort schema upgrade for VIP-free indicators
             try:
-                cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS vip_free BOOLEAN DEFAULT FALSE")
                 # i18n columns (see services/indicator_translator.py)
                 cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS source_language VARCHAR(16)")
                 cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS name_i18n JSONB")
@@ -602,127 +574,29 @@ def save_indicator():
                         }
                     ), 403
             if indicator_id and indicator_id > 0:
-                # 检查是否从未发布改为发布，需要设置审核状态
-                if publish_to_community:
-                    cur.execute(
-                        "SELECT publish_to_community, review_status FROM qd_indicator_codes WHERE id = ? AND user_id = ?",
-                        (indicator_id, user_id)
-                    )
-                    existing = cur.fetchone()
-                    was_published = existing and existing.get('publish_to_community')
-                    # 如果之前未发布，现在发布，设置审核状态
-                    # 管理员发布的直接通过，普通用户需要待审核
-                    new_review_status = 'approved' if is_admin else 'pending'
-                    if not was_published:
-                        cur.execute(
-                            """
-                            UPDATE qd_indicator_codes
-                            SET name = ?, code = ?, description = ?,
-                                publish_to_community = ?, pricing_type = ?, price = ?, preview_image = ?,
-                                vip_free = ?,
-                                review_status = ?, review_note = '', reviewed_at = NOW(), reviewed_by = ?,
-                                updatetime = ?, updated_at = NOW()
-                            WHERE id = ? AND user_id = ? AND (is_buy IS NULL OR is_buy = 0)
-                            """,
-                            (name, code, description, publish_to_community, pricing_type, price, preview_image, vip_free,
-                             new_review_status, user_id if is_admin else None, now, indicator_id, user_id),
-                        )
-                    else:
-                        # 已发布过的更新，保持原审核状态
-                        cur.execute(
-                            """
-                            UPDATE qd_indicator_codes
-                            SET name = ?, code = ?, description = ?,
-                                publish_to_community = ?, pricing_type = ?, price = ?, preview_image = ?,
-                                vip_free = ?,
-                                updatetime = ?, updated_at = NOW()
-                            WHERE id = ? AND user_id = ? AND (is_buy IS NULL OR is_buy = 0)
-                            """,
-                            (name, code, description, publish_to_community, pricing_type, price, preview_image, vip_free, now, indicator_id, user_id),
-                        )
-                else:
-                    # 取消发布，清除审核状态
-                    cur.execute(
-                        """
-                        UPDATE qd_indicator_codes
-                        SET name = ?, code = ?, description = ?,
-                            publish_to_community = ?, pricing_type = ?, price = ?, preview_image = ?,
-                            vip_free = FALSE,
-                            review_status = NULL, review_note = '', reviewed_at = NULL, reviewed_by = NULL,
-                            updatetime = ?, updated_at = NOW()
-                        WHERE id = ? AND user_id = ? AND (is_buy IS NULL OR is_buy = 0)
-                        """,
-                        (name, code, description, publish_to_community, pricing_type, price, preview_image, now, indicator_id, user_id),
-                    )
+                cur.execute(
+                    """
+                    UPDATE qd_indicator_codes
+                    SET name = ?, code = ?, description = ?,
+                        preview_image = ?, updatetime = ?, updated_at = NOW()
+                    WHERE id = ? AND user_id = ? AND (is_buy IS NULL OR is_buy = 0)
+                    """,
+                    (name, code, description, preview_image, now, indicator_id, user_id),
+                )
             else:
-                # 新建指标 - 管理员发布的直接通过，普通用户需要待审核
-                review_status = None
-                if publish_to_community:
-                    review_status = 'approved' if is_admin else 'pending'
                 cur.execute(
                     """
                     INSERT INTO qd_indicator_codes
                       (user_id, is_buy, end_time, name, code, description,
-                       publish_to_community, pricing_type, price, preview_image, vip_free, review_status,
+                       preview_image,
                        createtime, updatetime, created_at, updated_at)
-                    VALUES (?, 0, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+                    VALUES (?, 0, 1, ?, ?, ?, ?, ?, ?, NOW(), NOW())
                     """,
-                    (user_id, name, code, description, publish_to_community, pricing_type, price, preview_image, vip_free, review_status, now, now),
+                    (user_id, name, code, description, preview_image, now, now),
                 )
                 indicator_id = int(cur.lastrowid or 0)
             db.commit()
             cur.close()
-
-        # ============================================================
-        # 多语言：发布到指标市场时同步触发 LLM 翻译
-        # ============================================================
-        # 设计取舍：
-        #   - 仅在 publish_to_community=1 时才翻译，私有指标不浪费 LLM 额度。
-        #   - 同步阻塞（一次调用约 2-5s）。如果以后 P99 超过用户耐心，可改成
-        #     后台 worker；现在保持同步是为了「保存成功 = 全语言立即可见」
-        #     最简单的 UX 契约。
-        #   - 翻译失败不会让保存失败：translate_indicator 内部 try/except，
-        #     返回 (None, None, src) 时下游接口仍能 fallback 到原文。
-        if publish_to_community and indicator_id > 0:
-            try:
-                ui_lang = (
-                    request.headers.get('X-App-Lang')
-                    or request.headers.get('Accept-Language', '').split(',')[0].strip()
-                    or 'en-US'
-                )
-                if ui_lang not in _SUPPORTED_LANGUAGES_FOR_TRANSLATE:
-                    ui_lang = None  # let translator auto-detect
-
-                name_i18n, desc_i18n, src_lang = translate_indicator(
-                    name=name,
-                    description=description,
-                    source_language=ui_lang,
-                )
-
-                with get_db_connection() as db:
-                    cur = db.cursor()
-                    cur.execute(
-                        """
-                        UPDATE qd_indicator_codes
-                        SET source_language = ?,
-                            name_i18n = ?,
-                            description_i18n = ?,
-                            updated_at = NOW()
-                        WHERE id = ? AND user_id = ?
-                        """,
-                        (
-                            src_lang,
-                            json.dumps(name_i18n, ensure_ascii=False) if name_i18n else None,
-                            json.dumps(desc_i18n, ensure_ascii=False) if desc_i18n else None,
-                            indicator_id,
-                            user_id,
-                        ),
-                    )
-                    db.commit()
-                    cur.close()
-            except Exception as _e:
-                # 翻译是 nice-to-have，永远不能让 save_indicator 失败。
-                logger.warning(f"save_indicator: i18n translation skipped: {_e}")
 
         return jsonify({"code": 1, "msg": "success", "data": {"id": indicator_id, "userid": user_id}})
     except Exception as e:
@@ -1238,22 +1112,7 @@ Return **only** valid Python source: **no** markdown fences, **no** ` ``` `, **n
         logger.info("ai_generate debug=%s", json.dumps(debug, ensure_ascii=False))
         return repaired, debug
 
-    # Capture user_id before generator runs (generator executes outside request context)
-    user_id = g.user_id
     def stream():
-        from app.services.billing_service import get_billing_service
-        billing = get_billing_service()
-        ok, msg = billing.check_and_consume(
-            user_id=user_id,
-            feature='ai_code_gen',
-            reference_id=f"ai_code_gen_{user_id}_{int(time.time())}"
-        )
-        if not ok:
-            error_msg = f"积分不足: {msg}" if _is_zh_lang(lang) and msg else _indicator_ai_text("insufficient_credits", lang)
-            yield "data: " + json.dumps({"error": error_msg}, ensure_ascii=False) + "\n\n"
-            yield "data: [DONE]\n\n"
-            return
-
         code_text, debug_info = _generate_final_code()
 
         yield "data: " + json.dumps({"debug": debug_info}, ensure_ascii=False) + "\n\n"

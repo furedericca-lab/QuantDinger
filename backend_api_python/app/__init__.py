@@ -151,60 +151,6 @@ def start_grid_fill_poller():
         logger.error(f"Failed to start grid fill poller: {e}")
 
 
-def start_usdt_order_worker():
-    """Start the USDT order background worker.
-
-    Periodically scans pending/paid USDT orders and checks on-chain status.
-    Ensures orders are confirmed even if the user closes the browser after payment.
-    Only starts if USDT_PAY_ENABLED=true.
-
-    Boot logs intentionally include the resolved env values (truthy/falsy only
-    — no secrets) so operators can confirm what the worker actually sees,
-    rather than guessing why nothing is happening when the .env file looks
-    correct on disk.
-    """
-    import os
-
-    raw_enabled = os.getenv("USDT_PAY_ENABLED", "")
-    enabled = raw_enabled.strip().lower() in ("1", "true", "yes")
-    enabled_chains = os.getenv("USDT_PAY_ENABLED_CHAINS", "")
-    poll_interval = os.getenv("USDT_WORKER_POLL_INTERVAL", "30")
-
-    logger.info(
-        "USDT pay boot check: USDT_PAY_ENABLED=%r (parsed=%s) chains=%r poll=%ss",
-        raw_enabled, enabled, enabled_chains, poll_interval,
-    )
-
-    if not enabled:
-        logger.info(
-            "USDT order worker NOT started — USDT_PAY_ENABLED is %r. "
-            "Set USDT_PAY_ENABLED=true in .env and restart the container.",
-            raw_enabled,
-        )
-        return
-
-    # Avoid running twice with Flask reloader (local dev only)
-    debug = os.getenv("PYTHON_API_DEBUG", "false").lower() == "true"
-    if debug and os.environ.get("WERKZEUG_RUN_MAIN") != "true":
-        logger.info(
-            "USDT order worker skipped in this Flask reloader parent "
-            "(WERKZEUG_RUN_MAIN!=true); the child process will start it."
-        )
-        return
-
-    try:
-        from app.services.usdt_payment_service import get_usdt_order_worker
-        worker = get_usdt_order_worker()
-        worker.start()
-        logger.info(
-            "USDT order worker boot OK — thread alive=%s, scanning every %ss",
-            worker.is_alive() if hasattr(worker, "is_alive") else "n/a",
-            poll_interval,
-        )
-    except Exception as e:
-        logger.error(f"Failed to start USDT order worker: {e}", exc_info=True)
-
-
 def restore_running_strategies():
     """
     Restore running strategies on startup.
@@ -316,8 +262,8 @@ def create_app(config_name='default'):
 
     # CORS — pin to specific origins instead of '*'. FRONTEND_URL accepts a
     # comma-separated list (e.g. "http://localhost:8888,http://localhost:8000")
-    # so dev and prod frontends can both be allowed. Default covers the docker
-    # frontend port (8888) and the Vue dev server port (8000).
+    # so dev and prod frontends can both be allowed. Default covers the local
+    # nginx frontend and the Vue dev server port (8000).
     _cors_origins = [
         o.strip() for o in os.getenv(
             "FRONTEND_URL",
@@ -406,7 +352,6 @@ def create_app(config_name='default'):
             start_pending_order_worker()
             start_grid_fill_poller()
             start_portfolio_monitor()
-            start_usdt_order_worker()
             # Offline calibration to make AI thresholds self-tuning.
             try:
                 from app.services.ai_calibration import start_ai_calibration_worker
@@ -422,4 +367,3 @@ def create_app(config_name='default'):
             restore_running_strategies()
     
     return app
-

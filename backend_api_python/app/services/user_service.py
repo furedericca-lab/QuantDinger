@@ -208,7 +208,7 @@ class UserService:
                 cur.execute(
                     """
                     SELECT id, username, email, nickname, avatar, status, role,
-                           credits, vip_expires_at, timezone,
+                           timezone,
                            COALESCE(
                                qd_users.last_login_at,
                                (
@@ -680,7 +680,7 @@ class UserService:
                 # Get users
                 query_sql = f"""
                     SELECT id, username, email, nickname, avatar, status, role,
-                           credits, vip_expires_at, timezone,
+                           timezone,
                            COALESCE(
                                qd_users.last_login_at,
                                (
@@ -741,7 +741,7 @@ class UserService:
 
                 query_sql = f"""
                     SELECT id, username, email, nickname, avatar, status, role,
-                           credits, vip_expires_at, timezone,
+                           timezone,
                            COALESCE(
                                qd_users.last_login_at,
                                (

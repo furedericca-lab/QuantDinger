@@ -51,14 +51,10 @@ def _refresh_runtime_services() -> None:
     # Generic singleton fields used across services.
     singleton_fields = [
         ('app.services.fast_analysis', '_fast_analysis_service'),
-        ('app.services.billing_service', '_billing_service'),
         ('app.services.security_service', '_security_service'),
         ('app.services.oauth_service', '_oauth_service'),
         ('app.services.user_service', '_user_service'),
         ('app.services.email_service', '_email_service'),
-        ('app.services.community_service', '_community_service'),
-        ('app.services.usdt_payment_service', '_svc'),
-        ('app.services.usdt_payment_service', '_worker'),
         ('app.services.analysis_memory', '_memory_instance'),
     ]
 
@@ -73,7 +69,7 @@ def _refresh_runtime_services() -> None:
 # 配置项定义（分组）- 按功能模块划分，每个配置项包含描述
 # ---------------------------------------------------------------
 # 精简原则：
-#   - 部署级配置（host/port/debug）不在 UI 暴露，用户通过 .env 或 docker-compose 设置
+#   - 部署级配置（host/port/debug）不在 UI 暴露，用户通过 .env 或 systemd 设置
 #   - 内部调优参数（超时/重试/tick间隔/向量维度等）使用默认值即可，不暴露给普通用户
 #   - 只保留用户真正需要配置的功能开关和 API Key
 # - 频繁用到的开关、Key 放在 "常用" tab；冷门的限频/calibration 等放在 "高级" tab
@@ -107,12 +103,6 @@ ADVANCED_KEYS = {
     # AI reflection / calibration
     'REFLECTION_WORKER_INTERVAL_SEC', 'REFLECTION_MIN_AGE_DAYS', 'REFLECTION_VALIDATE_LIMIT',
     'AI_CALIBRATION_MARKETS', 'AI_CALIBRATION_LOOKBACK_DAYS', 'AI_CALIBRATION_MIN_SAMPLES',
-    # USDT pay internals
-    'USDT_TRC20_CONTRACT', 'USDT_BEP20_CONTRACT', 'USDT_ERC20_CONTRACT', 'USDT_SOL_MINT',
-    'TRONGRID_BASE_URL', 'ETHERSCAN_V2_BASE_URL', 'BSC_RPC_URLS', 'ETH_RPC_URLS',
-    'SOLANA_RPC_URL', 'BEP20_PREFER_EXPLORER', 'ERC20_PREFER_EXPLORER',
-    'USDT_PAY_CONFIRM_SECONDS', 'USDT_PAY_EXPIRE_MINUTES',
-    'USDT_AMOUNT_SUFFIX_DECIMALS', 'USDT_WORKER_POLL_INTERVAL',
     # Adanos sentiment
     'ADANOS_SENTIMENT_SOURCE', 'ADANOS_API_BASE_URL',
     # Brand internals
@@ -1174,178 +1164,6 @@ CONFIG_SCHEMA = {
                 'type': 'number',
                 'default': '30',
                 'description': 'How long to block code submissions after the attempt limit is hit.'
-            },
-        ]
-    },
-
-    # ==================== 11. 计费配置 ====================
-    'billing': {
-        'title': 'Billing & Credits',
-        'icon': 'dollar',
-        'order': 11,
-        'items': [
-            {
-                'key': 'BILLING_ENABLED',
-                'label': 'Enable Billing',
-                'type': 'boolean',
-                'default': 'False',
-                'description': 'Enable billing system. Users need credits to use certain features'
-            },
-
-            # ===== Membership Plans (3 tiers) =====
-            {
-                'key': 'MEMBERSHIP_MONTHLY_PRICE_USD',
-                'label': 'Monthly Membership Price (USD)',
-                'type': 'number',
-                'default': '19.9',
-                'description': 'Monthly membership price in USD (USDT checkout uses equivalent amount in USDT)'
-            },
-            {
-                'key': 'MEMBERSHIP_MONTHLY_CREDITS',
-                'label': 'Monthly Membership Bonus Credits',
-                'type': 'number',
-                'default': '500',
-                'description': 'Credits granted immediately after purchasing monthly membership'
-            },
-            {
-                'key': 'MEMBERSHIP_YEARLY_PRICE_USD',
-                'label': 'Yearly Membership Price (USD)',
-                'type': 'number',
-                'default': '199',
-                'description': 'Yearly membership price in USD (USDT checkout uses equivalent amount in USDT)'
-            },
-            {
-                'key': 'MEMBERSHIP_YEARLY_CREDITS',
-                'label': 'Yearly Membership Bonus Credits',
-                'type': 'number',
-                'default': '8000',
-                'description': 'Credits granted immediately after purchasing yearly membership'
-            },
-            {
-                'key': 'MEMBERSHIP_LIFETIME_PRICE_USD',
-                'label': 'Lifetime Membership Price (USD)',
-                'type': 'number',
-                'default': '499',
-                'description': 'Lifetime membership price in USD (USDT checkout uses equivalent amount in USDT)'
-            },
-            {
-                'key': 'MEMBERSHIP_LIFETIME_MONTHLY_CREDITS',
-                'label': 'Lifetime Membership Monthly Credits',
-                'type': 'number',
-                'default': '800',
-                'description': 'Credits granted every 30 days for lifetime members'
-            },
-
-            # ===== USDT Pay (v3.0.6+: one fixed address per chain + amount-suffix matching) =====
-            # Model: each chain has a single receiving address. Orders are
-            # disambiguated by a unique amount suffix in the low decimals
-            # (e.g. 19.991234 USDT, where .001234 is the order tag), so funds
-            # land directly in the operator wallet without per-order HD
-            # derivation or batched consolidation.
-            {
-                'key': 'USDT_PAY_ENABLED',
-                'label': 'Enable USDT Pay',
-                'type': 'boolean',
-                'default': 'False',
-                'description': 'Master switch for USDT scan-to-pay checkout (multi-chain, single address + amount-suffix matching).'
-            },
-            {
-                'key': 'USDT_PAY_ENABLED_CHAINS',
-                'label': 'Enabled Chains',
-                'type': 'text',
-                'default': 'TRC20,BEP20,ERC20,SOL',
-                'description': 'Comma-separated chain whitelist. Any code not in this list is rejected at order creation. Valid codes: TRC20 / BEP20 / ERC20 / SOL.'
-            },
-            {
-                'key': 'USDT_TRC20_ADDRESS',
-                'label': 'TRC20 Receiving Address',
-                'type': 'text',
-                'required': False,
-                'description': 'Your TRON wallet address (starts with T...). Leave blank to hide TRC20 from the chain picker.'
-            },
-            {
-                'key': 'USDT_BEP20_ADDRESS',
-                'label': 'BEP20 Receiving Address',
-                'type': 'text',
-                'required': False,
-                'description': 'Your BSC wallet address (0x...). Reconciliation runs on public BSC RPC by default — no API key needed.'
-            },
-            {
-                'key': 'USDT_ERC20_ADDRESS',
-                'label': 'ERC20 Receiving Address',
-                'type': 'text',
-                'required': False,
-                'description': 'Your Ethereum wallet address (0x...). Reconciliation prefers Etherscan V2 (free plan covers ETH), with public Ethereum RPC fallback.'
-            },
-            {
-                'key': 'USDT_SOL_ADDRESS',
-                'label': 'Solana Receiving Address',
-                'type': 'text',
-                'required': False,
-                'description': 'Your Solana wallet address (base58). The SPL USDT mint ATA is derived on-chain by the sender wallet.'
-            },
-            {
-                'key': 'TRONGRID_API_KEY',
-                'label': 'TronGrid API Key',
-                'type': 'password',
-                'required': False,
-                'description': 'Optional. Higher TronGrid rate-limit / stability for TRC20 reconciliation. Get one at https://www.trongrid.io.'
-            },
-            {
-                'key': 'ETHERSCAN_API_KEY',
-                'label': 'Etherscan API Key',
-                'type': 'password',
-                'required': False,
-                'description': 'Optional. Used for ERC20 reconciliation via Etherscan V2 (free plan covers Ethereum mainnet). BEP20 ignores this — it uses public BSC RPC. Get a key at https://etherscan.io/myapikey.'
-            },
-            {
-                'key': 'USDT_PAY_CONFIRM_SECONDS',
-                'label': 'Confirm Delay (sec)',
-                'type': 'number',
-                'default': '30',
-                'description': 'Seconds to wait after detecting a transfer before marking the order confirmed and activating the membership.'
-            },
-            {
-                'key': 'USDT_PAY_EXPIRE_MINUTES',
-                'label': 'Order Expire (min)',
-                'type': 'number',
-                'default': '30',
-                'description': 'Minutes a pending USDT order stays open before expiring. Users can re-open the modal to generate a fresh amount suffix.'
-            },
-            {
-                'key': 'USDT_WORKER_POLL_INTERVAL',
-                'label': 'Worker Poll Interval (sec)',
-                'type': 'number',
-                'default': '30',
-                'description': 'How often the background worker re-scans pending/paid orders against on-chain data.'
-            },
-            {
-                'key': 'BILLING_COST_AI_ANALYSIS',
-                'label': 'AI Analysis Cost (per symbol)',
-                'type': 'number',
-                'default': '10',
-                'description': 'Credits per symbol (instant analysis, AI filter, scheduled tasks all use this price)'
-            },
-            {
-                'key': 'BILLING_COST_AI_CODE_GEN',
-                'label': 'AI Code Generation Cost',
-                'type': 'number',
-                'default': '30',
-                'description': 'Credits per AI strategy/indicator code generation (higher token usage)'
-            },
-            {
-                'key': 'CREDITS_REGISTER_BONUS',
-                'label': 'Register Bonus',
-                'type': 'number',
-                'default': '100',
-                'description': 'Credits awarded to new users on registration'
-            },
-            {
-                'key': 'CREDITS_REFERRAL_BONUS',
-                'label': 'Referral Bonus',
-                'type': 'number',
-                'default': '50',
-                'description': 'Credits awarded to referrer for each signup'
             },
         ]
     },

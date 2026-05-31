@@ -55,7 +55,7 @@ def _serialize_monitor_ts(value):
     """Serialize a TIMESTAMP value for the frontend.
 
     DB columns are ``TIMESTAMP WITHOUT TIME ZONE`` and PostgreSQL writes them
-    as wall-clock in the container's ``TZ`` (see docker-compose ``TZ`` env
+    as wall-clock in the backend process ``TZ`` env
     var).  The old implementation assumed naive = UTC, which was wrong on any
     deployment whose container TZ wasn't UTC (default is Asia/Shanghai for
     this project) and caused an 8-hour drift on the dashboard.

@@ -29,8 +29,8 @@ CHECKS: list[tuple[str, str]] = [
         rf"defaultSettings\.appVersion \|\| '({SEMVER})'",
     ),
     # README shields.io badges are dynamic (GitHub release endpoint) and not checked here.
-    # README `quantdinger-frontend:X.Y.Z` mentions are not checked — FE and BE
-    # are versioned independently and the compose default is `latest`.
+    # Frontend image tags, if used externally, are not checked here. FE and BE
+    # are versioned independently.
 ]
 
 

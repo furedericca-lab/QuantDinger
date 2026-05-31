@@ -28,4 +28,4 @@ Write-Host ""
 Write-Host "Generated key: $newKey" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "You can now start the application:"
-Write-Host "  docker-compose up -d --build"
+Write-Host "  cd backend_api_python; gunicorn -c gunicorn_config.py run:app"

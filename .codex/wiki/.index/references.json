@@ -77,9 +77,9 @@
     ],
     "wiki_refs": []
   },
-  ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime": {
+  ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-gunicorn-config": {
     "code_refs": [
-      "docker-compose.yml"
+      "backend_api_python/gunicorn_config.py"
     ],
     "wiki_refs": []
   },
@@ -182,18 +182,6 @@
   ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-settings-catalog": {
     "code_refs": [
       "backend_api_python/app/routes/settings.py"
-    ],
-    "wiki_refs": []
-  },
-  ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service": {
-    "code_refs": [
-      "backend_api_python/app/services/usdt_payment/service.py"
-    ],
-    "wiki_refs": []
-  },
-  ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-worker": {
-    "code_refs": [
-      "backend_api_python/app/services/usdt_payment/service.py"
     ],
     "wiki_refs": []
   },

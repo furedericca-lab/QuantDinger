@@ -1,18 +1,15 @@
 # QuantDinger Python API (backend)
 
-Flask-based backend for QuantDinger: market data, indicators, AI analysis, backtesting, and a strategy runtime with multi-user support.
+Flask backend for QuantDinger: market data, indicators, AI analysis,
+backtesting, strategy runtime, multi-user auth, broker adapters, notifications,
+and Agent Gateway.
 
-## What you get
+This backend is run locally from source. The supported deployment shape for this
+checkout is Gunicorn or `python run.py` behind a local nginx reverse proxy. The
+backend no longer owns Docker, Railway, GHCR, billing, USDT payment, credits,
+VIP, membership, or community marketplace surfaces.
 
-- **Multi-market data layer**: factory-based providers (crypto / US stocks / forex / futures, etc.)
-- **Indicators + backtesting**: persisted runs/history in PostgreSQL
-- **AI multi-agent analysis**: optional web search + OpenRouter LLM integration
-- **Strategy runtime**: thread-based executor, with optional auto-restore on startup
-- **Pending orders worker (optional)**: polls queued orders and dispatches signals (webhook/notifications)
-- **Multi-user authentication**: role-based access control (admin/manager/user/viewer)
-- **User management**: admin can create/edit/delete users and reset passwords
-
-## Project layout
+## Project Layout
 
 ```text
 backend_api_python/
@@ -21,220 +18,71 @@ backend_api_python/
 │  ├─ config/                     # Settings (env-driven)
 │  ├─ data_sources/               # Data sources + factory
 │  ├─ routes/                     # REST endpoints
-│  ├─ services/                   # Analysis, agents, strategies, search, user_service
-│  └─ utils/                      # PostgreSQL helpers, config loader, logging, HTTP utils
-├─ migrations/
-│  └─ init.sql                    # PostgreSQL schema initialization
+│  ├─ services/                   # Analysis, agents, strategies, search, users
+│  └─ utils/                      # PostgreSQL helpers, auth, crypto, logging
+├─ migrations/init.sql            # PostgreSQL schema initialization
 ├─ env.example                    # Copy to .env for local config
 ├─ requirements.txt
-├─ run.py                         # Entrypoint (loads .env, applies proxy env, starts Flask)
-├─ gunicorn_config.py             # Optional production config
+├─ run.py                         # Entrypoint
+├─ gunicorn_config.py             # Production process config
 └─ README.md
 ```
 
-## Quick start (Docker - Recommended)
+## Quick Start
 
-### 1) Configure environment
-
-Create `.env` file in project root:
+### 1. Configure Environment
 
 ```bash
-# Database
+cp backend_api_python/env.example backend_api_python/.env
+bash scripts/generate-secret-key.sh
+```
+
+Set at least:
+
+```env
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+POSTGRES_DB=quantdinger
 POSTGRES_USER=quantdinger
 POSTGRES_PASSWORD=your_secure_password
-POSTGRES_DB=quantdinger
-
-# Admin account (created on first startup)
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
 ADMIN_USER=admin
 ADMIN_PASSWORD=your_admin_password
-
-# Optional
-OPENROUTER_API_KEY=your_api_key
+ADMIN_EMAIL=admin@example.com
+FRONTEND_URL=http://localhost
 ```
 
-### 2) Start services
+### 2. Install And Start
+
+From the repo root:
 
 ```bash
-docker-compose up -d
-```
-
-This will:
-- Start PostgreSQL database (port 5432)
-- Initialize database schema automatically
-- Start backend API (port 5000)
-- Start frontend (port 8888)
-- Create admin user from `ADMIN_USER`/`ADMIN_PASSWORD`
-
-### 3) Access the system
-
-- Frontend: `http://localhost:8888`
-- Backend API: `http://localhost:5000`
-- Login with your configured admin credentials
-
-## Quick start (Local Development)
-
-### Prerequisites
-
-- Python 3.10+ recommended
-- PostgreSQL 14+ installed and running
-
-### 1) Setup PostgreSQL
-
-```bash
-# Create database and user
-sudo -u postgres psql
-CREATE DATABASE quantdinger;
-CREATE USER quantdinger WITH ENCRYPTED PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE quantdinger TO quantdinger;
-\q
-
-# Initialize schema
-psql -U quantdinger -d quantdinger -f migrations/init.sql
-```
-
-### 2) Install dependencies
-
-```bash
-cd ..
 uv sync
-```
-
-### 3) Create your local `.env`
-
-Windows (CMD):
-```bash
-copy env.example .env
-```
-
-Windows (PowerShell):
-```bash
-Copy-Item env.example .env
-```
-
-Then edit `.env` and set:
-
-```bash
-# Required
-DATABASE_URL=postgresql://quantdinger:your_password@localhost:5432/quantdinger
-SECRET_KEY=your-secret-key-change-me
-ADMIN_USER=admin
-ADMIN_PASSWORD=your_admin_password
-
-# Optional but recommended
-OPENROUTER_API_KEY=your_api_key
-```
-
-### 4) Start the API server
-
-```bash
 uv run --directory backend_api_python python run.py
 ```
 
-Default address: `http://localhost:5000`
-
-## Database (PostgreSQL)
-
-- Connection: configured via `DATABASE_URL` environment variable
-- Schema: initialized via `migrations/init.sql`
-- Tables are managed with foreign key constraints and indexes for performance
-- User data isolation via `user_id` column in relevant tables
-
-## User Roles & Permissions
-
-| Role | Permissions |
-|------|-------------|
-| admin | Full access + user management |
-| manager | Strategy, backtest, portfolio, settings |
-| user | Strategy, backtest, portfolio (own data) |
-| viewer | Dashboard view only |
-
-## API Endpoints
-
-### Authentication
-```text
-POST /api/user/login      - User login
-POST /api/user/logout     - User logout
-GET  /api/user/info       - Get current user info
-```
-
-### User Management (Admin only)
-```text
-GET    /api/users/list           - List all users
-POST   /api/users/create         - Create user
-PUT    /api/users/update?id=     - Update user
-DELETE /api/users/delete?id=     - Delete user
-POST   /api/users/reset-password - Reset password
-```
-
-### Self-Service
-```text
-GET  /api/users/profile         - Get own profile
-PUT  /api/users/profile/update  - Update own profile
-POST /api/users/change-password - Change own password
-```
-
-### Other Endpoints
-```text
-GET  /api/health
-GET  /api/indicator/kline
-GET  /api/global-market/adanos-sentiment?tickers=AAPL,TSLA
-POST /api/fast-analysis/analyze    - Fast AI analysis (main entry)
-GET  /api/fast-analysis/history    - Analysis history
-GET  /api/fast-analysis/similar-patterns - RAG similar patterns
-POST /api/fast-analysis/feedback   - User feedback on analysis
-```
-
-### Optional Adanos Market Sentiment
-
-Set `ADANOS_API_KEY` to enable optional US stock sentiment enrichment from the
-Adanos Market Sentiment API. If the key is not configured, the endpoint returns
-`enabled=false` and the rest of QuantDinger continues to work normally.
+Production-style process:
 
 ```bash
-ADANOS_API_KEY=your_adanos_key
-ADANOS_SENTIMENT_SOURCE=reddit  # reddit, x, news, or polymarket
+cd backend_api_python
+gunicorn -c gunicorn_config.py run:app
 ```
 
-Example:
+nginx should serve frontend/static files and proxy API traffic to
+`127.0.0.1:5000`.
 
-```text
-GET /api/global-market/adanos-sentiment?tickers=AAPL,TSLA&source=reddit&days=7
-```
-
-The response normalizes common compare fields across sources, including
-`sentiment_score`, `buzz_score`, `bullish_pct`, `bearish_pct`, `mentions`,
-`trend`, `trend_history`, and source-specific activity metrics such as
-`subreddit_count`, `unique_tweets`, `source_count`, `trade_count`,
-`market_count`, and `total_liquidity`.
-
-## AI analysis & memory
-
-Uses **FastAnalysisService** (single LLM call, multi-factor):
-
-- Memory: `qd_analysis_memory` in PostgreSQL
-- API: `POST /api/fast-analysis/analyze` (main), `/history`, `/similar-patterns`, `/feedback`
-- Calibration: `AICalibrationService` tunes BUY/SELL thresholds from validated outcomes
-
-## Frontend integration
-
-For local Vue dev (private frontend repo):
-- Frontend dev server URL depends on your `vue.config.js` / Vite config
-- Backend: `http://localhost:5000`
-- Point devServer proxy at the backend URL above
-
-## Production (Gunicorn)
+### 3. Verify
 
 ```bash
-gunicorn -c gunicorn_config.py "run:app"
+curl -f http://127.0.0.1:5000/api/health
+uv run python -m pytest backend_api_python/tests/test_health.py
 ```
 
-## Troubleshooting
+## Notes
 
-- **Database connection failed**: Check `DATABASE_URL` format and PostgreSQL service status
-- **Outbound requests fail**: Configure `PROXY_URL` in `.env`
-- **Disable auto-restore**: Set `DISABLE_RESTORE_RUNNING_STRATEGIES=true`
-- **Disable pending-order worker**: Set `ENABLE_PENDING_ORDER_WORKER=false`
-
-## License
-
-Apache License 2.0. See repository root `LICENSE`.
+- `migrations/init.sql` is idempotently applied during backend startup.
+- `SKIP_STARTUP_HOOKS=1` disables workers for OpenAPI export and CI.
+- `PROXY_URL` controls backend outbound exchange/market-data egress when needed.
+- Broker credentials and LLM/OAuth/notification secrets must stay in `.env` or
+  encrypted storage, never docs or logs.

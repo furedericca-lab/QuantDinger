@@ -26,12 +26,6 @@ def setup_logger():
     kline_logger = logging.getLogger('app.routes.kline')
     kline_logger.setLevel(logging.WARNING)
 
-    # USDT 对账：即使 LOG_LEVEL=WARNING，也保留本模块 INFO（便于排查 pending/TronGrid）
-    _usdt = logging.getLogger("app.services.usdt_payment_service")
-    _usdt.setLevel(logging.INFO)
-    _billing = logging.getLogger("app.routes.billing")
-    _billing.setLevel(logging.INFO)
-    
     # 创建日志目录
     log_dir = 'logs'
     if not os.path.exists(log_dir):
@@ -59,4 +53,3 @@ def get_logger(name: str) -> logging.Logger:
         Logger 实例
     """
     return logging.getLogger(name)
-

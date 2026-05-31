@@ -53,13 +53,13 @@ def is_postgres() -> bool:
 def init_database():
     """Initialize the database connection, apply schema, and probe permissions.
 
-    Two deployment styles have to land here without diverging:
+    Two local startup styles have to land here without diverging:
 
-    1. **Docker compose** — the Postgres container's entrypoint runs
-       ``/docker-entrypoint-initdb.d/init.sql`` on first boot. Our re-apply on
-       every backend start is a no-op because ``init.sql`` is fully idempotent
+    1. **Managed local PostgreSQL** — an operator or service manager may apply
+       ``migrations/init.sql`` before the backend starts. Our re-apply on every
+       backend start is a no-op because ``init.sql`` is fully idempotent
        (``CREATE TABLE IF NOT EXISTS`` everywhere).
-    2. **Bare-metal / Windows local PG** — nothing runs ``init.sql`` for the
+    2. **Bare-metal / Windows local PostgreSQL** — nothing runs ``init.sql`` for the
        operator. Previously they had to manually ``psql -f migrations/init.sql``
        before starting the backend, otherwise every worker exploded with
        ``relation does not exist``. We now apply it ourselves.

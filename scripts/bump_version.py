@@ -54,9 +54,8 @@ PATCHES: list[tuple[str, str, str]] = [
     ),
     # README shields.io badges are dynamic (pulled from GitHub releases via
     # `/github/v/release/<owner>/<repo>`) and need no manual bump here.
-    # `quantdinger-frontend:X.Y.Z` mentions in README are intentionally left
-    # alone — FE and BE can ship on independent cadences, and the compose
-    # default is `latest`, not a pinned tag.
+    # Frontend image tags, if used externally, are intentionally left alone.
+    # FE and BE can ship on independent cadences.
 ]
 
 

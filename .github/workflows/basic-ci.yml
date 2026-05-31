@@ -5,9 +5,7 @@
 # It does NOT run tests, start servers, or require external services.
 #
 # Note: Frontend source code and CI live in the private QuantDinger-Vue repo.
-# The published `ghcr.io/<owner>/quantdinger-frontend` image is consumed
-# directly by both docker-compose files — no frontend source or build
-# artefacts are checked in here.
+# This repository validates the local Python backend and repo metadata only.
 
 on:
   push:
@@ -28,7 +26,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          # Use Python 3.12 to match Dockerfile and support f-string expressions with backslashes (PEP 701)
+          # Use Python 3.12 to support f-string expressions with backslashes (PEP 701)
 
       - name: Install dependencies
         working-directory: ./backend_api_python
@@ -76,23 +74,6 @@ jobs:
           # - Dependencies are available and importable
           # - Core module structure is intact
 
-  compose-check:
-    name: Docker Compose Validation
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Validate docker-compose.yml (build mode)
-        run: docker compose -f docker-compose.yml config -q
-
-      - name: Validate docker-compose.ghcr.yml (GHCR mode)
-        run: docker compose -f docker-compose.ghcr.yml config -q
-
-      - name: Validate docker-compose.yml + build override (merged)
-        run: docker compose -f docker-compose.yml -f docker-compose.build.yml config -q
-
   version-check:
     name: Version Consistency
     runs-on: ubuntu-latest
@@ -110,5 +91,5 @@ jobs:
         # Fails if any *tracked* version constant drifts from repo-root VERSION.
         # Frontend paths under QuantDinger-Vue-src/ are gitignored (private FE
         # repo) and are skipped when absent. Run bump_version.py locally with
-        # the full FE checkout to sync those files before building the image.
+        # the full FE checkout to sync those files before release.
         run: python scripts/check_version.py

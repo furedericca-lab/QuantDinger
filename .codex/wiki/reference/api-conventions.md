@@ -135,10 +135,10 @@ classification:
 | Internal | `x-visibility: internal` | QuantDinger product code; may change without notice |
 | Private | `x-visibility: private` | Admin or sensitive workflows with minimal public docs |
 
-Migration priority for public modules: `community`, `market`, `indicator`,
-`backtest`, `global-market`, and `health`.
+Migration priority for public modules: `market`, `indicator`, `backtest`,
+`global-market`, and `health`.
 
-Internal or sensitive modules include `strategy`, `credentials`, `billing`,
+Internal or sensitive modules include `strategy`, `credentials`,
 `quick-trade`, and broker adapters such as `ibkr`, `alpaca`, and `mt5`.
 
 ## Naming And Versioning
@@ -197,5 +197,5 @@ Local interactive docs are available at `/api/docs/swagger` and
 | Agent Gateway | Hand-written OpenAPI plus CI lint | `.codex/wiki/reference/agent/agent-openapi.json` |
 | All other modules | Legacy Flask Blueprint | Not yet in generated human OpenAPI |
 
-The next migration phases should move `community`, `market`, and other public
+The next migration phases should move `market` and other preserved public
 modules incrementally into the flask-smorest OpenAPI package.

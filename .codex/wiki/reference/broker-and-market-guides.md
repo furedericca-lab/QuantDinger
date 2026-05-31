@@ -110,8 +110,7 @@ sessions, otherwise TWS may disconnect one of the sessions.
 ## MT5
 
 MT5 requires the MetaTrader 5 terminal and is usually best run on Windows or a
-host where the terminal is installed and reachable. Docker-only deployments
-often cannot reach MT5 correctly.
+host where the terminal is installed and reachable.
 
 For public hosted deployments, MT5 should usually be hidden or disabled unless
 the operator has built a private reachable terminal service.
@@ -136,8 +135,8 @@ BUY/SELL, target prices, stop loss, future-period projections, and confidence.
 - Data-source failures are not the same as live-order failures.
 - CN/HK/US/forex/futures/regional sources may have different symbol formats
   and availability windows.
-- `PROXY_URL` may be required inside Docker for exchange metadata and OHLCV
-  even if host browser access works.
+- `PROXY_URL` may be required from the backend process for exchange metadata
+  and OHLCV even if browser access works.
 - Certificate errors should be fixed with CA bundles where possible; disabling
   TLS verification is a last resort.
 

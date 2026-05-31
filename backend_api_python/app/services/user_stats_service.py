@@ -2,7 +2,7 @@
 Admin user statistics service.
 
 Powers the dashboard widgets in the user-manage page (User Management tab):
-  * Headline KPIs (total / today / week / month / active / VIP / disabled)
+  * Headline KPIs (total / today / week / month / active / disabled)
   * 30-day daily-new-users + cumulative line
   * 14-day daily active users (DAU)
 
@@ -10,7 +10,7 @@ All queries are pure read-only and parameterless, so we run them concurrently
 inside a small thread pool — typical wall-clock on a 5k-user table is well
 under a second.
 
-The role distribution, recent signups, VIP-expiring list, and IP→country
+The role distribution, recent signups, and IP-to-country
 breakdown that used to live here were removed per product feedback; the
 endpoint is now strictly KPI + growth + activity to keep the admin landing
 page fast and unambiguous.
@@ -59,14 +59,7 @@ def _fetch_summary() -> Dict[str, Any]:
                 WHERE last_login_at >= CURRENT_DATE - INTERVAL '6 days'
             ) AS active_week,
             COUNT(*) FILTER (WHERE COALESCE(status, 'active') = 'disabled')
-                AS disabled,
-            COUNT(*) FILTER (WHERE vip_expires_at IS NOT NULL
-                                  AND vip_expires_at > NOW())
-                AS vip_total,
-            COUNT(*) FILTER (WHERE vip_expires_at IS NOT NULL
-                                  AND vip_expires_at > NOW()
-                                  AND vip_expires_at <= NOW() + INTERVAL '7 days')
-                AS vip_expiring_7d
+                AS disabled
         FROM qd_users
     """
     with get_db_connection() as db:

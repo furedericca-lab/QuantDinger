@@ -1,4 +1,4 @@
-# Local Vue dev on port 8000 (vite server). Does not touch Docker frontend.
+# Local Vue dev on port 8000 (vite server).
 # Backend API proxy target: http://localhost:5000 (see QuantDinger-Vue-src/.env.development)
 
 $ErrorActionPreference = 'Stop'

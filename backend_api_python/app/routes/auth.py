@@ -319,12 +319,10 @@ def login_with_code():
         from app.services.security_service import get_security_service
         from app.services.email_service import get_email_service
         from app.services.user_service import get_user_service
-        from app.services.billing_service import get_billing_service
         
         security = get_security_service()
         email_service = get_email_service()
         user_service = get_user_service()
-        billing_service = get_billing_service()
         
         data = request.get_json()
         if not data:
@@ -400,28 +398,6 @@ def login_with_code():
             
             if not user_id:
                 return jsonify({'code': 0, 'msg': 'Failed to create account', 'data': None}), 500
-            
-            # Grant registration bonus credits
-            register_bonus = int(os.getenv('CREDITS_REGISTER_BONUS', '0'))
-            if register_bonus > 0:
-                billing_service.add_credits(
-                    user_id=user_id,
-                    amount=register_bonus,
-                    action='register_bonus',
-                    remark='Registration bonus'
-                )
-            
-            # Grant referral bonus to referrer
-            if referred_by:
-                referral_bonus = int(os.getenv('CREDITS_REFERRAL_BONUS', '0'))
-                if referral_bonus > 0:
-                    billing_service.add_credits(
-                        user_id=referred_by,
-                        amount=referral_bonus,
-                        action='referral_bonus',
-                        remark=f'Referral bonus for inviting user {username}',
-                        reference_id=str(user_id)
-                    )
             
             user = user_service.get_user_by_id(user_id)
             is_new_user = True
@@ -626,12 +602,10 @@ def register():
         from app.services.security_service import get_security_service
         from app.services.email_service import get_email_service
         from app.services.user_service import get_user_service
-        from app.services.billing_service import get_billing_service
         
         security = get_security_service()
         email_service = get_email_service()
         user_service = get_user_service()
-        billing_service = get_billing_service()
         
         data = request.get_json()
         if not data:
@@ -709,28 +683,6 @@ def register():
         
         if not user_id:
             return jsonify({'code': 0, 'msg': 'Failed to create account', 'data': None}), 500
-        
-        # Grant registration bonus credits
-        register_bonus = int(os.getenv('CREDITS_REGISTER_BONUS', '0'))
-        if register_bonus > 0:
-            billing_service.add_credits(
-                user_id=user_id,
-                amount=register_bonus,
-                action='register_bonus',
-                remark='Registration bonus'
-            )
-        
-        # Grant referral bonus to referrer
-        if referred_by:
-            referral_bonus = int(os.getenv('CREDITS_REFERRAL_BONUS', '0'))
-            if referral_bonus > 0:
-                billing_service.add_credits(
-                    user_id=referred_by,
-                    amount=referral_bonus,
-                    action='referral_bonus',
-                    remark=f'Referral bonus for inviting user {username}',
-                    reference_id=str(user_id)
-                )
         
         # Log registration
         security.log_security_event('register', user_id, ip_address, user_agent, 

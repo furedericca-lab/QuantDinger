@@ -91,8 +91,8 @@ def init_openapi(app: Flask) -> Api:
                     "description": "Backend direct (python run.py)",
                 },
                 {
-                    "url": "http://localhost:8888",
-                    "description": "Docker Compose (via reverse proxy)",
+                    "url": "http://localhost",
+                    "description": "Local nginx reverse proxy",
                 },
             ],
         },

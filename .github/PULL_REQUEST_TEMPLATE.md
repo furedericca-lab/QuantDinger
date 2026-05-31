@@ -8,7 +8,7 @@
 
 ## Test plan
 
-- [ ] Tested locally with `docker compose up -d --build`
+- [ ] Tested locally with the backend process or Gunicorn behind nginx
 - [ ] Backend logs show no errors
 - [ ] Relevant pytest tests pass
 

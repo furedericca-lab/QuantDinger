@@ -1,5 +1,5 @@
 -- QuantDinger PostgreSQL Schema Initialization
--- This script runs automatically when PostgreSQL container starts for the first time.
+-- This script initializes the local PostgreSQL schema for first boot.
 
 -- =============================================================================
 -- 1. Users & Authentication
@@ -14,11 +14,6 @@ CREATE TABLE IF NOT EXISTS qd_users (
     avatar VARCHAR(255) DEFAULT '/avatar2.jpg',
     status VARCHAR(20) DEFAULT 'active',  -- active/disabled/pending
     role VARCHAR(20) DEFAULT 'user',       -- admin/manager/user/viewer
-    credits DECIMAL(20,2) DEFAULT 0,       -- 积分余额
-    vip_expires_at TIMESTAMP,              -- VIP过期时间
-    vip_plan VARCHAR(20) DEFAULT '',       -- VIP套餐：monthly/yearly/lifetime
-    vip_is_lifetime BOOLEAN DEFAULT FALSE, -- 是否永久会员
-    vip_monthly_credits_last_grant TIMESTAMP, -- 永久会员上次发放月度积分时间
     email_verified BOOLEAN DEFAULT FALSE,  -- 邮箱是否已验证
     referred_by INTEGER,                   -- 邀请人ID
     notification_settings TEXT DEFAULT '', -- 用户通知配置 JSON (telegram_chat_id, default_channels等)
@@ -35,138 +30,6 @@ CREATE INDEX IF NOT EXISTS idx_users_referred_by ON qd_users(referred_by);
 
 -- Note: Admin user is created automatically by the application on startup
 -- using ADMIN_USER and ADMIN_PASSWORD from environment variables
-
--- =============================================================================
--- 1.5. Credits Log (积分变动日志)
--- =============================================================================
-
-CREATE TABLE IF NOT EXISTS qd_credits_log (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES qd_users(id) ON DELETE CASCADE,
-    action VARCHAR(50) NOT NULL,            -- recharge/consume/refund/admin_adjust/vip_grant
-    amount DECIMAL(20,2) NOT NULL,          -- 变动金额（正数增加，负数减少）
-    balance_after DECIMAL(20,2) NOT NULL,   -- 变动后余额
-    feature VARCHAR(50) DEFAULT '',          -- 消费的功能：ai_analysis/strategy_run/backtest 等
-    reference_id VARCHAR(100) DEFAULT '',    -- 关联ID（如订单号、分析任务ID等）
-    remark TEXT DEFAULT '',                  -- 备注
-    operator_id INTEGER,                     -- 操作人ID（管理员调整时记录）
-    created_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_credits_log_user_id ON qd_credits_log(user_id);
-CREATE INDEX IF NOT EXISTS idx_credits_log_action ON qd_credits_log(action);
-CREATE INDEX IF NOT EXISTS idx_credits_log_created_at ON qd_credits_log(created_at);
-
--- =============================================================================
--- 1.55. Membership Orders (会员订单 - Mock支付)
--- =============================================================================
-
-CREATE TABLE IF NOT EXISTS qd_membership_orders (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES qd_users(id) ON DELETE CASCADE,
-    plan VARCHAR(20) NOT NULL,             -- monthly/yearly/lifetime
-    price_usd DECIMAL(10,2) DEFAULT 0,     -- 订单金额（USD）
-    status VARCHAR(20) DEFAULT 'paid',     -- paid/pending/failed/refunded (mock 默认 paid)
-    created_at TIMESTAMP DEFAULT NOW(),
-    paid_at TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_membership_orders_user_id ON qd_membership_orders(user_id);
-
--- =============================================================================
--- 1.56. USDT Orders (multi-chain single-receiving-address + amount-suffix model)
--- =============================================================================
---
--- v3.0.6 reset: replaced xpub-derived per-order addresses with a single fixed
--- receiving address per chain. Orders are identified on-chain by a unique
--- amount suffix in the low decimals (e.g. 19.991234 -> suffix 0.001234).
--- This eliminates the consolidation step (funds land directly in the main
--- wallet) and removes per-sweep TRX/gas costs.
---
--- Supported chains: TRC20 (TRON), BEP20 (BSC), ERC20 (Ethereum), SOL (Solana SPL).
--- Each chain's address is configured via USDT_{CHAIN}_ADDRESS env var.
-
-CREATE TABLE IF NOT EXISTS qd_usdt_orders (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES qd_users(id) ON DELETE CASCADE,
-    plan VARCHAR(20) NOT NULL,                                  -- monthly/yearly/lifetime
-    chain VARCHAR(20) NOT NULL DEFAULT 'TRC20',                 -- TRC20/BEP20/ERC20/SOL
-    currency VARCHAR(10) NOT NULL DEFAULT 'USDT',
-    amount_usdt DECIMAL(20,8) NOT NULL DEFAULT 0,               -- final amount = base + suffix (6 dp typical)
-    amount_suffix DECIMAL(20,8) NOT NULL DEFAULT 0,             -- the unique suffix portion used for matching
-    address VARCHAR(120) NOT NULL DEFAULT '',                   -- fixed receiving address (per chain)
-    payment_uri TEXT NOT NULL DEFAULT '',                       -- full deep link (EIP-681 / Solana Pay / tron URI)
-    matched_via VARCHAR(20) NOT NULL DEFAULT 'amount_suffix',
-    status VARCHAR(20) NOT NULL DEFAULT 'pending',              -- pending/paid/confirmed/expired/cancelled/failed
-    tx_hash VARCHAR(120) DEFAULT '',
-    paid_at TIMESTAMP,
-    confirmed_at TIMESTAMP,
-    expires_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_usdt_orders_user_id ON qd_usdt_orders(user_id);
-CREATE INDEX IF NOT EXISTS idx_usdt_orders_status ON qd_usdt_orders(status);
--- v3.0.6 cleanup: drop the legacy unique index on (chain, address) that
--- was used by the per-order xpub-derived address scheme. In the current
--- "single fixed receiving address per chain + amount-suffix matching"
--- model, every active order on the same chain shares the same address,
--- so this old index would falsely reject every second pending order
--- (UniqueViolation on idx_usdt_orders_address_unique). Safe & idempotent.
-DROP INDEX IF EXISTS idx_usdt_orders_address_unique;
--- Prevent two active orders on the same chain from claiming the same amount,
--- which is the foundation of the amount-suffix matching scheme.
-CREATE UNIQUE INDEX IF NOT EXISTS idx_usdt_orders_amount_active
-  ON qd_usdt_orders(chain, amount_usdt)
-  WHERE status IN ('pending', 'paid');
-
--- One-shot cleanup for installs that pre-date v3.0.6. address_index is no
--- longer used; we keep the column where it already exists to avoid breaking
--- old rows, but new installs do not need it. The DO block is idempotent and
--- safe to re-run.
-DO $$
-BEGIN
-    -- amount_suffix
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name='qd_usdt_orders' AND column_name='amount_suffix'
-    ) THEN
-        ALTER TABLE qd_usdt_orders ADD COLUMN amount_suffix DECIMAL(20,8) NOT NULL DEFAULT 0;
-    END IF;
-    -- payment_uri
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name='qd_usdt_orders' AND column_name='payment_uri'
-    ) THEN
-        ALTER TABLE qd_usdt_orders ADD COLUMN payment_uri TEXT NOT NULL DEFAULT '';
-    END IF;
-    -- currency
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name='qd_usdt_orders' AND column_name='currency'
-    ) THEN
-        ALTER TABLE qd_usdt_orders ADD COLUMN currency VARCHAR(10) NOT NULL DEFAULT 'USDT';
-    END IF;
-    -- matched_via
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name='qd_usdt_orders' AND column_name='matched_via'
-    ) THEN
-        ALTER TABLE qd_usdt_orders ADD COLUMN matched_via VARCHAR(20) NOT NULL DEFAULT 'amount_suffix';
-    END IF;
-    -- widen amount_usdt to (20,8) so suffix at 6+ decimals fits exactly
-    BEGIN
-        ALTER TABLE qd_usdt_orders ALTER COLUMN amount_usdt TYPE DECIMAL(20,8);
-    EXCEPTION WHEN others THEN NULL;
-    END;
-    -- widen address (TRC20 base58 ~34, Solana ~44; old col was 80)
-    BEGIN
-        ALTER TABLE qd_usdt_orders ALTER COLUMN address TYPE VARCHAR(120);
-    EXCEPTION WHEN others THEN NULL;
-    END;
-END
-$$;
 
 -- =============================================================================
 -- 1.59. OAuth CSRF State (多 worker / 多实例共享，避免 Invalid state)
@@ -509,32 +372,15 @@ CREATE TABLE IF NOT EXISTS qd_indicator_codes (
    name varchar(255) DEFAULT ''::character varying NOT NULL,
    code text NULL,
    description text DEFAULT ''::text NULL,
-   publish_to_community int4 DEFAULT 0 NOT NULL,
-   pricing_type varchar(20) DEFAULT 'free'::character varying NOT NULL,
-   price numeric(10, 2) DEFAULT 0 NOT NULL,
    is_encrypted int4 DEFAULT 0 NOT NULL,
    preview_image varchar(500) DEFAULT ''::character varying NULL,
-   vip_free boolean DEFAULT false, -- VIP免费指标：VIP可免扣积分使用
    createtime int8 NULL,
    updatetime int8 NULL,
    created_at timestamp DEFAULT now(),
    updated_at timestamp DEFAULT now(),
-   purchase_count int4 DEFAULT 0 NULL,
-   avg_rating numeric(3, 2) DEFAULT 0 NULL,
-   rating_count int4 DEFAULT 0 NULL,
-   view_count int4 DEFAULT 0 NULL,
-   review_status varchar(20) DEFAULT 'approved'::character varying NULL,
-   review_note text DEFAULT ''::text NULL,
-   reviewed_at timestamp NULL,
-   reviewed_by int4 NULL,
-    -- 对已购用户而言，本地副本通过此字段关联到市场上的原始指标，
-    -- 用于后续"同步代码"功能拉取发布者的最新版本
-    source_indicator_id int4 NULL,
     -- 多语言支持：用户上传的 name / description 用 source_language 标识原始语言
     -- (zh-CN / en-US / ja-JP 等)；name_i18n / description_i18n 是 LLM 翻译生成的
     -- JSONB，结构形如 {"en-US": "...", "zh-CN": "...", ...}。
-    -- 市场/详情接口按 Accept-Language 命中：先查 i18n 对应键，未命中再回退到原始 name。
-    -- 见 app/services/indicator_translator.py 与 community_service.py:_localize_indicator。
     source_language varchar(16) DEFAULT NULL,
     name_i18n        jsonb       DEFAULT NULL,
     description_i18n jsonb       DEFAULT NULL,
@@ -544,8 +390,6 @@ CREATE TABLE IF NOT EXISTS qd_indicator_codes (
 );
 
 CREATE INDEX IF NOT EXISTS idx_indicator_codes_user_id ON qd_indicator_codes USING btree (user_id);
-CREATE INDEX IF NOT EXISTS idx_indicator_review_status ON qd_indicator_codes USING btree (review_status);
-CREATE INDEX IF NOT EXISTS idx_indicator_codes_source ON qd_indicator_codes USING btree (source_indicator_id);
 
 -- =============================================================================
 -- 10. Watchlist
@@ -1024,77 +868,6 @@ END $$;
 ALTER TABLE qd_strategy_trades ADD COLUMN IF NOT EXISTS close_reason VARCHAR(64) DEFAULT '';
 ALTER TABLE qd_strategy_trades ADD COLUMN IF NOT EXISTS matched_entry_price DECIMAL(20,8) DEFAULT 0;
 ALTER TABLE qd_strategy_trades ADD COLUMN IF NOT EXISTS grid_matched_profit DECIMAL(20,8) DEFAULT 0;
-
--- =============================================================================
--- 21. Indicator Community Tables
--- =============================================================================
-
--- Indicator Purchases (购买记录)
-CREATE TABLE IF NOT EXISTS qd_indicator_purchases (
-    id SERIAL PRIMARY KEY,
-    indicator_id INTEGER NOT NULL REFERENCES qd_indicator_codes(id) ON DELETE CASCADE,
-    buyer_id INTEGER NOT NULL REFERENCES qd_users(id) ON DELETE CASCADE,
-    seller_id INTEGER NOT NULL REFERENCES qd_users(id),
-    price DECIMAL(10,2) NOT NULL DEFAULT 0,
-    created_at TIMESTAMP DEFAULT NOW(),
-    UNIQUE(indicator_id, buyer_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_purchases_indicator ON qd_indicator_purchases(indicator_id);
-CREATE INDEX IF NOT EXISTS idx_purchases_buyer ON qd_indicator_purchases(buyer_id);
-CREATE INDEX IF NOT EXISTS idx_purchases_seller ON qd_indicator_purchases(seller_id);
-
--- Indicator Comments (评论)
-CREATE TABLE IF NOT EXISTS qd_indicator_comments (
-    id SERIAL PRIMARY KEY,
-    indicator_id INTEGER NOT NULL REFERENCES qd_indicator_codes(id) ON DELETE CASCADE,
-    user_id INTEGER NOT NULL REFERENCES qd_users(id) ON DELETE CASCADE,
-    rating INTEGER DEFAULT 5 CHECK (rating >= 1 AND rating <= 5),
-    content TEXT DEFAULT '',
-    parent_id INTEGER REFERENCES qd_indicator_comments(id) ON DELETE CASCADE,
-    is_deleted INTEGER DEFAULT 0,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_comments_indicator ON qd_indicator_comments(indicator_id);
-CREATE INDEX IF NOT EXISTS idx_comments_user ON qd_indicator_comments(user_id);
-
--- Add community stats columns to qd_indicator_codes
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'qd_indicator_codes' AND column_name = 'purchase_count'
-    ) THEN
-        ALTER TABLE qd_indicator_codes ADD COLUMN purchase_count INTEGER DEFAULT 0;
-        RAISE NOTICE 'Added purchase_count column to qd_indicator_codes';
-    END IF;
-    
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'qd_indicator_codes' AND column_name = 'avg_rating'
-    ) THEN
-        ALTER TABLE qd_indicator_codes ADD COLUMN avg_rating DECIMAL(3,2) DEFAULT 0;
-        RAISE NOTICE 'Added avg_rating column to qd_indicator_codes';
-    END IF;
-    
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'qd_indicator_codes' AND column_name = 'rating_count'
-    ) THEN
-        ALTER TABLE qd_indicator_codes ADD COLUMN rating_count INTEGER DEFAULT 0;
-        RAISE NOTICE 'Added rating_count column to qd_indicator_codes';
-    END IF;
-    
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'qd_indicator_codes' AND column_name = 'view_count'
-    ) THEN
-        ALTER TABLE qd_indicator_codes ADD COLUMN view_count INTEGER DEFAULT 0;
-        RAISE NOTICE 'Added view_count column to qd_indicator_codes';
-    END IF;
-END $$;
 
 -- =============================================================================
 -- Quick Trades (manual / discretionary orders from Quick Trade Panel)

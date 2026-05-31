@@ -70,7 +70,7 @@ Recommended PR contents:
 - problem statement and user-facing impact;
 - changed files grouped by product area;
 - migration/config impact;
-- risk notes for auth, credentials, billing, agent scopes, or live trading;
+- risk notes for auth, credentials, agent scopes, or live trading;
 - tests or smoke checks run;
 - screenshots only when UI behavior changed.
 
@@ -79,8 +79,8 @@ Do not mix formatting-only refactors with behavior changes in high-risk areas.
 ## Security Policy
 
 Security-sensitive areas include auth, JWT, OAuth, agent tokens, credential
-encryption, the safe execution sandbox, live trading order paths, multi-user
-tenant isolation, billing, and USDT payment flows.
+encryption, the safe execution sandbox, live trading order paths, and
+multi-user tenant isolation.
 
 Reports should include impact, reproduction steps, affected version or commit,
 and whether credentials or funds may be exposed. Do not publish exploit details
@@ -96,8 +96,6 @@ High-risk paths:
 - `backend_api_python/app/services/live_trading/`
 - `backend_api_python/app/services/pending_order_worker.py`
 - `backend_api_python/app/services/trading_executor.py`
-- `backend_api_python/app/services/usdt_payment/`
-- `backend_api_python/app/routes/billing.py`
 - `backend_api_python/migrations/init.sql`
 - `mcp_server/src/quantdinger_mcp/server.py`
 

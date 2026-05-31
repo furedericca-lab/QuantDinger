@@ -124,6 +124,7 @@
     ],
     "definition_pages": [],
     "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md",
       ".codex/wiki/reference/current-verification-commands.md",
       ".codex/wiki/reference/project-governance.md",
       ".codex/wiki/reference/source-docs-archive-map.md"
@@ -146,6 +147,7 @@
     "anchors": [],
     "definition_pages": [],
     "pages": [
+      ".codex/wiki/implementation/deployment-and-operations.md",
       ".codex/wiki/reference/current-verification-commands.md",
       ".codex/wiki/reference/project-governance.md",
       ".codex/wiki/reference/source-docs-archive-map.md"
@@ -159,16 +161,6 @@
     ],
     "pages": [
       ".codex/wiki/reference/current-verification-commands.md"
-    ],
-    "symbols": {}
-  },
-  "backend_api_python/Dockerfile": {
-    "anchors": [],
-    "definition_pages": [
-      ".codex/wiki/implementation/deployment-and-operations.md"
-    ],
-    "pages": [
-      ".codex/wiki/implementation/deployment-and-operations.md"
     ],
     "symbols": {}
   },
@@ -415,7 +407,7 @@
         "kind": "route",
         "page": ".codex/wiki/reference/configuration-and-integrations.md",
         "role": "defines",
-        "symbol": "settings_bp",
+        "symbol": "settings_blp",
         "target": ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-settings-catalog"
       }
     ],
@@ -427,7 +419,7 @@
       ".codex/wiki/reference/configuration-and-integrations.md"
     ],
     "symbols": {
-      "settings_bp": [
+      "settings_blp": [
         ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-settings-catalog"
       ]
     }
@@ -780,43 +772,6 @@
       ]
     }
   },
-  "backend_api_python/app/services/usdt_payment/service.py": {
-    "anchors": [
-      {
-        "file": "backend_api_python/app/services/usdt_payment/service.py",
-        "id": "quantdinger-usdt-payment-service",
-        "kind": "class",
-        "page": ".codex/wiki/reference/configuration-and-integrations.md",
-        "role": "defines",
-        "symbol": "UsdtPaymentService",
-        "target": ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service"
-      },
-      {
-        "file": "backend_api_python/app/services/usdt_payment/service.py",
-        "id": "quantdinger-usdt-payment-worker",
-        "kind": "class",
-        "page": ".codex/wiki/reference/configuration-and-integrations.md",
-        "role": "explains",
-        "symbol": "UsdtOrderWorker",
-        "target": ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-worker"
-      }
-    ],
-    "definition_pages": [
-      ".codex/wiki/reference/configuration-and-integrations.md",
-      ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service"
-    ],
-    "pages": [
-      ".codex/wiki/reference/configuration-and-integrations.md"
-    ],
-    "symbols": {
-      "UsdtOrderWorker": [
-        ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-worker"
-      ],
-      "UsdtPaymentService": [
-        ".codex/wiki/reference/configuration-and-integrations.md#quantdinger-usdt-payment-service"
-      ]
-    }
-  },
   "backend_api_python/app/utils/agent_auth.py": {
     "anchors": [
       {
@@ -985,6 +940,33 @@
       ]
     }
   },
+  "backend_api_python/gunicorn_config.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/gunicorn_config.py",
+        "id": "quantdinger-gunicorn-config",
+        "kind": "config",
+        "page": ".codex/wiki/implementation/deployment-and-operations.md",
+        "role": "defines",
+        "symbol": "bind",
+        "target": ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-gunicorn-config"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/concepts/product-architecture.md",
+      ".codex/wiki/implementation/deployment-and-operations.md",
+      ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-gunicorn-config"
+    ],
+    "pages": [
+      ".codex/wiki/concepts/product-architecture.md",
+      ".codex/wiki/implementation/deployment-and-operations.md"
+    ],
+    "symbols": {
+      "bind": [
+        ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-gunicorn-config"
+      ]
+    }
+  },
   "backend_api_python/migrations/init.sql": {
     "anchors": [
       {
@@ -1109,55 +1091,6 @@
     "symbols": {
       "test_backtest_execution": [
         ".codex/wiki/reference/current-verification-commands.md#verification-strategy-runtime-tests"
-      ]
-    }
-  },
-  "docker-compose.build.yml": {
-    "anchors": [],
-    "definition_pages": [
-      ".codex/wiki/implementation/deployment-and-operations.md"
-    ],
-    "pages": [
-      ".codex/wiki/implementation/deployment-and-operations.md"
-    ],
-    "symbols": {}
-  },
-  "docker-compose.ghcr.yml": {
-    "anchors": [],
-    "definition_pages": [
-      ".codex/wiki/implementation/deployment-and-operations.md"
-    ],
-    "pages": [
-      ".codex/wiki/implementation/deployment-and-operations.md"
-    ],
-    "symbols": {}
-  },
-  "docker-compose.yml": {
-    "anchors": [
-      {
-        "file": "docker-compose.yml",
-        "id": "quantdinger-compose-runtime",
-        "kind": "config",
-        "page": ".codex/wiki/implementation/deployment-and-operations.md",
-        "role": "defines",
-        "symbol": "services.backend",
-        "target": ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime"
-      }
-    ],
-    "definition_pages": [
-      ".codex/wiki/concepts/product-architecture.md",
-      ".codex/wiki/implementation/deployment-and-operations.md",
-      ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime",
-      ".codex/wiki/reference/current-verification-commands.md"
-    ],
-    "pages": [
-      ".codex/wiki/concepts/product-architecture.md",
-      ".codex/wiki/implementation/deployment-and-operations.md",
-      ".codex/wiki/reference/current-verification-commands.md"
-    ],
-    "symbols": {
-      "services.backend": [
-        ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime"
       ]
     }
   },

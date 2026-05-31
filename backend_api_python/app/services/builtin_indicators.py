@@ -222,9 +222,9 @@ def seed_builtin_indicators_for_new_user(db: Any, user_id: int) -> int:
                 """
                 INSERT INTO qd_indicator_codes
                   (user_id, is_buy, end_time, name, code, description,
-                   publish_to_community, pricing_type, price, preview_image, vip_free, review_status,
+                   preview_image,
                    createtime, updatetime, created_at, updated_at)
-                VALUES (?, 0, 1, ?, ?, ?, 0, 'free', 0, '', FALSE, NULL, ?, ?, NOW(), NOW())
+                VALUES (?, 0, 1, ?, ?, ?, '', ?, ?, NOW(), NOW())
                 """,
                 (
                     user_id,

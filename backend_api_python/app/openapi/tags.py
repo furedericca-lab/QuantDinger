@@ -8,12 +8,10 @@ MARKET = "Market"
 INDICATOR = "Indicator"
 BACKTEST = "Backtest"
 STRATEGY = "Strategy"
-COMMUNITY = "Community"
 CREDENTIALS = "Credentials"
 DASHBOARD = "Dashboard"
 PORTFOLIO = "Portfolio"
 SETTINGS = "Settings"
-BILLING = "Billing"
 EXPERIMENT = "Experiment"
 FAST_ANALYSIS = "FastAnalysis"
 GLOBAL_MARKET = "GlobalMarket"
@@ -32,12 +30,10 @@ ALL_TAGS = [
     {"name": INDICATOR, "description": "Indicator IDE workspace (Public)"},
     {"name": BACKTEST, "description": "Indicator backtesting (Public)"},
     {"name": STRATEGY, "description": "Strategy runtime and bots (Internal)"},
-    {"name": COMMUNITY, "description": "Indicator marketplace (Public)"},
     {"name": CREDENTIALS, "description": "Exchange credential vault (Internal)"},
     {"name": DASHBOARD, "description": "Dashboard aggregates (Internal)"},
     {"name": PORTFOLIO, "description": "Manual portfolio tracking (Internal)"},
     {"name": SETTINGS, "description": "System and brand settings (Mixed)"},
-    {"name": BILLING, "description": "Membership and USDT billing (Internal)"},
     {"name": EXPERIMENT, "description": "Strategy tuning experiments (Internal)"},
     {"name": FAST_ANALYSIS, "description": "Fast AI analysis (Public)"},
     {"name": GLOBAL_MARKET, "description": "Global market overview (Public)"},

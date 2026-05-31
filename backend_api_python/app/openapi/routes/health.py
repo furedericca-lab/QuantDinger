@@ -46,7 +46,7 @@ def health_check():
 @blp.response(200, HealthStatusSchema)
 @blp.doc(
     summary="Health check (compat path)",
-    description="Used by Docker health checks and reverse-proxy probes.",
+    description="Used by local service and reverse-proxy probes.",
     tags=["Health"],
     operationId="getApiHealthCompat",
 )

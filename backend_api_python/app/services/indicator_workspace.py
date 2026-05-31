@@ -130,9 +130,9 @@ def save_user_indicator(
                 """
                 INSERT INTO qd_indicator_codes
                   (user_id, is_buy, end_time, name, code, description,
-                   publish_to_community, pricing_type, price, preview_image, vip_free,
+                   preview_image,
                    createtime, updatetime, created_at, updated_at)
-                VALUES (?, 0, 1, ?, ?, ?, 0, 'free', 0, '', FALSE, ?, ?, NOW(), NOW())
+                VALUES (?, 0, 1, ?, ?, ?, '', ?, ?, NOW(), NOW())
                 """,
                 (int(user_id), name, raw, description, now, now),
             )

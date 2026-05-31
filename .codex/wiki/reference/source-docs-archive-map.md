@@ -58,12 +58,13 @@ agent-readable knowledge layer and a concise README entrypoint.
   `README.md`.
 - Backend README and development guide -> `concepts/product-architecture.md`,
   `implementation/deployment-and-operations.md`, and `project-governance.md`.
-- Cloud deployment guides -> `implementation/deployment-and-operations.md`.
+- Cloud deployment guides -> archived historical context; current deployment is
+  local Gunicorn/nginx in `implementation/deployment-and-operations.md`.
 - Strategy development, cross-sectional strategy, signal standard, and AI
   trading plan -> `implementation/strategy-backtest-and-execution.md`.
 - Agent environment, Agent Gateway, quickstart, MCP setup ->
   `implementation/agent-gateway-and-mcp.md`.
-- OAuth, notification, USDT payment guides ->
+- OAuth and notification guides ->
   `reference/configuration-and-integrations.md`.
 - IBKR, MT5, indicators, fast analysis docs -> `reference/broker-and-market-guides.md`.
 - Code of conduct, contributing, contributors, security, trademarks, changelog,

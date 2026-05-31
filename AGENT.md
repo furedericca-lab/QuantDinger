@@ -22,9 +22,9 @@ Primary entry points:
 
 - `README.md`: operator-facing product and workflow guide.
 - `AGENT.md`: developer/agent-facing architecture and workflow contract.
-- Archived scope:
-  [.codex/scopes/archive/merge-upstream-v3-0-22/](.codex/scopes/archive/merge-upstream-v3-0-22/)
-  preserves the completed upstream `v3.0.22` merge evidence.
+- Archived scopes:
+  - [.codex/scopes/archive/merge-upstream-v3-0-22/](.codex/scopes/archive/merge-upstream-v3-0-22/) preserves the completed upstream `v3.0.22` merge evidence.
+  - `.codex/scopes/archive/local-nginx-slimdown/` preserves the local nginx/no-paid-product slimdown evidence after closeout.
 - [.codex/wiki/index.md](.codex/wiki/index.md): structured project knowledge,
   decision log, and maintenance log.
 - [Product Architecture](.codex/wiki/concepts/product-architecture.md):
@@ -34,9 +34,9 @@ Primary entry points:
 - [Agent Gateway And MCP](.codex/wiki/implementation/agent-gateway-and-mcp.md):
   machine API, scopes, audit, jobs, and MCP wrapper.
 - [Deployment And Operations](.codex/wiki/implementation/deployment-and-operations.md):
-  Compose runtime, frontend image model, ports, and operational checks.
+  local Gunicorn/nginx runtime, ports, and operational checks.
 - [Configuration And Integrations](.codex/wiki/reference/configuration-and-integrations.md):
-  environment, OAuth, notifications, LLM, billing, and payments.
+  environment, OAuth, notifications, LLM, and local runtime settings.
 - [Broker And Market Guides](.codex/wiki/reference/broker-and-market-guides.md):
   exchange, broker, market type, and data-source notes.
 - [Project Governance](.codex/wiki/reference/project-governance.md):
@@ -59,8 +59,7 @@ Top-level ownership:
 - `backend_api_python/app/routes/`: browser/API route modules, including
   `/api/agent/v1`.
 - `backend_api_python/app/services/`: business logic for strategies,
-  backtests, experiments, AI, trading, notifications, billing, users, and
-  workers.
+  backtests, experiments, AI, trading, notifications, users, and workers.
 - `backend_api_python/app/data_sources/`: normalized market data adapters,
   cache, circuit breaker, rate limits, and symbol families.
 - `backend_api_python/app/data_providers/`: higher-level market feeds such as
@@ -73,10 +72,8 @@ Top-level ownership:
 - `mcp_server/`: `quantdinger-mcp`, an additive MCP wrapper over Agent Gateway
   REST APIs.
 - `scripts/`: operational helper scripts.
-- `docker-compose.yml`: default Compose stack with local backend build and
-  prebuilt frontend image.
-- `docker-compose.build.yml`: local frontend source build overlay.
-- `docker-compose.ghcr.yml`: image-oriented deployment variant.
+- nginx: local reverse proxy and static/frontend serving boundary, configured outside this repo.
+- systemd or another host process manager: local backend/Gunicorn service owner.
 - `.codex/wiki/`: current durable knowledge for this checkout.
 
 The backend service layer is the source of truth. Frontend code and MCP tools
@@ -92,7 +89,7 @@ Required first-start checks:
 - `SECRET_KEY` is generated and not the default placeholder.
 - `ADMIN_USER`, `ADMIN_PASSWORD`, and `ADMIN_EMAIL` are intentional.
 - `FRONTEND_URL` matches the user-facing origin.
-- `DATABASE_URL`, Redis settings, and Compose database credentials agree.
+- `DATABASE_URL` and Redis settings point to local or private services.
 - `ENABLE_PENDING_ORDER_WORKER`, `ENABLE_PORTFOLIO_MONITOR`, and
   `DISABLE_RESTORE_RUNNING_STRATEGIES` are intentional.
 - `ALLOW_LOCAL_DESKTOP_BROKERS` is false for public SaaS deployments unless a
@@ -105,7 +102,7 @@ Hard rules:
 - Do not rotate `SECRET_KEY` casually. It signs JWTs and derives credential
   encryption material.
 - Do not commit `.env`, exchange keys, OAuth secrets, LLM keys, notification
-  tokens, USDT watcher keys, cookies, or private credentials.
+  tokens, cookies, or private credentials.
 - Keep PostgreSQL and Redis loopback-bound unless the deployment explicitly
   uses a private network boundary.
 - Keep runtime config changes reflected in the wiki when they alter operator
@@ -295,31 +292,25 @@ Rules:
 - Alpaca paper/live mode must be explicit.
 - Public market data failures should be diagnosed separately from private
   broker order failures.
-- Proxy settings such as `PROXY_URL` may be required inside Docker even when
-  the host browser has working network access.
+- Proxy settings such as `PROXY_URL` may be required when exchange REST access fails from the backend process.
 
-## 10. Billing, Payments, And Notifications
+## 10. Notifications And Runtime Settings
 
 Key files:
 
-- `backend_api_python/app/routes/billing.py`
-- `backend_api_python/app/services/billing_service.py`
-- `backend_api_python/app/services/usdt_payment/`
-- `backend_api_python/app/services/usdt_payment_service.py`
 - `backend_api_python/app/services/email_service.py`
 - `backend_api_python/app/services/signal_notifier.py`
 - `backend_api_python/app/routes/settings.py`
+- `backend_api_python/env.example`
 
 Rules:
 
-- Treat payment settings as production-sensitive.
-- USDT orders use chain-specific fixed receiving addresses plus amount-suffix
-  matching; avoid reintroducing per-order address assumptions without a
-  deliberate migration.
 - Notification credentials must stay in environment or encrypted settings.
 - Strategy code should request notification behavior through product settings,
   not embed raw tokens.
-- Payment and billing mutations require idempotency tests where available.
+- Runtime settings must not reintroduce paid-product gates, payment processors,
+  credits, VIP, memberships, or marketplace controls.
+- Settings changes that alter operator behavior belong in `.codex/wiki/`.
 
 ## 11. Documentation And Wiki Policy
 
@@ -377,14 +368,13 @@ During upstream merge, rebase, or cherry-pick work:
 - Keep `.github/workflows/openapi-ci.yml`, `.github/PULL_REQUEST_TEMPLATE.md`,
   README, AGENT, and `backend_api_python/scripts/export_openapi.py` aligned
   with the wiki API paths after conflict resolution.
-- Before deleting or restoring deployment assets such as Docker Compose files,
-  Dockerfiles, image build paths, or local runtime scripts, prove whether they
-  are still referenced by README, AGENT, wiki, CI, install scripts, or current
-  runtime commands. Cleanup is allowed only after those references and
-  replacement workflows are updated together.
-- Do not restore upstream documentation or deployment scaffolding just because
-  a merge marks it as added. Preserve the local deletion when the local wiki or
-  runtime model already absorbed the useful content.
+- Do not restore upstream Docker Compose, Dockerfile, GHCR, Railway, payment,
+  membership, credits, VIP, or marketplace scaffolding just because a merge
+  marks it as added. Preserve the local deletion when the local wiki or runtime
+  model already absorbed the useful content.
+- If upstream adds useful deployment or monetization documentation, extract only
+  the non-sensitive durable facts into `.codex/wiki/` and keep the local
+  nginx/no-paid-product baseline intact unless the user explicitly changes it.
 
 Post-merge minimum checks:
 
@@ -429,19 +419,11 @@ Backtest and trading semantics:
 uv run python -m pytest backend_api_python/tests/test_backtest_execution.py backend_api_python/tests/test_trading_execution_modes.py
 ```
 
-Billing and payments:
+Local runtime work:
 
 ```bash
-uv run python -m pytest backend_api_python/tests/test_usdt_payment_idempotency.py
-```
-
-Compose/runtime work:
-
-```bash
-docker compose config
-docker compose ps
-docker compose logs --tail=100 backend
-curl -f http://localhost:5000/api/health
+curl -f http://127.0.0.1:5000/api/health
+curl -f http://localhost/api/health
 ```
 
 Do not claim completion for high-risk changes without either running the
@@ -459,8 +441,6 @@ Treat these paths as security-sensitive:
 - `backend_api_python/app/services/live_trading/`
 - `backend_api_python/app/services/pending_order_worker.py`
 - `backend_api_python/app/services/trading_executor.py`
-- `backend_api_python/app/services/usdt_payment/`
-- `backend_api_python/app/routes/billing.py`
 - `backend_api_python/migrations/init.sql`
 - `mcp_server/src/quantdinger_mcp/server.py`
 

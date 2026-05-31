@@ -72,7 +72,7 @@ def validate_indicator():
 @agent_v1_bp.route("/indicators", methods=["POST"])
 @agent_required(SCOPE_W)
 def save_indicator():
-    """Save indicator into ``qd_indicator_codes`` (private; not community publish)."""
+    """Save indicator into the caller's private ``qd_indicator_codes`` workspace."""
     body, err = get_json_or_400()
     if err:
         return err

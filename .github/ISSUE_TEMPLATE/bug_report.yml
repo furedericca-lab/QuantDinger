@@ -32,8 +32,8 @@ body:
     attributes:
       label: Deployment method
       options:
-        - Docker Compose
         - Manual (Python + Nginx)
+        - Local Gunicorn + Nginx
         - Other
     validations:
       required: true
@@ -41,7 +41,7 @@ body:
     id: logs
     attributes:
       label: Relevant logs
-      description: Paste backend logs (`docker compose logs backend --tail=50`)
+      description: Paste backend process or service logs
       render: shell
     validations:
       required: false
