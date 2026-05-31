@@ -187,6 +187,16 @@
     ],
     "symbols": {}
   },
+  "backend_api_python/app/openapi": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {}
+  },
   "backend_api_python/app/routes": {
     "anchors": [],
     "definition_pages": [],
@@ -227,6 +237,31 @@
     "symbols": {
       "register": [
         ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-gateway-blueprint-registration"
+      ]
+    }
+  },
+  "backend_api_python/app/routes/agent_v1/me_tokens.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/routes/agent_v1/me_tokens.py",
+        "id": "agent-self-token-management",
+        "kind": "route",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "defines",
+        "symbol": "bp",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-self-token-management"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-self-token-management"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {
+      "bp": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-self-token-management"
       ]
     }
   },
@@ -311,6 +346,31 @@
     ],
     "symbols": {}
   },
+  "backend_api_python/app/services/agent_token_service.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/agent_token_service.py",
+        "id": "agent-token-service-issue-revoke",
+        "kind": "service",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "defines",
+        "symbol": "AgentTokenService",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-service-issue-revoke"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-service-issue-revoke"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md"
+    ],
+    "symbols": {
+      "AgentTokenService": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-service-issue-revoke"
+      ]
+    }
+  },
   "backend_api_python/app/services/alpaca_trading": {
     "anchors": [],
     "definition_pages": [
@@ -388,6 +448,64 @@
       ".codex/wiki/reference/configuration-and-integrations.md"
     ],
     "symbols": {}
+  },
+  "backend_api_python/app/services/grid": {
+    "anchors": [],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {}
+  },
+  "backend_api_python/app/services/grid/engine.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/grid/engine.py",
+        "id": "strategy-grid-engine",
+        "kind": "class",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "defines",
+        "symbol": "GridEngine",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-engine"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-engine"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {
+      "GridEngine": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-engine"
+      ]
+    }
+  },
+  "backend_api_python/app/services/grid/poller.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/app/services/grid/poller.py",
+        "id": "strategy-grid-fill-poller",
+        "kind": "class",
+        "page": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
+        "role": "defines",
+        "symbol": "GridFillPoller",
+        "target": ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-fill-poller"
+      }
+    ],
+    "definition_pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-fill-poller"
+    ],
+    "pages": [
+      ".codex/wiki/implementation/strategy-backtest-and-execution.md"
+    ],
+    "symbols": {
+      "GridFillPoller": [
+        ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-fill-poller"
+      ]
+    }
   },
   "backend_api_python/app/services/ibkr_trading": {
     "anchors": [],
@@ -811,6 +929,28 @@
       ]
     }
   },
+  "backend_api_python/scripts/export_openapi.py": {
+    "anchors": [
+      {
+        "file": "backend_api_python/scripts/export_openapi.py",
+        "id": "verification-openapi-export",
+        "kind": "command",
+        "page": ".codex/wiki/reference/current-verification-commands.md",
+        "role": "tests",
+        "symbol": "export_openapi",
+        "target": ".codex/wiki/reference/current-verification-commands.md#verification-openapi-export"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md"
+    ],
+    "symbols": {
+      "export_openapi": [
+        ".codex/wiki/reference/current-verification-commands.md#verification-openapi-export"
+      ]
+    }
+  },
   "backend_api_python/tests/test_agent_v1.py": {
     "anchors": [
       {
@@ -903,6 +1043,39 @@
         ".codex/wiki/implementation/deployment-and-operations.md#quantdinger-compose-runtime"
       ]
     }
+  },
+  "docs/agent/agent-openapi.json": {
+    "anchors": [
+      {
+        "file": "docs/agent/agent-openapi.json",
+        "id": "agent-openapi-spec-artifact",
+        "kind": "schema",
+        "page": ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+        "role": "references",
+        "symbol": "Agent Gateway OpenAPI",
+        "target": ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-openapi-spec-artifact"
+      }
+    ],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/implementation/agent-gateway-and-mcp.md",
+      ".codex/wiki/reference/current-verification-commands.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {
+      "Agent Gateway OpenAPI": [
+        ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-openapi-spec-artifact"
+      ]
+    }
+  },
+  "docs/api/openapi.yaml": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/current-verification-commands.md",
+      ".codex/wiki/reference/source-docs-archive-map.md"
+    ],
+    "symbols": {}
   },
   "mcp_server": {
     "anchors": [],

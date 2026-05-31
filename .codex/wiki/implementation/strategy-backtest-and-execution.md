@@ -19,6 +19,8 @@ related_files:
     role: owner
   - path: backend_api_python/app/services/pending_order_worker.py
     role: owner
+  - path: backend_api_python/app/services/grid
+    role: owner
   - path: backend_api_python/app/services/live_trading
     role: owner
   - path: backend_api_python/app/services/strategy_script_runtime.py
@@ -40,6 +42,16 @@ code_anchors:
     kind: class
     file: backend_api_python/app/services/pending_order_worker.py
     symbol: PendingOrderWorker
+    role: defines
+  - id: strategy-grid-fill-poller
+    kind: class
+    file: backend_api_python/app/services/grid/poller.py
+    symbol: GridFillPoller
+    role: defines
+  - id: strategy-grid-engine
+    kind: class
+    file: backend_api_python/app/services/grid/engine.py
+    symbol: GridEngine
     role: defines
   - id: strategy-script-runtime-context
     kind: class
@@ -68,7 +80,7 @@ tags:
   - strategy
   - backtest
   - execution
-updated: 2026-06-01T00:15:00+08:00
+updated: 2026-06-01T00:42:00+08:00
 ---
 
 # Strategy Backtest And Execution
@@ -102,6 +114,8 @@ boundary between signal generation and live order dispatch.
   provider.
 - `backend_api_python/app/services/pending_order_worker.py`: pending-order
   dispatch worker.
+- `backend_api_python/app/services/grid/`: grid strategy runtime, resting-order
+  persistence, fill polling, level generation, and exchange order helpers.
 - `backend_api_python/app/services/live_trading/`: direct REST live execution
   clients.
 - `backend_api_python/app/services/strategy_script_runtime.py`: event-driven
@@ -198,6 +212,13 @@ submission.
 `PendingOrderWorker` polls pending orders and dispatches live execution through
 `app.services.live_trading`.
 
+Grid runtime adds a specialized resting-order path under
+`backend_api_python/app/services/grid/`. `GridEngine` owns grid state and fill
+reaction, `GridFillPoller` rate-limits exchange order queries, and
+`GridRestingOrderRepository` persists open, partial, and filled status. This is
+still part of QuantDinger's own execution layer: it should use direct
+live-trading clients for order operations, not CCXT order placement.
+
 `app.services.live_trading` is a direct REST client layer. It intentionally
 does not use CCXT. It contains per-exchange clients and a factory for Binance,
 OKX, Bitget, Bybit, Coinbase Exchange, Kraken, KuCoin, Gate, Deepcoin, HTX,
@@ -256,9 +277,11 @@ free-form indicator snippets.
 ```bash
 uv run python -m pytest backend_api_python/tests/test_backtest_execution.py backend_api_python/tests/test_trading_execution_modes.py
 uv run python -m pytest backend_api_python/tests/test_agent_v1.py
+uv run python -m pytest backend_api_python/tests/test_grid_engine.py backend_api_python/tests/test_grid_poller.py
 uv run python -m py_compile backend_api_python/app/services/backtest.py
 uv run python -m py_compile backend_api_python/app/services/trading_executor.py
 uv run python -m py_compile backend_api_python/app/services/pending_order_worker.py
+uv run python -m py_compile backend_api_python/app/services/grid/poller.py
 ```
 
 When behavior touches live clients, prefer paper/signal-mode checks unless the

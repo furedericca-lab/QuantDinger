@@ -29,15 +29,33 @@
     ],
     "wiki_refs": []
   },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-openapi-spec-artifact": {
+    "code_refs": [
+      "docs/agent/agent-openapi.json"
+    ],
+    "wiki_refs": []
+  },
   ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-quick-trade-capital-boundary": {
     "code_refs": [
       "backend_api_python/app/routes/agent_v1/quick_trade.py"
     ],
     "wiki_refs": []
   },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-self-token-management": {
+    "code_refs": [
+      "backend_api_python/app/routes/agent_v1/me_tokens.py"
+    ],
+    "wiki_refs": []
+  },
   ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-auth-scope-guard": {
     "code_refs": [
       "backend_api_python/app/utils/agent_auth.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/agent-gateway-and-mcp.md#agent-token-service-issue-revoke": {
+    "code_refs": [
+      "backend_api_python/app/services/agent_token_service.py"
     ],
     "wiki_refs": []
   },
@@ -68,6 +86,18 @@
   ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-backtest-engine": {
     "code_refs": [
       "backend_api_python/app/services/backtest.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-engine": {
+    "code_refs": [
+      "backend_api_python/app/services/grid/engine.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/implementation/strategy-backtest-and-execution.md#strategy-grid-fill-poller": {
+    "code_refs": [
+      "backend_api_python/app/services/grid/poller.py"
     ],
     "wiki_refs": []
   },
@@ -146,6 +176,12 @@
   ".codex/wiki/reference/current-verification-commands.md#verification-agent-gateway-tests": {
     "code_refs": [
       "backend_api_python/tests/test_agent_v1.py"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/current-verification-commands.md#verification-openapi-export": {
+    "code_refs": [
+      "backend_api_python/scripts/export_openapi.py"
     ],
     "wiki_refs": []
   },

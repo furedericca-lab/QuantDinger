@@ -9,10 +9,18 @@ related_files:
     role: owner
   - path: backend_api_python/app/routes/agent_v1/__init__.py
     role: owner
+  - path: backend_api_python/app/routes/agent_v1/me_tokens.py
+    role: owner
+  - path: backend_api_python/app/services/agent_token_service.py
+    role: owner
   - path: backend_api_python/app/utils/agent_auth.py
     role: owner
   - path: backend_api_python/app/utils/agent_jobs.py
     role: owner
+  - path: backend_api_python/app/openapi
+    role: owner
+  - path: docs/agent/agent-openapi.json
+    role: generated
   - path: backend_api_python/app/routes/agent_v1/quick_trade.py
     role: caller
   - path: mcp_server/src/quantdinger_mcp/server.py
@@ -27,6 +35,16 @@ code_anchors:
     kind: decorator
     file: backend_api_python/app/utils/agent_auth.py
     symbol: agent_required
+    role: defines
+  - id: agent-self-token-management
+    kind: route
+    file: backend_api_python/app/routes/agent_v1/me_tokens.py
+    symbol: bp
+    role: defines
+  - id: agent-token-service-issue-revoke
+    kind: service
+    file: backend_api_python/app/services/agent_token_service.py
+    symbol: AgentTokenService
     role: defines
   - id: agent-idempotent-job-submission
     kind: decorator
@@ -43,6 +61,11 @@ code_anchors:
     file: mcp_server/src/quantdinger_mcp/server.py
     symbol: submit_backtest
     role: explains
+  - id: agent-openapi-spec-artifact
+    kind: schema
+    file: docs/agent/agent-openapi.json
+    symbol: Agent Gateway OpenAPI
+    role: references
 source_docs:
   - docs/agent/AI_INTEGRATION_DESIGN.md
   - docs/agent/AGENT_ENVIRONMENT_DESIGN.md
@@ -55,7 +78,7 @@ tags:
   - mcp
   - automation
   - safety
-updated: 2026-06-01T00:15:00+08:00
+updated: 2026-06-01T00:42:00+08:00
 ---
 
 # Agent Gateway And MCP
@@ -93,6 +116,13 @@ Current route modules:
 - `quick_trade.py`: trading-class and paper-order boundary.
 - `jobs.py`: async job polling and SSE streaming.
 - `admin.py`: admin token issuance/revocation and audit visibility.
+- `me_tokens.py`: authenticated user self-service token listing, issuance, and
+  revocation through the Agent Gateway boundary.
+
+`backend_api_python/app/services/agent_token_service.py` is the shared token
+service for admin and self-service token operations. Keep token generation,
+hashing, scope defaults, hosted-mode restrictions, and audit behavior there
+rather than duplicating token logic in route modules.
 
 ## Capability Classes
 
@@ -176,6 +206,16 @@ operator-issued agent token and relies on server-side scopes and allowlists.
 Add new MCP tools only after the underlying capability is exposed and protected
 through REST.
 
+## OpenAPI Artifacts
+
+The Agent Gateway keeps its machine-readable contract in
+`docs/agent/agent-openapi.json`. Human Web API OpenAPI lives separately under
+`docs/api/` and is generated from the flask-smorest registration layer.
+
+These files are allowed generated API artifacts, not a restoration of the old
+long-form `docs/` knowledge base. If their semantics change, update the API
+tests and this wiki page rather than relying on README links alone.
+
 MCP safety rules:
 
 - never wrap credential reads or secret values;
@@ -196,7 +236,10 @@ its token, scope, and audit model.
 
 ```bash
 uv run python -m pytest backend_api_python/tests/test_agent_v1.py backend_api_python/tests/test_agent_v1_saas_guard.py
+uv run python -m pytest backend_api_python/tests/test_openapi.py
 uv run python -m py_compile backend_api_python/app/routes/agent_v1/__init__.py
+uv run python -m py_compile backend_api_python/app/routes/agent_v1/me_tokens.py
+uv run python -m py_compile backend_api_python/app/services/agent_token_service.py
 uv run python -m py_compile backend_api_python/app/utils/agent_auth.py
 uv run python -m py_compile backend_api_python/app/utils/agent_jobs.py
 uv run python -m py_compile mcp_server/src/quantdinger_mcp/server.py

@@ -15,6 +15,10 @@ related_files:
     role: generated
   - path: .codex/wiki/maintenance-log.md
     role: doc
+  - path: docs/api/openapi.yaml
+    role: generated
+  - path: docs/agent/agent-openapi.json
+    role: generated
 code_anchors:
   - id: docs-consolidation-wiki-index
     kind: generated-doc
@@ -37,7 +41,7 @@ source_docs:
 tags:
   - docs
   - archive-map
-updated: 2026-06-01T00:15:00+08:00
+updated: 2026-06-01T00:42:00+08:00
 ---
 
 # Source Docs Archive Map
@@ -81,3 +85,18 @@ into competing manuals.
 During upstream merge or rebase, preserve the deletion of the old docs tree
 unless the user asks otherwise. If upstream adds new useful docs, extract the
 durable facts into the relevant wiki page and update this map.
+
+## API Artifact Exception
+
+The `v3.0.22` upstream merge intentionally keeps a narrow `docs/` exception for
+machine-readable API artifacts:
+
+- `docs/api/openapi.yaml`
+- `docs/api/index.html`
+- `docs/api/README.md`
+- `docs/API_CONVENTIONS.md`
+- `docs/agent/agent-openapi.json`
+
+These files support OpenAPI export, lint, and client integration. They are not
+the old long-form documentation tree. Durable architecture, operations,
+strategy, broker, and agent explanations still belong in `.codex/wiki/`.
