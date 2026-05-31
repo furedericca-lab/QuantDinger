@@ -8,8 +8,8 @@ description: Task list for upstream remote and v3.0.22 diff discovery.
 
 - `AGENT.md`
 - `.codex/wiki/reference/source-docs-archive-map.md`
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-implementation-research-notes.md`
-- `.codex/scopes/merge-upstream-v3-0-22/task-plans/4phases-checklist.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-implementation-research-notes.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/task-plans/4phases-checklist.md`
 
 ## Canonical Architecture / Key Constraints
 

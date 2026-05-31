@@ -6,11 +6,11 @@ description: Execution checklist for merging upstream v3.0.22.
 
 ## Input References
 
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-brainstorming.md`
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-implementation-research-notes.md`
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md`
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-technical-documentation.md`
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-contracts.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-brainstorming.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-implementation-research-notes.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-technical-documentation.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-contracts.md`
 - `AGENT.md`
 - `.codex/wiki/reference/source-docs-archive-map.md`
 
@@ -21,7 +21,7 @@ description: Execution checklist for merging upstream v3.0.22.
 | [Phase 1](phase-1-merge-upstream-v3-0-22.md) | Complete | 100% | Healthy | None |
 | [Phase 2](phase-2-merge-upstream-v3-0-22.md) | Complete | 100% | Healthy | None |
 | [Phase 3](phase-3-merge-upstream-v3-0-22.md) | Complete | 100% | Healthy | None |
-| [Phase 4](phase-4-merge-upstream-v3-0-22.md) | In progress | 75% | Healthy | Archive commit/push remains |
+| [Phase 4](phase-4-merge-upstream-v3-0-22.md) | Complete | 100% | Healthy | None |
 
 ## Phase 1 Execution Record
 
@@ -110,28 +110,35 @@ Checkpoint confirmation:
 Completion checklist:
 
 - [x] Scope evidence updated with final commands and results.
-- [ ] Final `main` branch is clean.
-- [ ] Merge commit created with correct author/committer identity.
-- [ ] `origin/main` pushed after validation.
+- [x] Final `main` branch is clean before archive move.
+- [x] Merge commit created with correct author/committer identity.
+- [x] `origin/main` pushed after validation.
 
 Evidence commands:
 
-- Pending: `bash /root/.codex/skills/repo-task-driven/scripts/doc_placeholder_scan.sh .codex/scopes/merge-upstream-v3-0-22`.
-- Pending: `bash /root/.codex/skills/repo-task-driven/scripts/decision_roundtable_check.sh .codex/scopes/merge-upstream-v3-0-22`.
-- Pending: `bash /root/.codex/skills/repo-task-driven/scripts/scope_sync_check.sh merge-upstream-v3-0-22 README.md AGENT.md`.
-- Pending: `git status --short --branch`.
-- Pending: `git log --oneline --decorate -n 5`.
-- Pending: `git push origin main`.
+- Pass before archive: `git status --short --branch` showed `main...origin/main` after pushing merge commit `1141452`.
+- Pass: `git log --oneline --decorate -n 5` showed merge commit `1141452`.
+- Pass: `git push origin main` pushed `2b5fa5f..1141452`.
+- Pending after archive move: archive hygiene scans and archive commit push.
 
 Issues/blockers and resolutions:
 
-- Remaining closeout is git publication and scope archival.
+- Merge publication complete. Archive move is the remaining closeout change.
 
 Checkpoint confirmation:
 
-- Pending archive closeout.
+- Confirmed for merge publication. Archive publication is recorded by the
+  follow-up archive commit.
 
 ## Final Release Gate Summary
 
-- Merge implementation complete on integration branch.
-- Remaining closeout: create merge commit, fast-forward `main`, push, archive this scope, commit the archive move, and push the archive commit.
+- Merge implementation was completed and pushed in commit `1141452`.
+- Scope was moved to `.codex/scopes/archive/merge-upstream-v3-0-22/` for the
+  follow-up archive commit.
+
+## Archive Record
+
+- Archived on 2026-06-01 under `.codex/scopes/archive/merge-upstream-v3-0-22/`.
+- Archive purpose: preserve the completed merge-upstream-v3-0-22 audit trail.
+- Future enhancements should use a new `repo-task-driven` scope under `.codex/scopes/<enhancement-scope>/`.
+- Archived docs should only change for factual errata or path-maintenance updates.

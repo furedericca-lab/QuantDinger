@@ -7,8 +7,8 @@ description: Task list for merging upstream v3.0.22 and resolving conflicts.
 ## Input
 
 - Phase 1 verified upstream tag and changed-file map.
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md`
-- `.codex/scopes/merge-upstream-v3-0-22/merge-upstream-v3-0-22-technical-documentation.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-technical-documentation.md`
 - `AGENT.md`
 - `.codex/wiki/index.md`
 

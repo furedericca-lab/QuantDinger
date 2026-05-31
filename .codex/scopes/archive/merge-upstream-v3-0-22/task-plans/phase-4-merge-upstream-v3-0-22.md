@@ -7,7 +7,7 @@ description: Task list for closeout, commit, and push after the v3.0.22 merge.
 ## Input
 
 - Completed Phase 3 validation evidence.
-- `.codex/scopes/merge-upstream-v3-0-22/task-plans/4phases-checklist.md`
+- `.codex/scopes/archive/merge-upstream-v3-0-22/task-plans/4phases-checklist.md`
 - `AGENT.md`
 - `.codex/wiki/maintenance-log.md`
 

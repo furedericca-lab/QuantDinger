@@ -22,11 +22,9 @@ Primary entry points:
 
 - `README.md`: operator-facing product and workflow guide.
 - `AGENT.md`: developer/agent-facing architecture and workflow contract.
-- Active scope:
-  [.codex/scopes/merge-upstream-v3-0-22/](.codex/scopes/merge-upstream-v3-0-22/)
-  owns the planned upstream `v3.0.22` merge. Start there before touching
-  upstream remotes, release tags, merge conflicts, version metadata, or
-  merge-driven wiki updates.
+- Archived scope:
+  [.codex/scopes/archive/merge-upstream-v3-0-22/](.codex/scopes/archive/merge-upstream-v3-0-22/)
+  preserves the completed upstream `v3.0.22` merge evidence.
 - [.codex/wiki/index.md](.codex/wiki/index.md): structured project knowledge,
   decision log, and maintenance log.
 - [Product Architecture](.codex/wiki/concepts/product-architecture.md):
