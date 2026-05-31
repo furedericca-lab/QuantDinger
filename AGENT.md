@@ -345,33 +345,35 @@ python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint --json
 
 Use the narrowest meaningful check first.
 
+Local Python environment:
+
+```bash
+uv sync
+```
+
 General backend:
 
 ```bash
-cd backend_api_python
-pytest tests/test_health.py
-python -m py_compile <changed-file.py>
+uv run python -m pytest backend_api_python/tests/test_health.py
+uv run python -m py_compile <changed-file.py>
 ```
 
 Agent Gateway:
 
 ```bash
-cd backend_api_python
-pytest tests/test_agent_v1.py tests/test_agent_v1_saas_guard.py
+uv run python -m pytest backend_api_python/tests/test_agent_v1.py backend_api_python/tests/test_agent_v1_saas_guard.py
 ```
 
 Backtest and trading semantics:
 
 ```bash
-cd backend_api_python
-pytest tests/test_backtest_execution.py tests/test_trading_execution_modes.py
+uv run python -m pytest backend_api_python/tests/test_backtest_execution.py backend_api_python/tests/test_trading_execution_modes.py
 ```
 
 Billing and payments:
 
 ```bash
-cd backend_api_python
-pytest tests/test_usdt_payment_idempotency.py
+uv run python -m pytest backend_api_python/tests/test_usdt_payment_idempotency.py
 ```
 
 Compose/runtime work:

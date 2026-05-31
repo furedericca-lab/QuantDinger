@@ -170,5 +170,5 @@ docker compose config
 docker compose ps
 docker compose logs --tail=100 backend
 curl -f http://localhost:5000/api/health
-cd backend_api_python && pytest tests/test_health.py
+uv run python -m pytest backend_api_python/tests/test_health.py
 ```

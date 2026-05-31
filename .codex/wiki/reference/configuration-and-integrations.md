@@ -128,5 +128,5 @@ Do not assume host-level VPN/proxy state applies inside Docker containers.
 docker compose config
 docker compose logs --tail=100 backend
 curl -f http://localhost:5000/api/health
-cd backend_api_python && pytest tests/test_usdt_payment_idempotency.py
+uv run python -m pytest backend_api_python/tests/test_usdt_payment_idempotency.py
 ```

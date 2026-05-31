@@ -1,0 +1,48 @@
+[project]
+name = "quantdinger-workspace"
+version = "0.0.0"
+description = "Local development environment for the QuantDinger backend and MCP server."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "Flask==3.1.3",
+  "Werkzeug>=3.1.6",
+  "flask-cors==6.0.0",
+  "finnhub-python>=2.4.18",
+  "yfinance>=0.2.18",
+  "ccxt>=4.0.0",
+  "pandas>=1.5.0",
+  "requests>=2.32.0",
+  "certifi>=2024.2.2",
+  "PySocks>=1.7.1",
+  "akshare>=1.12.0",
+  "PyJWT>=2.12.0,<3",
+  "python-dotenv>=1.0.1",
+  "cryptography>=43.0.0",
+  "bip-utils>=2.9.0",
+  "psycopg2-binary>=2.9.9",
+  "redis>=5.0.0",
+  "gunicorn>=22.0.0",
+  "bcrypt>=4.1.0",
+  "ib-insync>=0.9.86",
+  "alpaca-py>=0.30.0",
+  "quantdinger-mcp",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=7",
+  "build>=1.0",
+  "twine>=4",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+quantdinger-mcp = { path = "mcp_server", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["backend_api_python/tests"]
+pythonpath = ["backend_api_python"]
+norecursedirs = [".venv", "mcp_server", "docs"]

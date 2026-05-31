@@ -321,12 +321,16 @@ Two-way `buy` / `sell` remains valid for simpler strategies when
 
 ## Local Development For Operators
 
-Backend-only local run:
+Install Python dependencies in a repo-local `.venv`:
 
 ```bash
-cd backend_api_python
-pip install -r requirements.txt
-python run.py
+uv sync
+```
+
+Start the backend:
+
+```bash
+uv run --directory backend_api_python python run.py
 ```
 
 Routine backend rebuild:
@@ -347,11 +351,10 @@ for the current command families.
 Common checks:
 
 ```bash
-cd backend_api_python
-pytest tests/test_health.py
-pytest tests/test_agent_v1.py tests/test_agent_v1_saas_guard.py
-pytest tests/test_backtest_execution.py tests/test_trading_execution_modes.py
-pytest tests/test_usdt_payment_idempotency.py
+uv run python -m pytest backend_api_python/tests/test_health.py
+uv run python -m pytest backend_api_python/tests/test_agent_v1.py backend_api_python/tests/test_agent_v1_saas_guard.py
+uv run python -m pytest backend_api_python/tests/test_backtest_execution.py backend_api_python/tests/test_trading_execution_modes.py
+uv run python -m pytest backend_api_python/tests/test_usdt_payment_idempotency.py
 ```
 
 Runtime checks:

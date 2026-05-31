@@ -210,12 +210,11 @@ free-form indicator snippets.
 ## Verification
 
 ```bash
-cd backend_api_python
-pytest tests/test_backtest_execution.py tests/test_trading_execution_modes.py
-pytest tests/test_agent_v1.py
-python -m py_compile app/services/backtest.py
-python -m py_compile app/services/trading_executor.py
-python -m py_compile app/services/pending_order_worker.py
+uv run python -m pytest backend_api_python/tests/test_backtest_execution.py backend_api_python/tests/test_trading_execution_modes.py
+uv run python -m pytest backend_api_python/tests/test_agent_v1.py
+uv run python -m py_compile backend_api_python/app/services/backtest.py
+uv run python -m py_compile backend_api_python/app/services/trading_executor.py
+uv run python -m py_compile backend_api_python/app/services/pending_order_worker.py
 ```
 
 When behavior touches live clients, prefer paper/signal-mode checks unless the

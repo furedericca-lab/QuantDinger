@@ -31,29 +31,26 @@ the change affects deployment behavior.
 ## General Backend
 
 ```bash
-cd backend_api_python
-pytest tests/test_health.py
-python -m py_compile <changed-file.py>
+uv run python -m pytest backend_api_python/tests/test_health.py
+uv run python -m py_compile <changed-file.py>
 ```
 
 ## Agent Gateway
 
 ```bash
-cd backend_api_python
-pytest tests/test_agent_v1.py tests/test_agent_v1_saas_guard.py
-python -m py_compile app/routes/agent_v1/__init__.py
-python -m py_compile app/utils/agent_auth.py
-python -m py_compile app/utils/agent_jobs.py
+uv run python -m pytest backend_api_python/tests/test_agent_v1.py backend_api_python/tests/test_agent_v1_saas_guard.py
+uv run python -m py_compile backend_api_python/app/routes/agent_v1/__init__.py
+uv run python -m py_compile backend_api_python/app/utils/agent_auth.py
+uv run python -m py_compile backend_api_python/app/utils/agent_jobs.py
 ```
 
 ## Strategy, Backtest, And Trading Semantics
 
 ```bash
-cd backend_api_python
-pytest tests/test_backtest_execution.py tests/test_trading_execution_modes.py
-python -m py_compile app/services/backtest.py
-python -m py_compile app/services/trading_executor.py
-python -m py_compile app/services/pending_order_worker.py
+uv run python -m pytest backend_api_python/tests/test_backtest_execution.py backend_api_python/tests/test_trading_execution_modes.py
+uv run python -m py_compile backend_api_python/app/services/backtest.py
+uv run python -m py_compile backend_api_python/app/services/trading_executor.py
+uv run python -m py_compile backend_api_python/app/services/pending_order_worker.py
 ```
 
 Use signal or paper mode for live-order-adjacent checks unless the user
@@ -62,18 +59,16 @@ explicitly authorizes a real account action.
 ## Billing And USDT Payments
 
 ```bash
-cd backend_api_python
-pytest tests/test_usdt_payment_idempotency.py
-python -m py_compile app/routes/billing.py
-python -m py_compile app/services/usdt_payment/service.py
+uv run python -m pytest backend_api_python/tests/test_usdt_payment_idempotency.py
+uv run python -m py_compile backend_api_python/app/routes/billing.py
+uv run python -m py_compile backend_api_python/app/services/usdt_payment/service.py
 ```
 
 ## MCP Server
 
 ```bash
-cd mcp_server
-python -m py_compile src/quantdinger_mcp/server.py
-python -m build
+uv run python -m py_compile mcp_server/src/quantdinger_mcp/server.py
+uv run --directory mcp_server python -m build
 ```
 
 `python -m build` requires the local build dependencies to be installed. If

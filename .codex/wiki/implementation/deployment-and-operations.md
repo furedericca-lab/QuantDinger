@@ -142,9 +142,8 @@ configure Docker Engine registry mirrors.
 Backend-only local development:
 
 ```bash
-cd backend_api_python
-pip install -r requirements.txt
-python run.py
+uv sync
+uv run --directory backend_api_python python run.py
 ```
 
 Routine backend rebuild:

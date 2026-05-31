@@ -161,11 +161,9 @@ its token, scope, and audit model.
 ## Verification
 
 ```bash
-cd backend_api_python
-pytest tests/test_agent_v1.py tests/test_agent_v1_saas_guard.py
-python -m py_compile app/routes/agent_v1/__init__.py
-python -m py_compile app/utils/agent_auth.py
-python -m py_compile app/utils/agent_jobs.py
-cd ../mcp_server
-python -m py_compile src/quantdinger_mcp/server.py
+uv run python -m pytest backend_api_python/tests/test_agent_v1.py backend_api_python/tests/test_agent_v1_saas_guard.py
+uv run python -m py_compile backend_api_python/app/routes/agent_v1/__init__.py
+uv run python -m py_compile backend_api_python/app/utils/agent_auth.py
+uv run python -m py_compile backend_api_python/app/utils/agent_jobs.py
+uv run python -m py_compile mcp_server/src/quantdinger_mcp/server.py
 ```

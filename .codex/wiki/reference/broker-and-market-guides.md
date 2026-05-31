@@ -117,10 +117,9 @@ BUY/SELL, target prices, stop loss, future-period projections, and confidence.
 ## Verification
 
 ```bash
-cd backend_api_python
-python -m py_compile app/services/live_trading/factory.py
-python -m py_compile app/services/pending_order_worker.py
-python -m py_compile app/services/broker_market_policy.py
+uv run python -m py_compile backend_api_python/app/services/live_trading/factory.py
+uv run python -m py_compile backend_api_python/app/services/pending_order_worker.py
+uv run python -m py_compile backend_api_python/app/services/broker_market_policy.py
 ```
 
 For live-order paths, use signal or paper mode unless the user explicitly
