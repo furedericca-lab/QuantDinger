@@ -95,8 +95,8 @@ psql -U quantdinger -d quantdinger -f migrations/init.sql
 ### 2) Install dependencies
 
 ```bash
-cd backend_api_python
-pip install -r requirements.txt
+cd ..
+uv sync
 ```
 
 ### 3) Create your local `.env`
@@ -127,7 +127,7 @@ OPENROUTER_API_KEY=your_api_key
 ### 4) Start the API server
 
 ```bash
-python run.py
+uv run --directory backend_api_python python run.py
 ```
 
 Default address: `http://localhost:5000`

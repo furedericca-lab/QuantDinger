@@ -68,15 +68,14 @@ From PyPI (recommended — works on any machine without cloning the repo):
 pipx install quantdinger-mcp
 # or, no install at all (cached on first run):
 uvx quantdinger-mcp
-# or, into a venv:
-pip install quantdinger-mcp
 ```
 
 Editable install for hacking on the server itself:
 
 ```bash
-cd mcp_server
-pip install -e .
+cd ..
+uv sync
+uv run quantdinger-mcp
 ```
 
 ## Run

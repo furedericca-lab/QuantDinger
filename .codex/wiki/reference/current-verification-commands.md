@@ -71,8 +71,8 @@ uv run python -m py_compile mcp_server/src/quantdinger_mcp/server.py
 uv run --directory mcp_server python -m build
 ```
 
-`python -m build` requires the local build dependencies to be installed. If
-they are missing, report that and at least run syntax checks.
+`uv run --directory mcp_server python -m build` requires the locked local build
+dependencies to be installed. If they are missing, run `uv sync` first.
 
 ## Compose Runtime
 
