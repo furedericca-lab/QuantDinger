@@ -964,7 +964,7 @@ Self-check before returning code: every place where you call `.rolling` / `.fill
 - Use an `edge(s)` helper: `s & ~s.shift(1).fillna(False)` on each raw condition.
 - On trend flip bars you MAY set both `close_*` and opposing `open_*` true (flip_mode R2); for tp/sl-only exits use `close_*` alone without mixing tp/sl into `buy`/`sell`.
 - Declare contract header comments: `# signal_form: four_way`, `# exit_owner: engine|indicator`, `# flip_mode: R1|R2`.
-- See `docs/SIGNAL_EXECUTION_STANDARD_CN.md`.
+- See `.codex/wiki/implementation/strategy-backtest-and-execution.md`.
 
 **Legacy two-way** (simple crossover only):
 
@@ -1030,7 +1030,7 @@ Supported keys (parser-enforced):
 - `trailingStopPct`, `trailingActivationPct`: float **0–1** = price retracement / activation thresholds (same basis as stop/take-profit).
 - `tradeDirection`: exactly `long`, `short`, or `both`.
 
-**`tradeDirection both` execution semantics:** `df['buy']` → open long (close short first if short); `df['sell']` → open short (close long first if long). Do not document `buy` as a separate close-short column. If the strategy uses in-code tp/sl on `high`/`low` touches, prefer **not** also setting `trailingEnabled true` unless the user explicitly wants engine trailing — see `docs/STRATEGY_DEV_GUIDE.md`.
+**`tradeDirection both` execution semantics:** `df['buy']` → open long (close short first if short); `df['sell']` → open short (close long first if long). Do not document `buy` as a separate close-short column. If the strategy uses in-code tp/sl on `high`/`low` touches, prefer **not** also setting `trailingEnabled true` unless the user explicitly wants engine trailing — see `.codex/wiki/implementation/strategy-backtest-and-execution.md`.
 
 **Do not** put `leverage` in `@strategy`; users set leverage in the IDE backtest panel.
 

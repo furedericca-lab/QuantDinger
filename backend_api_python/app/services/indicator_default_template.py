@@ -2,7 +2,7 @@
 Canonical default indicator templates (QuantDinger execution contract v1).
 
 Used by AI fallback code generation and as the reference for IDE / docs examples.
-See docs/SIGNAL_EXECUTION_STANDARD_CN.md.
+See .codex/wiki/implementation/strategy-backtest-and-execution.md.
 """
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ def build_default_indicator_template(
     name: str = "策略模板（四路信号）",
     description: str = (
         "双均线金叉/死叉：四路显式信号 + 边缘触发 + 引擎风控。"
-        "详见 docs/SIGNAL_EXECUTION_STANDARD_CN.md"
+        "详见 .codex/wiki/implementation/strategy-backtest-and-execution.md"
     ),
 ) -> str:
     """Four-way EMA crossover starter (platform default)."""
@@ -23,7 +23,7 @@ def build_default_indicator_template(
 # QuantDinger 默认指标模板 — 形态 B（四路信号）· 契约 v1
 # ------------------------------------------------------------
 # signal_form: four_way    exit_owner: engine    flip_mode: R2
-# 文档: docs/SIGNAL_EXECUTION_STANDARD_CN.md
+# 文档: .codex/wiki/implementation/strategy-backtest-and-execution.md
 # ============================================================
 
 my_indicator_name = "{safe_name}"

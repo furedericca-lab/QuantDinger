@@ -1,0 +1,101 @@
+---
+title: Current Verification Commands
+type: reference
+status: current
+scope: quantdinger-verification
+last_checked: 2026-05-31
+related_files:
+  - README.md
+  - AGENT.md
+  - docker-compose.yml
+  - backend_api_python
+  - mcp_server
+source_docs:
+  - README.md
+  - AGENT.md
+tags:
+  - verification
+  - tests
+  - operations
+updated: 2026-05-31T15:55:00+08:00
+---
+
+# Current Verification Commands
+
+## Scope
+
+Use this page as the quick command map for QuantDinger maintenance. Prefer the
+narrowest meaningful check first, then broaden to Compose/runtime checks when
+the change affects deployment behavior.
+
+## General Backend
+
+```bash
+cd backend_api_python
+pytest tests/test_health.py
+python -m py_compile <changed-file.py>
+```
+
+## Agent Gateway
+
+```bash
+cd backend_api_python
+pytest tests/test_agent_v1.py tests/test_agent_v1_saas_guard.py
+python -m py_compile app/routes/agent_v1/__init__.py
+python -m py_compile app/utils/agent_auth.py
+python -m py_compile app/utils/agent_jobs.py
+```
+
+## Strategy, Backtest, And Trading Semantics
+
+```bash
+cd backend_api_python
+pytest tests/test_backtest_execution.py tests/test_trading_execution_modes.py
+python -m py_compile app/services/backtest.py
+python -m py_compile app/services/trading_executor.py
+python -m py_compile app/services/pending_order_worker.py
+```
+
+Use signal or paper mode for live-order-adjacent checks unless the user
+explicitly authorizes a real account action.
+
+## Billing And USDT Payments
+
+```bash
+cd backend_api_python
+pytest tests/test_usdt_payment_idempotency.py
+python -m py_compile app/routes/billing.py
+python -m py_compile app/services/usdt_payment/service.py
+```
+
+## MCP Server
+
+```bash
+cd mcp_server
+python -m py_compile src/quantdinger_mcp/server.py
+python -m build
+```
+
+`python -m build` requires the local build dependencies to be installed. If
+they are missing, report that and at least run syntax checks.
+
+## Compose Runtime
+
+```bash
+docker compose config
+docker compose ps
+docker compose logs --tail=100 backend
+curl -f http://localhost:5000/api/health
+```
+
+Use these after deployment, env, image, port, database, Redis, worker, or
+reverse-proxy changes.
+
+## Wiki Maintenance
+
+```bash
+python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py rebuild --json
+python3 /root/.codex/skills/wiki-note/scripts/wiki_note.py lint --json
+```
+
+Run these after structural wiki edits or when README/AGENT links change.

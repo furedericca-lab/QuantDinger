@@ -34,7 +34,7 @@ def get_indicator_authoring_contract() -> Dict[str, Any]:
     template = build_default_indicator_template()
     return {
         "version": "indicator-contract-v1",
-        "doc": "docs/SIGNAL_EXECUTION_STANDARD_CN.md",
+        "doc": ".codex/wiki/implementation/strategy-backtest-and-execution.md",
         "workflow": [
             "1. Call this contract (or MCP get_indicator_authoring_contract) before writing code.",
             "2. Write full Python indicator script (not natural language) following required_fields.",

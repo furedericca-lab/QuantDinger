@@ -55,6 +55,6 @@ def register_routes(app: Flask):
     app.register_blueprint(policy_bp, url_prefix='/api/policy')
 
     # Agent Gateway (/api/agent/v1) — versioned, scoped surface for AI agents.
-    # See docs/agent/AI_INTEGRATION_DESIGN.md.
+    # See .codex/wiki/implementation/agent-gateway-and-mcp.md.
     from app.routes.agent_v1 import register as register_agent_v1
     register_agent_v1(app)

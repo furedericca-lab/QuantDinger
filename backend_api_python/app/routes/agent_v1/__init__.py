@@ -1,8 +1,9 @@
 """
 Agent Gateway v1 — versioned, scoped surface for AI agents.
 
-Mounted at `/api/agent/v1`. Read `docs/agent/AI_INTEGRATION_DESIGN.md` before
-adding new endpoints.
+Mounted at `/api/agent/v1`. Read
+`.codex/wiki/implementation/agent-gateway-and-mcp.md` before adding new
+endpoints.
 
 This package is intentionally separate from the human-facing routes so:
   * Identity is exclusively agent-token (never JWT user sessions).

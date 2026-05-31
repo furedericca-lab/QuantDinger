@@ -54,10 +54,10 @@ dev = [
 
 [project.urls]
 Homepage      = "https://github.com/brokermr810/QuantDinger"
-Documentation = "https://github.com/brokermr810/QuantDinger/blob/main/docs/agent/AGENT_QUICKSTART.md"
+Documentation = "https://github.com/brokermr810/QuantDinger/blob/main/.codex/wiki/implementation/agent-gateway-and-mcp.md"
 Repository    = "https://github.com/brokermr810/QuantDinger"
 Issues        = "https://github.com/brokermr810/QuantDinger/issues"
-Changelog     = "https://github.com/brokermr810/QuantDinger/blob/main/docs/CHANGELOG.md"
+Changelog     = "https://github.com/brokermr810/QuantDinger/blob/main/.codex/wiki/reference/project-governance.md"
 
 [project.scripts]
 quantdinger-mcp = "quantdinger_mcp.server:main"

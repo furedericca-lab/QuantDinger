@@ -502,7 +502,8 @@ def submit_structured_tune(payload: dict) -> Any:
     """Submit a grid/random tuning job. Returns a job for polling.
 
     `payload` should include `base` (a backtest spec) and either `parameterSpace`
-    (grid) or `randomTrials` (random). See `docs/AI_TRADING_SYSTEM_PLAN_CN.md`.
+    (grid) or `randomTrials` (random). See
+    `.codex/wiki/implementation/strategy-backtest-and-execution.md`.
     """
     return _post("/api/agent/v1/experiments/structured-tune", json=assert_json_dict("payload", payload))
 
@@ -598,4 +599,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
+

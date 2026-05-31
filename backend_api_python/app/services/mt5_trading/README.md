@@ -169,5 +169,5 @@ Then remove the related import and registration code in `app/routes/__init__.py`
 
 ## See Also
 
-- [Python Strategy Development Guide](../../docs/STRATEGY_DEV_GUIDE.md)
+- [Python Strategy Runtime](../../../../.codex/wiki/implementation/strategy-backtest-and-execution.md)
 - [MetaTrader 5 Python Documentation](https://www.mql5.com/en/docs/python_metatrader5)
