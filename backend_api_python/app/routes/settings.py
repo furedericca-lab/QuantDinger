@@ -282,20 +282,6 @@ CONFIG_SCHEMA = {
                 'required': False,
                 'description': 'Inline privacy policy text shown in the modal. Used only when the URL above is empty.'
             },
-            {
-                'key': 'MOBILE_APP_LATEST_VERSION',
-                'label': 'Mobile App Latest Version',
-                'type': 'text',
-                'required': False,
-                'description': 'Semver-like version string for the in-app upgrade prompt. Leave empty to disable the prompt.'
-            },
-            {
-                'key': 'MOBILE_APP_DOWNLOAD_URL',
-                'label': 'Mobile App Download URL',
-                'type': 'text',
-                'required': False,
-                'description': 'APK / install page URL surfaced when the mobile app reports an old version.'
-            },
         ]
     },
 
@@ -1378,10 +1364,6 @@ def get_brand_config():
                 'user_agreement_text': _brand_env('BRAND_LEGAL_USER_AGREEMENT_TEXT'),
                 'privacy_policy_url': _brand_env('BRAND_LEGAL_PRIVACY_POLICY_URL'),
                 'privacy_policy_text': _brand_env('BRAND_LEGAL_PRIVACY_POLICY_TEXT'),
-            },
-            'mobile_app': {
-                'latest_version': _brand_env('MOBILE_APP_LATEST_VERSION'),
-                'download_url': _brand_env('MOBILE_APP_DOWNLOAD_URL'),
             },
         }
     })
