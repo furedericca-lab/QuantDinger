@@ -121,3 +121,10 @@ Validation evidence:
 - `/var/www/quantdinger` was refreshed from the new `frontend/dist` build.
 - Wiki know-how page added at
   `.codex/wiki/reference/upstream-merge-playbook.md`.
+
+## Archive Record
+
+- Archived on 2026-06-02 under `.codex/scopes/archive/merge-upstream-v3-0-27/`.
+- Archive purpose: preserve the completed merge-upstream-v3-0-27 audit trail.
+- Future enhancements should use a new `repo-task-driven` scope under `.codex/scopes/<enhancement-scope>/`.
+- Archived docs should only change for factual errata or path-maintenance updates.

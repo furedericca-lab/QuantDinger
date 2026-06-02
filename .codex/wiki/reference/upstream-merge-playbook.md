@@ -9,8 +9,8 @@ related_files:
     role: prior-merge
   - path: .codex/scopes/archive/local-nginx-slimdown
     role: baseline
-  - path: .codex/scopes/merge-upstream-v3-0-27
-    role: active-scope
+  - path: .codex/scopes/archive/merge-upstream-v3-0-27
+    role: latest-merge
   - path: AGENTS.md
     role: contract
   - path: README.md
@@ -20,9 +20,9 @@ related_files:
 code_anchors:
   - id: upstream-merge-scope-archive
     kind: scope-archive
-    file: .codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md
-    symbol: merge-upstream-v3-0-22 Scope And Milestones
-    role: precedent
+    file: .codex/scopes/archive/merge-upstream-v3-0-27/merge-upstream-v3-0-27-scope-milestones.md
+    symbol: merge-upstream-v3-0-27 Scope And Milestones
+    role: latest-merge
   - id: local-nginx-slimdown-baseline
     kind: scope-archive
     file: .codex/scopes/archive/local-nginx-slimdown/local-nginx-slimdown-contracts.md

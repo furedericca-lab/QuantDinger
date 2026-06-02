@@ -3,8 +3,9 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-06-02T03:44:52Z
+updated: 2026-06-02T03:50:03Z
 ---
+
 
 
 
@@ -34,7 +35,7 @@ updated: 2026-06-02T03:44:52Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-06-02T03:44:52Z
+- Last rebuilt: 2026-06-02T03:50:03Z
 - Page count: 11
 
 ## By Type
@@ -135,7 +136,7 @@ updated: 2026-06-02T03:44:52Z
 - [Current Verification Commands](reference/current-verification-commands.md) | files: `backend_api_python`, `mcp_server` ... | anchors: 4 | status: current
 - [Project Governance](reference/project-governance.md) | files: `backend_api_python/app/utils/auth.py`, `backend_api_python/app/utils/credential_crypto.py`, `backend_api_python/app/utils/safe_exec.py` ... | anchors: 3 | status: current
 - [Source Docs Archive Map](reference/source-docs-archive-map.md) | files: `README.md`, `AGENTS.md`, `.codex/wiki` ... | anchors: 2 | status: current
-- [Upstream Merge Playbook](reference/upstream-merge-playbook.md) | files: `.codex/scopes/archive/merge-upstream-v3-0-22`, `.codex/scopes/archive/local-nginx-slimdown`, `.codex/scopes/merge-upstream-v3-0-27` ... | anchors: 2 | status: current
+- [Upstream Merge Playbook](reference/upstream-merge-playbook.md) | files: `.codex/scopes/archive/merge-upstream-v3-0-22`, `.codex/scopes/archive/local-nginx-slimdown`, `.codex/scopes/archive/merge-upstream-v3-0-27` ... | anchors: 2 | status: current
 
 Use `scripts/wiki.py nav goto` and `scripts/wiki.py nav refs` for symbol-level navigation.
 <!-- END AUTO -->

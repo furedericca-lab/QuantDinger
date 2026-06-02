@@ -37,15 +37,23 @@
     ],
     "symbols": {}
   },
-  ".codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md": {
+  ".codex/scopes/archive/merge-upstream-v3-0-27": {
+    "anchors": [],
+    "definition_pages": [],
+    "pages": [
+      ".codex/wiki/reference/upstream-merge-playbook.md"
+    ],
+    "symbols": {}
+  },
+  ".codex/scopes/archive/merge-upstream-v3-0-27/merge-upstream-v3-0-27-scope-milestones.md": {
     "anchors": [
       {
-        "file": ".codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md",
+        "file": ".codex/scopes/archive/merge-upstream-v3-0-27/merge-upstream-v3-0-27-scope-milestones.md",
         "id": "upstream-merge-scope-archive",
         "kind": "scope-archive",
         "page": ".codex/wiki/reference/upstream-merge-playbook.md",
-        "role": "precedent",
-        "symbol": "merge-upstream-v3-0-22 Scope And Milestones",
+        "role": "latest-merge",
+        "symbol": "merge-upstream-v3-0-27 Scope And Milestones",
         "target": ".codex/wiki/reference/upstream-merge-playbook.md#upstream-merge-scope-archive"
       }
     ],
@@ -54,18 +62,10 @@
       ".codex/wiki/reference/upstream-merge-playbook.md"
     ],
     "symbols": {
-      "merge-upstream-v3-0-22 Scope And Milestones": [
+      "merge-upstream-v3-0-27 Scope And Milestones": [
         ".codex/wiki/reference/upstream-merge-playbook.md#upstream-merge-scope-archive"
       ]
     }
-  },
-  ".codex/scopes/merge-upstream-v3-0-27": {
-    "anchors": [],
-    "definition_pages": [],
-    "pages": [
-      ".codex/wiki/reference/upstream-merge-playbook.md"
-    ],
-    "symbols": {}
   },
   ".codex/wiki": {
     "anchors": [
