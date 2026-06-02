@@ -26,7 +26,7 @@ code_anchors:
     role: defines
 source_docs:
   - README.md
-  - AGENT.md
+  - AGENTS.md
 tags:
   - configuration
   - oauth

@@ -165,7 +165,7 @@ movement and credential access.
   or container deployment scaffolding without an explicit new scope.
 - Prefer idempotent startup guards for upgrade compatibility, but do not hide
   real migration requirements in unrelated request paths.
-- Keep wiki pages as the durable manual. README and `AGENT.md` should summarize
+- Keep wiki pages as the durable manual. README and `AGENTS.md` should summarize
   and link, not become competing long-form docs.
 
 ## Verification

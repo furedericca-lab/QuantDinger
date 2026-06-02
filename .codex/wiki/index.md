@@ -3,8 +3,11 @@ title: Project Wiki Index
 type: wiki-index
 status: current
 generated_by: /root/.codex/skills/wiki-note/scripts/wiki_note.py
-updated: 2026-05-31T18:03:05Z
+updated: 2026-06-02T02:03:55Z
 ---
+
+
+
 
 
 
@@ -25,7 +28,7 @@ updated: 2026-05-31T18:03:05Z
 # Project Wiki Index
 
 <!-- BEGIN AUTO -->
-- Last rebuilt: 2026-05-31T18:03:05Z
+- Last rebuilt: 2026-06-02T02:03:55Z
 - Page count: 10
 
 ## By Type
@@ -119,7 +122,7 @@ updated: 2026-05-31T18:03:05Z
 - [Configuration And Integrations](reference/configuration-and-integrations.md) | files: `backend_api_python/env.example`, `backend_api_python/app/routes/settings.py`, `backend_api_python/app/services/oauth_service.py` ... | anchors: 2 | status: current
 - [Current Verification Commands](reference/current-verification-commands.md) | files: `backend_api_python`, `mcp_server` ... | anchors: 4 | status: current
 - [Project Governance](reference/project-governance.md) | files: `backend_api_python/app/utils/auth.py`, `backend_api_python/app/utils/credential_crypto.py`, `backend_api_python/app/utils/safe_exec.py` ... | anchors: 3 | status: current
-- [Source Docs Archive Map](reference/source-docs-archive-map.md) | files: `README.md`, `AGENT.md`, `.codex/wiki` ... | anchors: 2 | status: current
+- [Source Docs Archive Map](reference/source-docs-archive-map.md) | files: `README.md`, `AGENTS.md`, `.codex/wiki` ... | anchors: 2 | status: current
 
 Use `scripts/wiki.py nav goto` and `scripts/wiki.py nav refs` for symbol-level navigation.
 <!-- END AUTO -->

@@ -9,7 +9,7 @@ related_files:
     role: doc
   - path: README.md
     role: doc
-  - path: AGENT.md
+  - path: AGENTS.md
     role: doc
   - path: backend_api_python/app/utils/auth.py
     role: owner
@@ -20,7 +20,7 @@ related_files:
 code_anchors:
   - id: governance-agent-contract
     kind: doc
-    file: AGENT.md
+    file: AGENTS.md
     symbol: wiki-note
     role: references
   - id: governance-secret-crypto-boundary
@@ -135,7 +135,7 @@ consolidated into `.codex/wiki/`.
 Rules:
 
 - README is the operator-facing entry point.
-- `AGENT.md` is the developer/agent operating contract.
+- `AGENTS.md` is the developer/agent operating contract.
 - `.codex/wiki/` is the durable manual.
 - `.codex/scopes/<scope>/` is for active task contracts when used.
 - `.codex/scopes/archive/<scope>/` is for completed task provenance when used.

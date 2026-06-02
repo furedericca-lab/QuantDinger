@@ -1,4 +1,4 @@
-# AGENT.md
+# AGENTS.md
 
 This is the repo-local operating contract for developers and coding agents in
 `/root/code/QuantDinger`.
@@ -21,7 +21,7 @@ Use this precedence for implementation decisions:
 Primary entry points:
 
 - `README.md`: operator-facing product and workflow guide.
-- `AGENT.md`: developer/agent-facing architecture and workflow contract.
+- `AGENTS.md`: developer/agent-facing architecture and workflow contract.
 - Archived scopes:
   - [.codex/scopes/archive/merge-upstream-v3-0-22/](.codex/scopes/archive/merge-upstream-v3-0-22/) preserves the completed upstream `v3.0.22` merge evidence.
   - `.codex/scopes/archive/local-nginx-slimdown/` preserves the local nginx/no-paid-product slimdown evidence after closeout.
@@ -72,8 +72,11 @@ Top-level ownership:
 - `mcp_server/`: `quantdinger-mcp`, an additive MCP wrapper over Agent Gateway
   REST APIs.
 - `scripts/`: operational helper scripts.
-- nginx: local reverse proxy and static/frontend serving boundary, configured outside this repo.
+- nginx: local reverse proxy and static/frontend serving boundary, configured
+  outside this repo. On `openclaw`, the active vhost is
+  `/etc/nginx/conf.d/quantdinger.conf`.
 - systemd or another host process manager: local backend/Gunicorn service owner.
+  On `openclaw`, the active unit is `quantdinger.service`.
 - `.codex/wiki/`: current durable knowledge for this checkout.
 
 The backend service layer is the source of truth. Frontend code and MCP tools
@@ -96,6 +99,35 @@ Required first-start checks:
   private bridge to IBKR/MT5 is explicitly supported.
 - `QUANTDINGER_DEPLOYMENT_MODE=saas` or `hosted` is used for shared hosted
   deployments that must force Agent Gateway trading to paper-only behavior.
+
+Current `openclaw` public single-user baseline:
+
+- Public hostname is `https://tsw.momoe.qzz.io` through the existing
+  Cloudflare Tunnel. This historical hostname is intentional for the current
+  local baseline; do not rename local nginx or `FRONTEND_URL` unless the
+  Cloudflare public hostname is changed first.
+- `quantdinger.service` runs Gunicorn from `backend_api_python/` and binds to
+  `127.0.0.1:5000`.
+- nginx serves the browser WebUI from `/var/www/quantdinger` and proxies
+  `/api/*` to `127.0.0.1:5000`. The deployed static files were extracted from
+  `ghcr.io/brokermr810/quantdinger-frontend:v3.0.22`; the Vue source itself is
+  maintained outside this checkout.
+- `backend_api_python/.env` should keep `ENABLE_REGISTRATION=false`,
+  `PYTHON_API_HOST=127.0.0.1`, `FRONTEND_URL=https://tsw.momoe.qzz.io`,
+  `OPENAPI_ENABLED=false`, and `AGENT_LIVE_TRADING_ENABLED=false`.
+- The retired TSW services must remain absent/inactive:
+  `tsw-gravity-api.service`, `tsw-gravity-worker.service`, and
+  `/var/www/tsw-webui`.
+- Cloudflare Access is a remote account policy, not something local file edits
+  can expand. Unless a live Cloudflare check proves otherwise, treat the
+  current QuantDinger exposure as app-JWT-protected behind a Tunnel-only local
+  origin, with registration disabled.
+- Current observed Cloudflare behavior redirects unauthenticated public
+  requests for `/`, `/login`, `/assets/*`, and `/api/health` to Cloudflare
+  Access. Use loopback Host/SNI checks for local WebUI validation, and use a
+  real Access-authenticated browser session for public end-to-end validation.
+- If Cloudflare changes are explicitly authorized later, prefer protecting the
+  whole `tsw.momoe.qzz.io` hostname instead of only a legacy path.
 
 Hard rules:
 
@@ -336,7 +368,7 @@ Rules:
 - Durable behavior, architecture, and operating assumptions belong in
   `.codex/wiki/`.
 - README should remain an operator entry point.
-- AGENT should remain a developer/agent contract.
+- AGENTS should remain a developer/agent contract.
 - Do not store secrets, tokens, private keys, cookies, or raw credentials in
   README, wiki, tests, examples, or final answers.
 
@@ -366,7 +398,7 @@ During upstream merge, rebase, or cherry-pick work:
   `docs/api/index.html`, `docs/agent/agent-openapi.json`, or
   `docs/API_CONVENTIONS.md`; keep those paths under `.codex/wiki/reference/`.
 - Keep `.github/workflows/openapi-ci.yml`, `.github/PULL_REQUEST_TEMPLATE.md`,
-  README, AGENT, and `backend_api_python/scripts/export_openapi.py` aligned
+  README, AGENTS, and `backend_api_python/scripts/export_openapi.py` aligned
   with the wiki API paths after conflict resolution.
 - Do not restore upstream Docker Compose, Dockerfile, GHCR, Railway, payment,
   membership, credits, VIP, or marketplace scaffolding just because a merge
@@ -379,7 +411,7 @@ During upstream merge, rebase, or cherry-pick work:
 Post-merge minimum checks:
 
 ```bash
-rg -n "docs/api|docs/agent|docs/API_CONVENTIONS|API_CONVENTIONS" README.md AGENT.md .github backend_api_python .codex/wiki -S
+rg -n "docs/api|docs/agent|docs/API_CONVENTIONS|API_CONVENTIONS" README.md AGENTS.md .github backend_api_python .codex/wiki -S
 python3 /root/.codex/skills/wiki-note/scripts/wiki.py rebuild --json
 python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
 cd backend_api_python && python scripts/export_openapi.py
@@ -423,7 +455,9 @@ Local runtime work:
 
 ```bash
 curl -f http://127.0.0.1:5000/api/health
-curl -f http://localhost/api/health
+curl -fk https://tsw.momoe.qzz.io/api/health
+curl -fkI --resolve tsw.momoe.qzz.io:443:127.0.0.1 https://tsw.momoe.qzz.io/assets/index-DBOji-Sz.js
+curl -k -sS -o /dev/null -w '%{http_code}\n' --resolve tsw.momoe.qzz.io:443:192.168.1.153 https://tsw.momoe.qzz.io/api/health
 ```
 
 Do not claim completion for high-risk changes without either running the

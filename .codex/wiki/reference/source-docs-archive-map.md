@@ -7,7 +7,7 @@ last_checked: 2026-06-01
 related_files:
   - path: README.md
     role: doc
-  - path: AGENT.md
+  - path: AGENTS.md
     role: doc
   - path: .codex/wiki
     role: doc
@@ -74,14 +74,14 @@ agent-readable knowledge layer and a concise README entrypoint.
   `reference/api-conventions.md`.
 
 Future durable documentation should be added to `.codex/wiki/` first. README
-and AGENT should link to wiki pages or summarize them; they should not grow
+and AGENTS should link to wiki pages or summarize them; they should not grow
 into competing manuals.
 
 ## Current Documentation Shape
 
 - `README.md` is the operator-facing entry point and should explain access,
   major product workflows, runtime shape, and safety notes.
-- `AGENT.md` is the repo-local developer/agent contract and should explain
+- `AGENTS.md` is the repo-local developer/agent contract and should explain
   source boundaries, high-risk areas, and validation rules.
 - `.codex/wiki/index.md` is generated from structured wiki front matter.
 - `decision-log.md` and `maintenance-log.md` are generated/maintained wiki

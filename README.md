@@ -15,12 +15,21 @@ live in the wiki.
 
 ## Access
 
-- Local WebUI through nginx: `http://localhost`
+- Public WebUI on `openclaw`: `https://tsw.momoe.qzz.io`
+- Public access is gated by Cloudflare Access for the full hostname before
+  nginx or QuantDinger receive traffic.
+- Local WebUI through nginx: `https://tsw.momoe.qzz.io` with Host/SNI resolved
+  to loopback for origin checks.
 - Backend health direct: `http://127.0.0.1:5000/api/health`
 - Backend API direct: `http://127.0.0.1:5000`
-- Agent Gateway through nginx: `http://localhost/api/agent/v1`
+- Agent Gateway through nginx: `https://tsw.momoe.qzz.io/api/agent/v1`
 - Human Web API OpenAPI: `.codex/wiki/reference/api/openapi.yaml`
 - Agent Gateway OpenAPI: `.codex/wiki/reference/agent/agent-openapi.json`
+
+The deployed WebUI on `openclaw` is served from `/var/www/quantdinger`. Its
+static artifact was extracted from
+`ghcr.io/brokermr810/quantdinger-frontend:v3.0.22`; the Vue source is not part
+of this checkout.
 
 ## What You Use It For
 
@@ -96,13 +105,17 @@ gunicorn -c gunicorn_config.py run:app
 ```
 
 nginx should serve the frontend build and reverse proxy `/api/` and
-`/api/agent/v1` to the backend on `127.0.0.1:5000`.
+`/api/agent/v1` to the backend on `127.0.0.1:5000`. On `openclaw`, the active
+vhost is `/etc/nginx/conf.d/quantdinger.conf` and the public hostname remains
+`https://tsw.momoe.qzz.io`.
 
 Check:
 
 ```bash
 curl -f http://127.0.0.1:5000/api/health
 curl -f http://localhost/api/health
+curl -fkI --resolve tsw.momoe.qzz.io:443:127.0.0.1 https://tsw.momoe.qzz.io/assets/index-DBOji-Sz.js
+curl -k -sSI https://tsw.momoe.qzz.io/api/health | sed -n '1,8p'
 ```
 
 ### 3. Verify Market And Broker Assumptions

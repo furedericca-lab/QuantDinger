@@ -110,10 +110,10 @@
     ],
     "symbols": {}
   },
-  "AGENT.md": {
+  "AGENTS.md": {
     "anchors": [
       {
-        "file": "AGENT.md",
+        "file": "AGENTS.md",
         "id": "governance-agent-contract",
         "kind": "doc",
         "page": ".codex/wiki/reference/project-governance.md",

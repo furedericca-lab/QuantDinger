@@ -15,7 +15,7 @@ related_files:
     role: owner
   - path: README.md
     role: doc
-  - path: AGENT.md
+  - path: AGENTS.md
     role: doc
 code_anchors:
   - id: quantdinger-backend-env-template
@@ -35,7 +35,7 @@ code_anchors:
     role: defines
 source_docs:
   - README.md
-  - AGENT.md
+  - AGENTS.md
 tags:
   - deployment
   - operations
@@ -111,6 +111,25 @@ Recommended local production shape:
 - `FRONTEND_URL` matches the browser-facing origin.
 - HTTPS is used when the origin is not strictly local.
 
+Current `openclaw` public single-user deployment:
+
+- Public hostname remains `https://tsw.momoe.qzz.io` through the existing
+  Cloudflare Tunnel.
+- Cloudflare Access protects the full public hostname. Unauthenticated public
+  requests for `/`, `/login`, `/assets/*`, and `/api/health` should redirect to
+  Cloudflare Access before reaching local nginx.
+- Active nginx vhost is `/etc/nginx/conf.d/quantdinger.conf`.
+- Static WebUI files are served from `/var/www/quantdinger`.
+- The deployed WebUI artifact came from
+  `ghcr.io/brokermr810/quantdinger-frontend:v3.0.22`; the Vue source is not
+  part of this checkout.
+- `/api/*` proxies to the local Gunicorn backend at `127.0.0.1:5000`.
+- Loopback Host/SNI checks should still render the WebUI and API without going
+  through Cloudflare Access.
+- LAN/direct-origin requests to the same hostname should return `403`.
+- Legacy TSW paths such as `/showcase` and `/management` are explicitly not
+  served by local nginx.
+
 Production-sensitive settings:
 
 - Set `QUANTDINGER_DEPLOYMENT_MODE=saas` or `hosted` for shared deployments.
@@ -128,6 +147,8 @@ uv run --directory backend_api_python python run.py
 cd backend_api_python && gunicorn -c gunicorn_config.py run:app
 curl -f http://127.0.0.1:5000/api/health
 curl -f http://localhost/api/health
+curl -fkI --resolve tsw.momoe.qzz.io:443:127.0.0.1 https://tsw.momoe.qzz.io/assets/index-DBOji-Sz.js
+curl -k -sSI https://tsw.momoe.qzz.io/api/health | sed -n '1,8p'
 ```
 
 ## Troubleshooting

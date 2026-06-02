@@ -7,7 +7,7 @@ last_checked: 2026-06-01
 related_files:
   - path: README.md
     role: doc
-  - path: AGENT.md
+  - path: AGENTS.md
     role: doc
   - path: backend_api_python
     role: owner
@@ -42,7 +42,7 @@ code_anchors:
     role: tests
 source_docs:
   - README.md
-  - AGENT.md
+  - AGENTS.md
 tags:
   - verification
   - tests
@@ -113,10 +113,16 @@ dependencies to be installed. If they are missing, run `uv sync` first.
 ```bash
 curl -f http://127.0.0.1:5000/api/health
 curl -f http://localhost/api/health
+curl -fkI --resolve tsw.momoe.qzz.io:443:127.0.0.1 https://tsw.momoe.qzz.io/assets/index-DBOji-Sz.js
+curl -k -sS -o /dev/null -w '%{http_code}\n' --resolve tsw.momoe.qzz.io:443:192.168.1.153 https://tsw.momoe.qzz.io/api/health
+curl -k -sSI https://tsw.momoe.qzz.io/ | sed -n '1,8p'
+curl -k -sSI https://tsw.momoe.qzz.io/api/health | sed -n '1,8p'
 ```
 
 Use these after environment, port, database, Redis, worker, or reverse-proxy
-changes.
+changes. The public `tsw.momoe.qzz.io` checks should show Cloudflare Access
+redirects for unauthenticated requests; loopback `--resolve ...:127.0.0.1`
+checks should bypass Cloudflare and validate the local nginx/WebUI/API path.
 
 ## Wiki Maintenance
 
@@ -125,4 +131,4 @@ python3 /root/.codex/skills/wiki-note/scripts/wiki.py rebuild --json
 python3 /root/.codex/skills/wiki-note/scripts/wiki.py doctor --json
 ```
 
-Run these after structural wiki edits or when README/AGENT links change.
+Run these after structural wiki edits or when README/AGENTS links change.
