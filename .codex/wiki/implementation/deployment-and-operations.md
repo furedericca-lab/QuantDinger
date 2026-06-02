@@ -120,9 +120,9 @@ Current `openclaw` public single-user deployment:
   Cloudflare Access before reaching local nginx.
 - Active nginx vhost is `/etc/nginx/conf.d/quantdinger.conf`.
 - Static WebUI files are served from `/var/www/quantdinger`.
-- The deployed WebUI artifact came from
-  `ghcr.io/brokermr810/quantdinger-frontend:v3.0.22`; the Vue source is not
-  part of this checkout.
+- Frontend source is tracked as the `frontend/` git submodule, pointing at
+  `https://github.com/furedericca-lab/QuantDinger-Vue`. The deployed WebUI is
+  built from `frontend/dist` at the pinned frontend commit.
 - `/api/*` proxies to the local Gunicorn backend at `127.0.0.1:5000`.
 - Loopback Host/SNI checks should still render the WebUI and API without going
   through Cloudflare Access.

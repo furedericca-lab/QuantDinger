@@ -26,10 +26,10 @@ live in the wiki.
 - Human Web API OpenAPI: `.codex/wiki/reference/api/openapi.yaml`
 - Agent Gateway OpenAPI: `.codex/wiki/reference/agent/agent-openapi.json`
 
-The deployed WebUI on `openclaw` is served from `/var/www/quantdinger`. Its
-static artifact was extracted from
-`ghcr.io/brokermr810/quantdinger-frontend:v3.0.22`; the Vue source is not part
-of this checkout.
+The WebUI source is tracked as the `frontend/` git submodule, pointing at
+`https://github.com/furedericca-lab/QuantDinger-Vue`. On `openclaw`, the
+deployed WebUI is served from `/var/www/quantdinger` and is built from
+`frontend/dist` at the pinned frontend commit.
 
 ## What You Use It For
 
@@ -108,6 +108,17 @@ nginx should serve the frontend build and reverse proxy `/api/` and
 `/api/agent/v1` to the backend on `127.0.0.1:5000`. On `openclaw`, the active
 vhost is `/etc/nginx/conf.d/quantdinger.conf` and the public hostname remains
 `https://tsw.momoe.qzz.io`.
+
+Frontend build and deploy on `openclaw`:
+
+```bash
+git submodule update --init frontend
+cd frontend
+pnpm install --frozen-lockfile
+pnpm build
+find /var/www/quantdinger -mindepth 1 -delete
+cp -a dist/. /var/www/quantdinger/
+```
 
 Check:
 

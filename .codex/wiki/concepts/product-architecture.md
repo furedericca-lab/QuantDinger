@@ -65,10 +65,12 @@ The supported topology is:
 - Backend: Flask API on `127.0.0.1:5000`, started with `python run.py` or
   Gunicorn.
 - nginx: browser-facing static/frontend and reverse proxy boundary.
+- `frontend/`: Vue WebUI source tracked as a git submodule. Its production
+  build output is deployed to `/var/www/quantdinger` on `openclaw`.
 - MCP: optional wrapper over the preserved Agent Gateway REST API.
 
-Most backend, strategy, Agent Gateway, and MCP work should not require frontend
-source.
+Most backend, strategy, Agent Gateway, and MCP work should not require editing
+the frontend submodule.
 
 ## Current Code Anchors
 

@@ -108,10 +108,11 @@ Current `openclaw` public single-user baseline:
   Cloudflare public hostname is changed first.
 - `quantdinger.service` runs Gunicorn from `backend_api_python/` and binds to
   `127.0.0.1:5000`.
-- nginx serves the browser WebUI from `/var/www/quantdinger` and proxies
-  `/api/*` to `127.0.0.1:5000`. The deployed static files were extracted from
-  `ghcr.io/brokermr810/quantdinger-frontend:v3.0.22`; the Vue source itself is
-  maintained outside this checkout.
+- Frontend source is tracked as the `frontend/` git submodule, pointing at
+  `https://github.com/furedericca-lab/QuantDinger-Vue`. nginx serves the
+  browser WebUI from `/var/www/quantdinger` and proxies `/api/*` to
+  `127.0.0.1:5000`. The deployed static files are built from `frontend/dist`
+  at the pinned frontend commit.
 - `backend_api_python/.env` should keep `ENABLE_REGISTRATION=false`,
   `PYTHON_API_HOST=127.0.0.1`, `FRONTEND_URL=https://tsw.momoe.qzz.io`,
   `OPENAPI_ENABLED=false`, and `AGENT_LIVE_TRADING_ENABLED=false`.
