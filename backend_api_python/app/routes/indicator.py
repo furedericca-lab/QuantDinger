@@ -23,6 +23,7 @@ import numpy as np
 
 from app.utils.db import get_db_connection
 from app.utils.logger import get_logger
+from app.services.indicator_workspace import is_indicator_ide_listable, resolve_indicator_asset_type
 from app.utils.auth import login_required
 from app.services.indicator_params import IndicatorParamsParser
 import requests
@@ -475,12 +476,17 @@ def get_indicators():
 
         with get_db_connection() as db:
             cur = db.cursor()
+            try:
+                cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS asset_type VARCHAR(32) DEFAULT 'indicator'")
+            except Exception:
+                pass
             # Get user's own indicators (both purchased and custom).
             cur.execute(
                 """
                 SELECT
                   id, user_id, is_buy, end_time, name, code, description,
                   is_encrypted, preview_image,
+                  COALESCE(asset_type, 'indicator') as asset_type,
                   createtime, updatetime, created_at, updated_at
                 FROM qd_indicator_codes
                 WHERE user_id = ?
@@ -491,6 +497,13 @@ def get_indicators():
             rows = cur.fetchall() or []
             cur.close()
 
+        rows = [
+            r for r in rows
+            if is_indicator_ide_listable(
+                code=r.get("code") or "",
+                asset_type=r.get("asset_type") or "indicator",
+            )
+        ]
         out = [_row_to_indicator(r, user_id) for r in rows]
         return jsonify({"code": 1, "msg": "success", "data": out})
     except Exception as e:
@@ -521,19 +534,34 @@ def save_indicator():
         name = (data.get("name") or "").strip()
         description = (data.get("description") or "").strip()
         preview_image = (data.get("previewImage") or data.get("preview_image") or "").strip()
+        asset_type = (data.get("assetType") or data.get("asset_type") or "indicator").strip() or "indicator"
+        if asset_type not in ("indicator", "script_template", "bot_preset"):
+            asset_type = "indicator"
+
+        asset_type = resolve_indicator_asset_type(code, asset_type)
 
         if not code or not str(code).strip():
             return jsonify({"code": 0, "msg": "code is required", "data": None}), 400
 
-        from app.utils.safe_exec import validate_code_safety
+        if asset_type == "script_template":
+            from app.routes.strategy import _validate_strategy_code_internal
+            validation = _validate_strategy_code_internal(code)
+            if not validation.get("success"):
+                return jsonify({
+                    "code": 0,
+                    "msg": validation.get("message") or "Unsafe script template code",
+                    "data": None,
+                }), 400
+        else:
+            from app.utils.safe_exec import validate_code_safety
 
-        is_safe_code, unsafe_reason = validate_code_safety(code)
-        if not is_safe_code:
-            return jsonify({
-                "code": 0,
-                "msg": f"Unsafe indicator code: {unsafe_reason}",
-                "data": None,
-            }), 400
+            is_safe_code, unsafe_reason = validate_code_safety(code)
+            if not is_safe_code:
+                return jsonify({
+                    "code": 0,
+                    "msg": f"Unsafe indicator code: {unsafe_reason}",
+                    "data": None,
+                }), 400
 
         # Local dev UX: if name/description not provided, derive from code variables.
         if not name or not description:
@@ -551,6 +579,7 @@ def save_indicator():
         with get_db_connection() as db:
             cur = db.cursor()
             try:
+                cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS asset_type VARCHAR(32) DEFAULT 'indicator'")
                 # i18n columns (see services/indicator_translator.py)
                 cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS source_language VARCHAR(16)")
                 cur.execute("ALTER TABLE qd_indicator_codes ADD COLUMN IF NOT EXISTS name_i18n JSONB")
@@ -578,21 +607,21 @@ def save_indicator():
                     """
                     UPDATE qd_indicator_codes
                     SET name = ?, code = ?, description = ?,
-                        preview_image = ?, updatetime = ?, updated_at = NOW()
+                        preview_image = ?, asset_type = ?, updatetime = ?, updated_at = NOW()
                     WHERE id = ? AND user_id = ? AND (is_buy IS NULL OR is_buy = 0)
                     """,
-                    (name, code, description, preview_image, now, indicator_id, user_id),
+                    (name, code, description, preview_image, asset_type, now, indicator_id, user_id),
                 )
             else:
                 cur.execute(
                     """
                     INSERT INTO qd_indicator_codes
                       (user_id, is_buy, end_time, name, code, description,
-                       preview_image,
+                       preview_image, asset_type,
                        createtime, updatetime, created_at, updated_at)
-                    VALUES (?, 0, 1, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+                    VALUES (?, 0, 1, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
                     """,
-                    (user_id, name, code, description, preview_image, now, now),
+                    (user_id, name, code, description, preview_image, asset_type, now, now),
                 )
                 indicator_id = int(cur.lastrowid or 0)
             db.commit()
@@ -757,7 +786,7 @@ Self-check before returning code: every place where you call `.rolling` / `.fill
 - Use an `edge(s)` helper: `s & ~s.shift(1).fillna(False)` on each raw condition.
 - On trend flip bars you MAY set both `close_*` and opposing `open_*` true (flip_mode R2); for tp/sl-only exits use `close_*` alone without mixing tp/sl into `buy`/`sell`.
 - Declare contract header comments: `# signal_form: four_way`, `# exit_owner: engine|indicator`, `# flip_mode: R1|R2`.
-- See `.codex/wiki/implementation/strategy-backtest-and-execution.md`.
+- See `docs/SIGNAL_EXECUTION_STANDARD_CN.md`.
 
 **Legacy two-way** (simple crossover only):
 
@@ -823,7 +852,7 @@ Supported keys (parser-enforced):
 - `trailingStopPct`, `trailingActivationPct`: float **0–1** = price retracement / activation thresholds (same basis as stop/take-profit).
 - `tradeDirection`: exactly `long`, `short`, or `both`.
 
-**`tradeDirection both` execution semantics:** `df['buy']` → open long (close short first if short); `df['sell']` → open short (close long first if long). Do not document `buy` as a separate close-short column. If the strategy uses in-code tp/sl on `high`/`low` touches, prefer **not** also setting `trailingEnabled true` unless the user explicitly wants engine trailing — see `.codex/wiki/implementation/strategy-backtest-and-execution.md`.
+**`tradeDirection both` execution semantics:** `df['buy']` → open long (close short first if short); `df['sell']` → open short (close long first if long). Do not document `buy` as a separate close-short column. If the strategy uses in-code tp/sl on `high`/`low` touches, prefer **not** also setting `trailingEnabled true` unless the user explicitly wants engine trailing — see `docs/STRATEGY_DEV_GUIDE.md`.
 
 **Do not** put `leverage` in `@strategy`; users set leverage in the IDE backtest panel.
 

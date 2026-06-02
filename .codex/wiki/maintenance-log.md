@@ -28,3 +28,10 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Summary: Synchronized local nginx/no-paid-product baseline after removing Docker, billing, USDT payment, community marketplace, credits, VIP, and membership surfaces.
 - Pages: .codex/wiki/implementation/deployment-and-operations.md, .codex/wiki/reference/configuration-and-integrations.md, .codex/wiki/reference/current-verification-commands.md, .codex/wiki/concepts/product-architecture.md
 - Verification: OpenAPI export, targeted pytest, wiki rebuild/doctor
+
+## 2026-06-02T11:37:00Z [merge-upstream-v3-0-27]
+
+- Summary: Recorded the reusable upstream release-merge playbook while merging backend changes through v3.0.27 and advancing the frontend submodule to the matching fork commit.
+- Pages: .codex/wiki/reference/upstream-merge-playbook.md, .codex/wiki/reference/source-docs-archive-map.md, .codex/wiki/reference/api/openapi.yaml
+- Verification: frontend pnpm build, targeted pytest, OpenAPI export diff, wiki rebuild/doctor, nginx/runtime smoke, Cloudflare Access and LAN direct-origin checks.
+- Residual risk: The frontend release commit still reports package metadata 3.0.22; main repo VERSION and backend APP_VERSION were updated to 3.0.27, and frontend metadata should be fixed only through a frontend fork commit if needed.

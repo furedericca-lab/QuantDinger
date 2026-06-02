@@ -2097,6 +2097,46 @@ paths:
       - Strategy
       operationId: getApiStrategiesPositions
       x-visibility: internal
+  /api/account/snapshot:
+    get:
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanErrorEnvelope'
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanSuccessEnvelope'
+      summary: Live swap/spot positions + open orders for a saved credential.
+      tags:
+      - strategy
+      operationId: getApiAccountSnapshot
+      x-visibility: internal
+  /api/account/positions:
+    get:
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanErrorEnvelope'
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanSuccessEnvelope'
+      summary: L1 account position mirror for Quick Trade / asset views.
+      tags:
+      - strategy
+      operationId: getApiAccountPositions
+      x-visibility: internal
   /api/strategies/grid-resting-orders:
     get:
       responses:

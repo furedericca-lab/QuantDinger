@@ -45,6 +45,9 @@ Primary entry points:
   human API, Agent Gateway, OpenAPI artifact paths, and contract rules.
 - [Source Docs Archive Map](.codex/wiki/reference/source-docs-archive-map.md):
   mapping from deleted `docs/` and top-level governance files into wiki pages.
+- [Upstream Merge Playbook](.codex/wiki/reference/upstream-merge-playbook.md):
+  reusable release-merge triage rules for preserving the local nginx,
+  no-paid-product, wiki-first, frontend-submodule baseline.
 
 Do not treat the deleted legacy `docs/` tree as something to restore during
 normal maintenance. If upstream adds genuinely useful durable documentation,

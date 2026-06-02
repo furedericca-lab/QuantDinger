@@ -134,7 +134,8 @@
   ".codex/wiki/reference/api-conventions.md": {
     "code_refs": [],
     "wiki_refs": [
-      ".codex/wiki/reference/source-docs-archive-map.md"
+      ".codex/wiki/reference/source-docs-archive-map.md",
+      ".codex/wiki/reference/upstream-merge-playbook.md"
     ]
   },
   ".codex/wiki/reference/api-conventions.md#api-common-envelopes": {
@@ -236,6 +237,18 @@
   ".codex/wiki/reference/source-docs-archive-map.md#docs-consolidation-wiki-index": {
     "code_refs": [
       ".codex/wiki/index.md"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/upstream-merge-playbook.md#local-nginx-slimdown-baseline": {
+    "code_refs": [
+      ".codex/scopes/archive/local-nginx-slimdown/local-nginx-slimdown-contracts.md"
+    ],
+    "wiki_refs": []
+  },
+  ".codex/wiki/reference/upstream-merge-playbook.md#upstream-merge-scope-archive": {
+    "code_refs": [
+      ".codex/scopes/archive/merge-upstream-v3-0-22/merge-upstream-v3-0-22-scope-milestones.md"
     ],
     "wiki_refs": []
   }

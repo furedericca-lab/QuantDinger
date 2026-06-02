@@ -91,6 +91,12 @@ During upstream merge or rebase, preserve the deletion of the old docs tree
 unless the user asks otherwise. If upstream adds new useful docs, extract the
 durable facts into the relevant wiki page and update this map.
 
+For release merges, use
+`reference/upstream-merge-playbook.md` before resolving conflicts. It records
+the current local baseline, the accepted/adapted/rejected diff buckets, and the
+residual scans that prevent upstream docs, Docker deployment, billing,
+community, or USDT payment surfaces from being restored accidentally.
+
 ## API Artifacts
 
 The API documentation and generated artifacts now live under `.codex/wiki/`:

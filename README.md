@@ -5,13 +5,32 @@ data, indicator authoring, Python strategy runtimes, server-side backtests,
 live trading adapters, multi-user administration, an Agent Gateway, and an MCP
 server.
 
-This checkout is optimized for a local backend plus nginx deployment. It does
-not ship Docker Compose, GHCR/Railway deployment assets, community marketplace,
-USDT payment, credits, VIP, or membership purchase flows.
-
 Durable project knowledge lives in `.codex/wiki/`. README is the operator-facing
 entry point; architecture, integration, governance, and verification details
 live in the wiki.
+
+## Local Fork Scope
+
+This checkout is a local self-hosted fork, not an upstream-default SaaS
+distribution. The table below is the operating boundary for this repository.
+
+| Area | This Local Checkout | Upstream / SaaS-Oriented Surface | Local Rule |
+|---|---|---|---|
+| Deployment target | Gunicorn backend on `127.0.0.1:5000`, nginx HTTPS, PostgreSQL, Redis, Cloudflare Tunnel | Docker Compose, backend Dockerfile, GHCR images, Railway/cloud deployment guides | Keep the local nginx baseline; do not restore container/cloud deployment files unless explicitly requested |
+| Public hostname | `https://tsw.momoe.qzz.io` through the existing Cloudflare Tunnel | Upstream demo or new deployment hostnames | Keep this hostname until Cloudflare is changed deliberately |
+| Public access gate | Cloudflare Access protects the full hostname before nginx receives traffic | App-only auth or upstream demo access shape | Keep Cloudflare Access as the outer identity gate |
+| App authentication | QuantDinger JWT login remains the inner app auth layer | Same core app auth, plus upstream SaaS assumptions | Keep JWT auth; disable public self-registration for single-user deployment |
+| User model | Self-hosted single-user/operator-first runtime; admin user is intentional | Multi-user SaaS and public signup workflows | Preserve user isolation, but do not add SaaS billing/signup assumptions |
+| Frontend source | `frontend/` git submodule at `https://github.com/furedericca-lab/QuantDinger-Vue` | Separate upstream frontend repo/image release flow | Advance the submodule gitlink; do not vendor frontend source into this repo |
+| Frontend deployment | Build `frontend/dist` and copy it to `/var/www/quantdinger` | Pull or publish frontend container images | Deploy static files from the submodule build output |
+| API documentation | `.codex/wiki/reference/api/openapi.yaml` and `.codex/wiki/reference/agent/agent-openapi.json` | Old `docs/api/*` and `docs/agent/*` artifact paths | Keep generated API artifacts under `.codex/wiki/` |
+| Durable docs | README plus `.codex/wiki/` | Large upstream `docs/` tree and top-level governance docs | Put durable knowledge in wiki; do not restore competing active docs |
+| Billing and credits | Removed | Billing service, credits, VIP, membership, purchase flows | Do not restore billing/credits/VIP gates or schema |
+| Community marketplace | Removed | Community marketplace routes, services, publishing, review workflow | Keep private indicators/strategies; do not restore marketplace endpoints |
+| USDT payment | Removed | USDT payment services, watchers, billing subroutes, payment schema | Do not restore payment workflow; crypto trading pairs like `BTC/USDT` remain valid |
+| Live trading | Preserved but explicit and opt-in | Upstream live execution surfaces | Keep live trading disabled unless intentionally configured; never test real-money trading without explicit authorization |
+| Agent Gateway / MCP | Preserved for local agent workflows | Upstream agent tooling plus SaaS feature mix | Keep scoped agent tokens, audit, and paper-only hosted safeguards |
+| Version policy | Repo `VERSION` and backend `APP_VERSION` track the merged upstream target, currently `3.0.27` | Upstream tags may lag internal version constants | After a release merge, bump local main-repo version constants with `scripts/bump_version.py` |
 
 ## Access
 

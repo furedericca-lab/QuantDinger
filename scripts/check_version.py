@@ -21,16 +21,8 @@ SEMVER = r"\d+\.\d+\.\d+"
 # The captured group is compared against the VERSION file.
 CHECKS: list[tuple[str, str]] = [
     ("backend_api_python/app/_version.py", rf'APP_VERSION\s*=\s*"({SEMVER})"'),
-    ("QuantDinger-Vue-src/package.json", rf'"version"\s*:\s*"({SEMVER})"'),
-    ("QuantDinger-Vue-src/src/config/defaultSettings.js", rf"appVersion:\s*'({SEMVER})'"),
-    ("QuantDinger-Vue-src/src/store/modules/brand.js", rf"app_version:\s*'({SEMVER})'"),
-    (
-        "QuantDinger-Vue-src/src/layouts/BasicLayout.vue",
-        rf"defaultSettings\.appVersion \|\| '({SEMVER})'",
-    ),
     # README shields.io badges are dynamic (GitHub release endpoint) and not checked here.
-    # Frontend image tags, if used externally, are not checked here. FE and BE
-    # are versioned independently.
+    # Frontend source is a git submodule and is versioned by the frontend repo.
 ]
 
 
@@ -50,8 +42,6 @@ def main() -> int:
     for rel_path, pattern in CHECKS:
         path = REPO_ROOT / rel_path
         if not path.is_file():
-            # Frontend source lives in a private repo and is gitignored here;
-            # only verify paths that are actually tracked in this checkout.
             skipped.append(f"  SKIP    : {rel_path} (not in repo)")
             continue
         text = path.read_text(encoding="utf-8")

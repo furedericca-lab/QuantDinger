@@ -31,31 +31,9 @@ PATCHES: list[tuple[str, str, str]] = [
         rf'APP_VERSION\s*=\s*"{SEMVER}"',
         'APP_VERSION = "{v}"',
     ),
-    # Frontend package metadata + first-paint fallbacks.
-    (
-        "QuantDinger-Vue-src/package.json",
-        rf'"version"\s*:\s*"{SEMVER}"',
-        '"version": "{v}"',
-    ),
-    (
-        "QuantDinger-Vue-src/src/config/defaultSettings.js",
-        rf"appVersion:\s*'{SEMVER}'",
-        "appVersion: '{v}'",
-    ),
-    (
-        "QuantDinger-Vue-src/src/store/modules/brand.js",
-        rf"app_version:\s*'{SEMVER}'",
-        "app_version: '{v}'",
-    ),
-    (
-        "QuantDinger-Vue-src/src/layouts/BasicLayout.vue",
-        rf"defaultSettings\.appVersion \|\| '{SEMVER}'",
-        "defaultSettings.appVersion || '{v}'",
-    ),
     # README shields.io badges are dynamic (pulled from GitHub releases via
     # `/github/v/release/<owner>/<repo>`) and need no manual bump here.
-    # Frontend image tags, if used externally, are intentionally left alone.
-    # FE and BE can ship on independent cadences.
+    # Frontend source is a git submodule and must be bumped in that repo.
 ]
 
 
