@@ -22,6 +22,7 @@ distribution. The table below is the operating boundary for this repository.
 | App authentication | QuantDinger JWT login remains the inner app auth layer | Same core app auth, plus upstream SaaS assumptions | Keep JWT auth; disable public self-registration for single-user deployment |
 | User model | Self-hosted single-user/operator-first runtime; admin user is intentional | Multi-user SaaS and public signup workflows | Preserve user isolation, but do not add SaaS billing/signup assumptions |
 | Frontend source | `frontend/` git submodule at `https://github.com/furedericca-lab/QuantDinger-Vue` | Separate upstream frontend repo/image release flow | Advance the submodule gitlink; do not vendor frontend source into this repo |
+| Frontend version | Frontend submodule currently points at `3.0.28`, compatible with backend/main repo `3.0.27` | Frontend releases can move independently from backend tags | Keep the backend version at the merged upstream target unless a backend merge is performed |
 | Frontend deployment | Build `frontend/dist` and copy it to `/var/www/quantdinger` | Pull or publish frontend container images | Deploy static files from the submodule build output |
 | API documentation | `.codex/wiki/reference/api/openapi.yaml` and `.codex/wiki/reference/agent/agent-openapi.json` | Old `docs/api/*` and `docs/agent/*` artifact paths | Keep generated API artifacts under `.codex/wiki/` |
 | Durable docs | README plus `.codex/wiki/` | Large upstream `docs/` tree and top-level governance docs | Put durable knowledge in wiki; do not restore competing active docs |
@@ -30,7 +31,7 @@ distribution. The table below is the operating boundary for this repository.
 | USDT payment | Removed | USDT payment services, watchers, billing subroutes, payment schema | Do not restore payment workflow; crypto trading pairs like `BTC/USDT` remain valid |
 | Live trading | Preserved but explicit and opt-in | Upstream live execution surfaces | Keep live trading disabled unless intentionally configured; never test real-money trading without explicit authorization |
 | Agent Gateway / MCP | Preserved for local agent workflows | Upstream agent tooling plus SaaS feature mix | Keep scoped agent tokens, audit, and paper-only hosted safeguards |
-| Version policy | Repo `VERSION` and backend `APP_VERSION` track the merged upstream target, currently `3.0.27` | Upstream tags may lag internal version constants | After a release merge, bump local main-repo version constants with `scripts/bump_version.py` |
+| Version policy | Repo `VERSION` and backend `APP_VERSION` track the merged upstream target, currently `3.0.27`; frontend metadata is owned by the submodule | Upstream tags may lag internal version constants | After a backend release merge, bump local main-repo version constants with `scripts/bump_version.py` |
 
 ## Access
 

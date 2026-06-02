@@ -35,3 +35,10 @@ Append-only history for wiki updates caused by scope work, implementation closeo
 - Pages: .codex/wiki/reference/upstream-merge-playbook.md, .codex/wiki/reference/source-docs-archive-map.md, .codex/wiki/reference/api/openapi.yaml
 - Verification: frontend pnpm build, targeted pytest, OpenAPI export diff, wiki rebuild/doctor, nginx/runtime smoke, Cloudflare Access and LAN direct-origin checks.
 - Residual risk: The frontend release commit still reports package metadata 3.0.22; main repo VERSION and backend APP_VERSION were updated to 3.0.27, and frontend metadata should be fixed only through a frontend fork commit if needed.
+
+## 2026-06-02T12:10:00Z [frontend-v3-0-28-submodule]
+
+- Summary: Advanced the frontend submodule to furedericca-lab/QuantDinger-Vue commit 0c659aa, whose package and UI metadata report 3.0.28, while keeping the backend/main repo at 3.0.27.
+- Pages: README.md, AGENTS.md, .codex/wiki/maintenance-log.md
+- Verification: frontend pnpm build, wiki rebuild/doctor, local nginx static asset smoke, backend /api/health smoke.
+- Residual risk: The version pairing is intentionally frontend 3.0.28 plus backend 3.0.27; future backend merges should revisit the pairing before bumping main repo VERSION.

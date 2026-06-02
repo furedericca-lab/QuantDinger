@@ -115,7 +115,9 @@ Current `openclaw` public single-user baseline:
   `https://github.com/furedericca-lab/QuantDinger-Vue`. nginx serves the
   browser WebUI from `/var/www/quantdinger` and proxies `/api/*` to
   `127.0.0.1:5000`. The deployed static files are built from `frontend/dist`
-  at the pinned frontend commit.
+  at the pinned frontend commit. The frontend submodule may intentionally be
+  one compatible patch release ahead of the backend/main repo; current local
+  baseline is frontend `3.0.28` with backend/main repo `3.0.27`.
 - `backend_api_python/.env` should keep `ENABLE_REGISTRATION=false`,
   `PYTHON_API_HOST=127.0.0.1`, `FRONTEND_URL=https://tsw.momoe.qzz.io`,
   `OPENAPI_ENABLED=false`, and `AGENT_LIVE_TRADING_ENABLED=false`.
